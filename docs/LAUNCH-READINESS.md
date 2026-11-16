@@ -5,12 +5,12 @@ Reviewed 16 November 2026 against the public GitHub repository and the saved rea
 ## Launch decision
 
 - **COMPLETE:** Static project package, information pages, initial browser headers, local audio/PDF assets, Vercel exclusion for internal documents, source inventory, and draft legal documents are prepared. The checks listed below passed where stated.
-- **NEEDS MY INPUT:** Legal operator identity and acceptable public contact address, intended operating jurisdiction, child audience, international target, real domain, final hosting choice, and whether to introduce analytics or monitoring. No services are connected and no spending has occurred.
+- **NEEDS MY INPUT:** Legal operator identity and acceptable public contact/address, final confirmation that India is the operating jurisdiction, intended age group (the voice note says both “not a child audience” and “3+”), whether the service is intentionally targeted internationally, and a real domain. Vercel is the preferred host; anonymous Vercel Web Analytics is preferred over Google Analytics, but neither Vercel nor analytics is connected or enabled. No monitoring service was selected.
 - **NEEDS PROFESSIONAL REVIEW:** Counsel must confirm the applicable legal roles/duties, final privacy notice and terms, copyright complaint procedure, and the correct operator/grievance details. A security specialist should review a current PDF.js upgrade and file parser limits before production.
 
 **Production status: not ready to launch.** The static site is packaged for a Vercel project with no build step, but no hosted preview exists, so headers, HTTPS, host logs, and actual provider behavior have not been verified. The legal documents are drafts, not public site pages. Do not publish as a finished public product until missing details, counsel review, production checks, and required regressions are complete.
 
-**Cost and connected services:** No service was connected, no deployment or domain was created, and no cost was incurred. GitHub is the source repository. Vercel is a prepared configuration only; Cloudflare, Google Analytics, Sentry, Resend, accounts, payments, and backend storage are not configured. Any hosting plan/bandwidth costs depend on the owner’s Vercel account and usage and were not assessed by activating a service.
+**Cost and connected services:** GitHub is the connected source repository. No Vercel project, deployment, domain, DNS change, or paid service was activated, and no cost was incurred. Vercel is the preferred host but remains unconnected. The user prefers anonymous Vercel Web Analytics over Google Analytics; analytics is not enabled. Cloudflare, Google Analytics, Sentry, Resend, accounts, payments, and backend storage are not configured. Any hosting plan/bandwidth costs depend on the owner's Vercel account and usage and were not assessed by activating a service.
 
 ## Status
 
@@ -24,6 +24,7 @@ Reviewed 16 November 2026 against the public GitHub repository and the saved rea
 - This release includes locally served ambience recordings and embedded PDF.js and its worker. App code does not call a remote analytics or document service. Clicking external links, including source/credit links, contacts the destination.
 - No production host was configured during this audit. Access logs, retention, cookies, regional processing, and other provider telemetry therefore remain unknown. A browser network trace on the actual deployment is required before making a definitive public privacy statement.
 - No cookies were found in the inspected app code. This does not establish that a future host or third-party integration will not set cookies.
+- The owner prefers anonymous Vercel Web Analytics and does not want Google Analytics. Vercel documents aggregated traffic reporting, no third-party cookies, and request-derived visitor hashes discarded after 24 hours; its script also records page URL, referrer, approximate geography, and device/browser details. It is not person-level identity tracking. It is not enabled in this repository. Enabling it requires a Vercel project and its generated script route; assess the final notice and any consent requirements for the selected audience and jurisdictions before activation.
 
 ## Security
 
@@ -62,9 +63,11 @@ This product appears to be a local reading utility without user-submitted hostin
 
 Primary sources: [DPDP Act, India Code](https://www.indiacode.nic.in/bitstream/123456789/22037/1/a2023-22.pdf), [DPDP commencement notification G.S.R. 843(E), Gazette of India](https://egazette.gov.in/WriteReadData/2025/267647.pdf), [DPDP Rules, 2025 G.S.R. 846(E), Gazette of India](https://egazette.gov.in/WriteReadData/2025/267650.pdf), [MeitY DPDP Rules page](https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa), [Information Technology Act, India Code](https://www.indiacode.nic.in/bitstream/123456789/13116/1/it_act_2000_updated.pdf), [IT Rules updated 10 February 2026, MeitY](https://www.meity.gov.in/static/uploads/2026/02/550681ab908f8afb135b0ad42816a1c9.pdf), [Copyright Act, India Code](https://www.indiacode.nic.in/indiacode/handle/123456789/1367?view_type=browse), [Consumer Protection Act, India Code](https://www.indiacode.nic.in/bitstream/123456789/15256/1/eng201935.pdf), [Mozilla PDF.js security advisory GHSA-wgrm-67xf-hhpq](https://github.com/mozilla/pdf.js/security/advisories/GHSA-wgrm-67xf-hhpq).
 
+Provider references: [Vercel Web Analytics privacy](https://vercel.com/docs/analytics/privacy-policy) and [Vercel Web Analytics quickstart](https://vercel.com/docs/analytics/quickstart). The quickstart requires enabling analytics in a Vercel project and then adding its generated script route; it is not wired into this build.
+
 ## Not implemented or still pending
 
-- Final public policy pages, clickwrap, cookie banner, analytics consent, or a grievance-officer designation. The operator’s legal name/business identity, address, confirmed operating jurisdiction, child audience, international service scope, and host/log practices are unresolved. Legal drafts are intentionally separate and clearly marked as drafts.
+- Final public policy pages, clickwrap, analytics preference/consent interface, or a grievance-officer designation. Drafts for Terms, Acceptable Use, Copyright/IP, complaint/takedown process, and Disclaimer now accompany the Privacy and Contact drafts under `docs/legal-drafts/`; they remain unpublished and require review. The operator's legal name/business identity, acceptable contact/address, confirmed operating jurisdiction, intended age group, international targeting, and host/log practices remain unresolved. No cookie banner is currently needed to describe app-created cookies because the app has no analytics or app-created cookies; reassess before enabling analytics or adding other tracking.
 - About, FAQ, updates, contact, and custom 404 pages are implemented. Information pages share navigation/footer. Final legal policy pages remain drafts and are excluded from Vercel uploads.
 - Custom domain, canonical URLs, sitemap, production robots policy, and social sharing image. No fake domain was added. A placeholder domain is intentionally not used in metadata or sitemap.
 - Actual deployment, browser network inspection, host log/retention disclosure, headers verification, domain/DNS configuration, and production smoke tests.
@@ -74,11 +77,11 @@ Primary sources: [DPDP Act, India Code](https://www.indiacode.nic.in/bitstream/1
 
 ## Next decisions
 
-1. Provide the legal operator name/business identity, correspondence address or acceptable alternative, and intended jurisdiction.
-2. Confirm whether children are an intended audience and whether the service will target users outside India.
-3. Select a real domain and confirm host choice and log retention. No purchase, DNS edit, or paid service has been made.
-4. Have Indian counsel review the legal drafts and applicability questions before publication.
-5. Upgrade PDF.js and add parser resource limits, then run the full regression and browser/security checks.
+1. Provide the legal operator name/business identity and acceptable public contact/address; confirm India as the initial operating jurisdiction.
+2. Resolve the age-audience conflict (“not a child audience” versus “3+”) and whether the service will intentionally target users outside India.
+3. Select a real domain and import the GitHub repository into Vercel. Before enabling Vercel Analytics, confirm its generated route and review notice/consent requirements. No purchase, DNS edit, or paid service has been made.
+4. Have Indian counsel review the unpublished legal drafts and applicability questions before publication.
+5. Upgrade PDF.js and complete the full regression, accessibility, browser, and security checks before production.
 
 ## Verification performed
 

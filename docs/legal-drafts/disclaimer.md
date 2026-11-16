@@ -1,7 +1,9 @@
-# Product disclaimer — draft, not for publication
+# Product Disclaimer — unpublished draft
 
-GoodReadence is a reading tool. It does not grant rights to books or other documents. Users are responsible for the documents they choose to open and for respecting copyright and other rights.
+**Draft status:** Not for publication until the operator, intended audience, governing jurisdiction, product behavior, and counsel review are complete. Reviewed 16 November 2026.
 
-The application stores its library and reading information in the browser. Browser storage may be cleared, evicted, or become unavailable. The inspected build has no verified complete backup/restore service. Keep independent copies of important documents.
+GoodReadence is a tool for reading PDF and EPUB files in a browser. It does not sell books or grant rights in books. You are responsible for the files you choose and for obtaining any rights required for your use.
 
-Operation depends on compatible browsers, local storage, PDF.js, and other included or third-party components. This draft does not limit rights that cannot be excluded by applicable law. Identify the legal operator and obtain legal review before publication.
+In the reviewed build, selected files and reading information are processed or stored in the browser, not uploaded to a GoodReadence book library. Browser storage can be cleared, evicted, or lost, and file compatibility varies. Keep your own copies of important documents. The reader depends on a compatible browser and third-party open-source components.
+
+The operator and service do not promise uninterrupted operation or support for every file or device. Nothing in this draft limits rights or liabilities that applicable law does not allow to be limited. This is not legal advice and does not claim that GoodReadence is legally compliant or certified.

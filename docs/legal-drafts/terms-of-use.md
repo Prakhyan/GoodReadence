@@ -1,25 +1,35 @@
-# Terms of use — draft, not for publication
+# Terms of Use — unpublished draft
 
-**Draft status:** Operator identity, governing jurisdiction, user eligibility, and enforceability review are unresolved. Last reviewed 16 November 2026.
+**Draft status:** Not for publication or reliance until the operator, intended audience, governing jurisdiction, product behavior, and legal review are confirmed. Reviewed 16 November 2026.
 
-GoodReadence is a personal reading application for books a user selects in their browser. The legal operator has not been identified. These draft terms are not an agreement and visiting the site is not stated to constitute acceptance.
+> **Publication blockers:** Identify the person or entity operating GoodReadence; confirm the service's minimum age and intended audience; confirm governing law and forum with counsel; review the live product and privacy notice. This draft does not create a claim that access alone is acceptance.
 
-## Use of the application
+## About this draft
 
-Use the reader only with documents you are entitled to access and use. Do not use the app or its infrastructure for unlawful activity, copyright infringement, malicious files, unauthorised access, or attempts to disrupt the service. Do not upload or distribute books through GoodReadence; the inspected app has no upload service.
+GoodReadence is a browser-based PDF and EPUB reading interface. The site has no reader account, payment, or cloud library in the reviewed build. The product and its legal operator are distinct concepts; the legal operator's identity has not been provided.
 
-## Books and intellectual property
+## Use of the service
 
-You retain whatever rights you have in your documents. Selecting a document does not transfer its copyright to GoodReadence. GoodReadence’s software, product name, original interface, and assets belong to their respective rights holders. Third-party libraries and recordings remain subject to their own licenses, listed in their notices and the sound credits.
+You may use GoodReadence to open and read files that you are entitled to access. You are responsible for choosing files and for complying with rights that apply to them. Do not use the site to violate law, infringe copyright, interfere with the site, or attempt to exploit it or another person's device.
 
-## Availability and local data
+The reader processes selected documents in the browser in the reviewed build. It does not provide a document hosting, sharing, account, or cloud synchronization service. Browser storage can be cleared, evicted, unavailable, or lost. Keep independent copies of important source files. Browser, operating-system, storage, and file compatibility vary.
 
-Browser support, local storage availability, and third-party software affect operation. Browser storage can be cleared or evicted. The inspected build has no verified cloud recovery or complete library backup/restore. Keep independent copies of important books and notes.
+## Intellectual property
 
-## Changes, warranty, liability, and disputes
+GoodReadence branding, original interface code, and original design elements are not transferred to users by use of the reader. The legal owner of the brand and software must be identified before publication. Third-party components and audio remain governed by their own notices and licenses. Opening a file does not transfer ownership of that file to GoodReadence or grant anyone new rights to copy or distribute it.
 
-The operator and governing law/jurisdiction must be identified before final terms can be drafted. Any warranty, liability, indemnity, suspension, termination, or dispute provision must be reviewed under applicable law and must preserve rights that cannot legally be excluded. No final agreement is formed by this draft.
+## Availability and third parties
+
+The site may change or be unavailable. The app depends on browsers and third-party open-source software. External links are provided to their destinations; their services have separate terms and privacy practices. Hosting and analytics providers, if activated, will be described in the privacy notice after configuration and verification.
+
+## Disclaimers and liability
+
+The reader is provided as a reading utility. To the extent permitted by applicable law, it is provided without a promise that it will be uninterrupted, compatible with every file, or free of errors. Nothing in these terms excludes a right or liability that applicable law does not allow to be excluded. Any additional limitations must be reviewed by counsel for the confirmed operator and jurisdiction.
+
+## Suspension, changes, and disputes
+
+The operator may need to restrict access to address security, legal, or operational issues. Material changes should be described with an updated date. The governing law, venue, dispute process, and any notice/acceptance mechanism are intentionally unresolved; no city, court, or deemed acceptance is asserted in this draft.
 
 ## Contact
 
-General and legal enquiries: [goodreadence@proton.me](mailto:goodreadence@proton.me). Add the verified operator and legally required contact information before publication.
+Email [goodreadence@proton.me](mailto:goodreadence@proton.me) with “Legal notice” in the subject. This email is the supplied product contact, not a verified legal operator identity or designated statutory officer.

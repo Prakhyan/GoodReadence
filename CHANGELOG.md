@@ -3,6 +3,8 @@
 ## Follow-up readiness work — 2026-11-16
 
 - Replaced the station-focused train recording with a 12:02 CC0 passenger-train recording featuring wheel and rail rumble; updated the track catalog and credits.
+- Replaced the rain option with a clean rain-on-roof recording without added insect layers; its source is rated 4.8/5 across five ratings.
+- Added unpublished legal drafts for Terms of Use, Acceptable Use, Copyright/IP, complaint handling, and the product Disclaimer. Updated launch notes to reflect Vercel as the preferred host and optional anonymous Vercel Web Analytics as the selected analytics preference; neither is activated.
 - Verified a generated PDF import and render at a 390 px mobile viewport in Edge emulation, with no horizontal overflow. Physical phone testing remains outstanding.
 - Verified the replacement train audio decodes and plays for more than ten minutes in Edge emulation.
 
