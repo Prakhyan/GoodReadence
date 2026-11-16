@@ -41,7 +41,7 @@ Reviewed 16 November 2026 against the public GitHub repository and the saved rea
 
 ## Included ambience inventory
 
-Each selected recording is served alone; no synthetic ambience bed or simultaneous ambience mix is used. Excerpts run about 11–12 minutes before a same-recording crossfade. The installed catalog is: Rain, Thunderstorm, Fireplace, Ocean, Beach, Forest, Night, Stream, Wind · airplane cabin, Café, Train · India, Calm piano, Brown noise, and Rain by the sea. Source descriptions and license links are in `ambience/CREDITS.html`; exact durations, hashes, source URLs, and ratings where available are in `ambience/catalog.json`.
+Each selected recording is served alone; no synthetic ambience bed or simultaneous ambience mix is used. Excerpts run about 11–12 minutes before a same-recording crossfade. The installed catalog is: Rain, Thunderstorm, Fireplace, Ocean, Beach, Forest, Night, Stream, Wind · airplane cabin, Café, Train · Rail Ride, Calm piano, Brown noise, and Rain by the sea. The train option now uses a 12:02 CC0 recording from inside a moving passenger train, with wheel rumble over rails and wagon connectors; brief stops and conversation are present in the source. Source descriptions and license links are in `ambience/CREDITS.html`; exact durations, hashes, source URLs, and ratings where available are in `ambience/catalog.json`.
 
 The Rain option now uses the separate car-roof rain recording (4.8/5 from 5 source ratings), with no extra insect or ambience layers. Its playback is verified in Edge as a single decoded track, but the test does not substitute for human listening. Several tracks are CC0, while others are CC BY and therefore still copyrighted under a license. This set is free to redistribute under its listed terms; it is not a paid premium-library collection, and ratings with few votes should not be described as definitive.
 
@@ -84,7 +84,9 @@ Primary sources: [DPDP Act, India Code](https://www.indiacode.nic.in/bitstream/1
 
 - Node/VM review checks passed: inline script syntax, streak gaps, cache budget, animation/render cancellation, IndexedDB transaction completion/failure, local PDF assets, and no remote script/style URLs.
 - Microsoft Edge smoke tests passed: a generated two-page PDF rendered and navigated to page two without browser errors; a generated EPUB parsed and rendered its chapter, accepted a highlight, and rejected malformed and size-limit cases.
+- Microsoft Edge mobile emulation at 390 px passed a generated one-page PDF import/render with no horizontal overflow. This does not replace testing on physical Android and iOS devices.
 - Microsoft Edge browser check passed for all 14 ambience recordings: each file decoded and played locally for more than 600 seconds, one track played at a time, previous sources stopped on switching, volume applied, Off and rapid switching worked, and selected end-crossfades completed. The test did not listen subjectively to the audio; a human listening check is still needed for sound quality and incidental background noises.
+- After replacing the train source, mobile emulation verified playback of the new 722.05-second recording from `train-rails.mp3`; no subjective listening verification was performed.
 - No full PDF import/annotation/backup workflow or cross-browser/accessibility/security scan was performed. No hosted preview was available, so Vercel headers, logs, and mobile production behavior remain unverified.
 - Build configuration is static: root `index.html`, no package/build command required. Vercel is only a prepared option; no project is connected here. `.vercelignore` excludes internal `docs/` files from deployment uploads.
 

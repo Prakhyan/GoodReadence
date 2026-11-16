@@ -1,5 +1,11 @@
 # Changelog
 
+## Follow-up readiness work — 2026-11-16
+
+- Replaced the station-focused train recording with a 12:02 CC0 passenger-train recording featuring wheel and rail rumble; updated the track catalog and credits.
+- Verified a generated PDF import and render at a 390 px mobile viewport in Edge emulation, with no horizontal overflow. Physical phone testing remains outstanding.
+- Verified the replacement train audio decodes and plays for more than ten minutes in Edge emulation.
+
 ## Unreleased audit build — 2026-11-16
 
 - Imported the existing local GoodReadence reader into the GitHub repository.
