@@ -28,7 +28,7 @@ Reviewed 16 November 2026 against the public GitHub repository and the saved rea
 ## Security
 
 - The reader embeds PDF.js 3.11.174. Mozilla advisory CVE-2024-4367 describes arbitrary JavaScript execution from a malicious PDF for affected PDF.js versions when `isEvalSupported` is true. The reader’s three PDF load paths now set `isEvalSupported:false`, Mozilla’s documented workaround. This reduces that specific risk. It does not replace upgrading to a currently supported PDF.js release and reviewing its worker, compatibility, and security history.
-- The EPUB reader reads the selected archive into memory and expands chapter text. No explicit decompressed-size budget was found. Malformed or unusually large EPUBs may exhaust memory. A bounded parser and adversarial file tests remain launch work.
+- The EPUB reader reads the selected archive into memory. It now rejects source files over 100 MB, archives with over 5,000 entries, any extracted XML entry over 8 MB, and more than 32 MB total extracted XML. It bounds central-directory and local-entry offsets and streams deflate output before accepting it. Smoke tests passed for a valid EPUB, malformed input, an oversized file, and an entry that declares excessive expanded size. This does not replace a maintained ZIP library or fuzzing against adversarial archives.
 - `vercel.json` sets an initial CSP and basic browser security headers. The CSP permits inline and data scripts because the bundled reader uses embedded scripts. That weakens script restrictions. It must be tested on a Vercel preview before production. HSTS is omitted until HTTPS and domain configuration are verified.
 - No Vercel build, deploy, environment variables, DNS, GitHub Actions, API keys, or connected analytics/Sentry/Resend services were found in the original repository. No domain is supplied.
 
@@ -68,8 +68,8 @@ Primary sources: [DPDP Act, India Code](https://www.indiacode.nic.in/bitstream/1
 - About, FAQ, updates, contact, and custom 404 pages are implemented. Information pages share navigation/footer. Final legal policy pages remain drafts and are excluded from Vercel uploads.
 - Custom domain, canonical URLs, sitemap, production robots policy, and social sharing image. No fake domain was added. A placeholder domain is intentionally not used in metadata or sitemap.
 - Actual deployment, browser network inspection, host log/retention disclosure, headers verification, domain/DNS configuration, and production smoke tests.
-- Full regression matrix across PDF import/render, navigation, animation, zoom, search, annotations, themes, statistics/goals, persistence, ambience, mobile, desktop, keyboard, assistive technology, and major browsers. Automated checks below cover script syntax, selected internal logic, local PDF assets, and ambience playback in Edge; PDF user workflows and other browsers remain unverified.
-- PDF.js upgrade analysis, EPUB archive expansion limits, accessibility audit, current vulnerability scan, and counsel review.
+- Full regression matrix across multiple PDF imports, animation, zoom, search, annotations, themes, statistics/goals, persistence, mobile, desktop, keyboard, assistive technology, and major browsers. Automated checks below cover a two-page PDF render/turn, EPUB parse/render/highlight, selected internal logic, local PDF assets, and ambience playback in Edge; the remaining workflows and other browsers remain unverified.
+- PDF.js upgrade analysis, EPUB parser fuzzing or migration to a maintained ZIP library, accessibility audit, current vulnerability scan, and counsel review.
 - Library ZIP backup/restore. The existing source does not demonstrate this capability, so no claim is made that a ZIP backup contains complete books and state.
 
 ## Next decisions
@@ -83,6 +83,7 @@ Primary sources: [DPDP Act, India Code](https://www.indiacode.nic.in/bitstream/1
 ## Verification performed
 
 - Node/VM review checks passed: inline script syntax, streak gaps, cache budget, animation/render cancellation, IndexedDB transaction completion/failure, local PDF assets, and no remote script/style URLs.
+- Microsoft Edge smoke tests passed: a generated two-page PDF rendered and navigated to page two without browser errors; a generated EPUB parsed and rendered its chapter, accepted a highlight, and rejected malformed and size-limit cases.
 - Microsoft Edge browser check passed for all 14 ambience recordings: each file decoded and played locally for more than 600 seconds, one track played at a time, previous sources stopped on switching, volume applied, Off and rapid switching worked, and selected end-crossfades completed. The test did not listen subjectively to the audio; a human listening check is still needed for sound quality and incidental background noises.
 - No full PDF import/annotation/backup workflow or cross-browser/accessibility/security scan was performed. No hosted preview was available, so Vercel headers, logs, and mobile production behavior remain unverified.
 - Build configuration is static: root `index.html`, no package/build command required. Vercel is only a prepared option; no project is connected here. `.vercelignore` excludes internal `docs/` files from deployment uploads.

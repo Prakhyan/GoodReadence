@@ -8,6 +8,8 @@ Open `index.html` in a current desktop browser. Keep `vendor/`, `ambience/`, `ep
 
 Imported books and reading state are stored in the browser using IndexedDB and localStorage. This repository does not provide an upload service, user accounts, or a cloud backup service. Browser storage can be cleared or evicted. Keep independent copies of important books.
 
+EPUB imports are limited to 100 MB, 5,000 archive entries, 8 MB per extracted XML entry, and 32 MB total extracted XML to limit memory use from unusually large archives.
+
 ## Before public launch
 
 The `docs/legal-drafts/` files are working drafts, not final policies. Do not present them as final until the operator identity, hosting and log practices, jurisdiction, audience, and legal review are complete. The security and deployment audit is in `docs/LAUNCH-READINESS.md`.

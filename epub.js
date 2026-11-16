@@ -1,28 +1,49 @@
 /* Read the EPUB package and spine locally. Only text enters the reader DOM. */
 async function readEpub(file) {
+  const MAX_FILE=100*1024*1024,MAX_ENTRIES=5000,MAX_XML=8*1024*1024,MAX_TOTAL_XML=32*1024*1024;
+  if(file.size>MAX_FILE)throw Error('This EPUB is larger than the 100 MB import limit.');
   const bytes = new Uint8Array(await file.arrayBuffer());
+  if(bytes.length<22)throw Error('Invalid EPUB archive.');
   const view = new DataView(bytes.buffer), decoder = new TextDecoder();
-  const word = offset => view.getUint16(offset,true);
-  const integer = offset => view.getUint32(offset,true);
+  const word = offset => {if(offset<0||offset+2>bytes.length)throw Error('Invalid EPUB archive.');return view.getUint16(offset,true)};
+  const integer = offset => {if(offset<0||offset+4>bytes.length)throw Error('Invalid EPUB archive.');return view.getUint32(offset,true)};
   let end = bytes.length - 22;
   while(end >= Math.max(0,bytes.length-65557) && integer(end)!==0x06054b50) end--;
   if(end<0 || integer(end)!==0x06054b50) throw Error('Invalid EPUB archive.');
+  const count=word(end+10),directorySize=integer(end+12),directoryStart=integer(end+16);
+  if(word(end+4)!==0||word(end+6)!==0||word(end+8)!==count||count===0xffff||directorySize===0xffffffff||directoryStart===0xffffffff||count>MAX_ENTRIES||directoryStart+directorySize>end)throw Error('Unsupported or invalid EPUB directory.');
   const entries = new Map();
-  let cursor = integer(end+16);
-  for(let i=0;i<word(end+10);i++){
-    if(integer(cursor)!==0x02014b50) throw Error('Invalid EPUB directory.');
-    const length=word(cursor+28);
-    entries.set(decoder.decode(bytes.subarray(cursor+46,cursor+46+length)),cursor);
-    cursor+=46+length+word(cursor+30)+word(cursor+32);
+  let cursor = directoryStart;
+  for(let i=0;i<count;i++){
+    if(cursor+46>directoryStart+directorySize||integer(cursor)!==0x02014b50) throw Error('Invalid EPUB directory.');
+    const nameLength=word(cursor+28),extraLength=word(cursor+30),commentLength=word(cursor+32),next=cursor+46+nameLength+extraLength+commentLength;
+    if(next>directoryStart+directorySize)throw Error('Invalid EPUB directory.');
+    entries.set(decoder.decode(bytes.subarray(cursor+46,cursor+46+nameLength)),cursor);
+    cursor=next;
+  }
+  if(cursor!==directoryStart+directorySize)throw Error('Invalid EPUB directory.');
+  let totalXmlBytes=0;
+  async function inflate(data,expected){
+    const reader=new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw')).getReader(),chunks=[];let size=0;
+    try{while(true){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>MAX_XML||size>expected){await reader.cancel();throw Error('EPUB text entry exceeds the safe size limit.')}chunks.push(value)}}finally{reader.releaseLock()}
+    if(size!==expected)throw Error('Invalid EPUB text entry.');
+    const joined=new Uint8Array(size);let offset=0;for(const chunk of chunks){joined.set(chunk,offset);offset+=chunk.byteLength}
+    return joined;
   }
   async function xml(path){
     const entry=entries.get(path);
     if(entry===undefined) throw Error('Missing EPUB content.');
-    const header=integer(entry+42), start=header+30+word(header+26)+word(header+28);
-    const data=bytes.subarray(start,start+integer(entry+20));
-    const method=word(entry+10);
+    const method=word(entry+10),compressed=integer(entry+20),uncompressed=integer(entry+24),header=integer(entry+42);
+    if(uncompressed>MAX_XML||totalXmlBytes+uncompressed>MAX_TOTAL_XML)throw Error('EPUB text exceeds the safe size limit.');
+    if(header+30>bytes.length||integer(header)!==0x04034b50)throw Error('Invalid EPUB text entry.');
+    const start=header+30+word(header+26)+word(header+28),finish=start+compressed;
+    if(start>bytes.length||finish>bytes.length)throw Error('Invalid EPUB text entry.');
+    const data=bytes.subarray(start,finish);
     if(word(entry+8)&1 || ![0,8].includes(method)) throw Error('Unsupported or encrypted EPUB.');
-    const content=method===0?decoder.decode(data):await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
+    if(method===0&&compressed!==uncompressed)throw Error('Invalid EPUB text entry.');
+    totalXmlBytes+=uncompressed;
+    const decoded=method===0?data:await inflate(data,uncompressed);
+    const content=decoder.decode(decoded);
     const doc=new DOMParser().parseFromString(content,'application/xml');
     if(doc.querySelector('parsererror')) throw Error('Unreadable EPUB chapter.');
     return doc;
@@ -35,6 +56,7 @@ async function readEpub(file) {
     const href=items.get(ref.getAttribute('idref'));
     if(!href) continue;
     const url=new URL(href,new URL(path,'file:///'));
+    if(url.protocol!=='file:'||url.search)throw Error('Invalid EPUB chapter path.');
     const doc=await xml(decodeURIComponent(url.pathname.slice(1)));
     doc.querySelectorAll('script,style,nav').forEach(el=>el.remove());
     const body=doc.querySelector('body');
