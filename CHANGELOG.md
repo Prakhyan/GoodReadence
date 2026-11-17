@@ -1,5 +1,14 @@
 # Changelog
 
+## Blueprint additions — 2026-11-18
+
+- Added the supplied logo, saved home-page light/dark switch, and ivory/charcoal/violet library styling.
+- Added local PDF merge, page/chapter extraction, optional image-based compression, and image-to-book preparation.
+- Added DOCX/PPTX text import, explicit view selection, four-page continuous-scroll rendering, local margin notes, local-voice read-aloud, reading backdrops and a time estimate.
+- Added an installable app manifest, icons and cached app shell for offline reopening of saved books.
+- Migrated new PDF annotation writes to IndexedDB and added a local reader-settings backup there.
+- Documented format, compression, voice and device limits in `docs/FEATURE-IMPLEMENTATION.md`.
+
 ## Follow-up readiness work — 2026-11-16
 
 - Replaced the station-focused train recording with a 12:02 CC0 passenger-train recording featuring wheel and rail rumble; updated the track catalog and credits.

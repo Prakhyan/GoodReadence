@@ -236,19 +236,21 @@ main{background:var(--room)}
 #book::before{transform:translate(3px,3px);box-shadow:1px 3px 0 #bdb5a5}
 #book::after{transform:translate(5px,5px);box-shadow:1px 4px 0 #aaa291}
 </style>
+<link rel="stylesheet" href="premium.css"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png">
+<script>try{document.documentElement.dataset.appearance=localStorage.getItem("gr:appearance")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light")}catch(e){}</script>
 </head>
 <body class="lib">
-<section id="intro" aria-labelledby="introTitle">
-  <div class="intro-content"><div class="intro-logo"><svg class="brand-mark" viewBox="0 0 64 64" role="img" aria-label="GoodReadence mark"><path d="M8 15c9-3 17-1 24 5v31c-7-6-15-8-24-5z"/><path d="M56 15c-9-3-17-1-24 5v31c7-6 15-8 24-5z"/><path d="M32 20v31"/><path d="M13 23c5-1 10 0 14 3M51 23c-5-1-10 0-14 3"/></svg></div><p class="intro-kicker">A little room for stories</p><h1 id="introTitle">Make space<br>for a good read.</h1><p class="intro-copy">Bring a book you love. Settle in, find your place, and read at your own pace.</p><button id="enterLibrary" class="primary">Enter your library <span aria-hidden="true">→</span></button><p class="intro-note">Your books are read in this browser and stored on this device.</p><nav aria-label="Product information" style="display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;font-size:13px"><a href="about.html">About</a><a href="faq.html">Help &amp; FAQ</a><a href="updates.html">Updates</a><a href="contact.html">Contact</a><a href="https://www.instagram.com/goodreadence/" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://x.com/GoodReadence" rel="noopener noreferrer" aria-label="GoodReadence on X" title="X"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22H17l-4.9-7.4L5.6 22H2.4l8.3-9.5L.8 2h6.4l4.5 6.8L18.9 2zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20z"/></svg></a></nav><p style="font-size:12px;margin-top:20px">GoodReadence · © 2026 GoodReadence</p></div><div class="intro-art" aria-hidden="true"><div class="intro-halo"></div><div class="intro-book intro-book-back"></div><div class="intro-book intro-book-front"><i></i><b></b></div><span class="intro-spark spark-one">✳</span><span class="intro-spark spark-two">·</span></div></section>
+<section id="intro" aria-labelledby="introTitle"><button id="appearanceToggle" class="appearance-toggle" type="button" aria-label="Switch appearance">Appearance</button>
+  <div class="intro-content"><div class="intro-logo"><img src="logo.jpeg" alt="GoodReadence logo" width="108" height="72"></div><p class="intro-kicker">A little room for stories</p><h1 id="introTitle">Make space<br>for a good read.</h1><p class="intro-copy">Bring a book you love. Settle in, find your place, and read at your own pace.</p><button id="enterLibrary" class="primary">Enter your library <span aria-hidden="true">→</span></button><p class="intro-note">Your books are read in this browser and stored on this device.</p><nav aria-label="Product information" style="display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;font-size:13px"><a href="about.html">About</a><a href="faq.html">Help &amp; FAQ</a><a href="updates.html">Updates</a><a href="contact.html">Contact</a><a href="https://www.instagram.com/goodreadence/" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://x.com/GoodReadence" rel="noopener noreferrer" aria-label="GoodReadence on X" title="X"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22H17l-4.9-7.4L5.6 22H2.4l8.3-9.5L.8 2h6.4l4.5 6.8L18.9 2zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20z"/></svg></a></nav><p style="font-size:12px;margin-top:20px">© 2026 Prakhyan Nagarajan · GoodReadence</p></div><div class="intro-art" aria-hidden="true"><div class="intro-halo"></div><div class="intro-book intro-book-back"></div><div class="intro-book intro-book-front"><i></i><b></b></div><span class="intro-spark spark-one">✳</span><span class="intro-spark spark-two">·</span></div></section>
 <main>
   <div id="stage">
     <div id="book" hidden><div id='L' class='pg'><div class='hl'></div><div class='ln'></div><i class='sd'></i></div><div id='R' class='pg'><div class='hl'></div><div class='ln'></div><i class='sd'></i></div><div id="sh"></div></div>
   </div>
   <div id="empty">
     <div class="library-frame">
-      <header class="library-header"><span class="wordmark" id="brandHome" role="button" tabindex="0" title="Back to home" style="cursor:pointer"><span class="brand-icon" aria-hidden="true"><svg class="brand-mark" viewBox="0 0 64 64" role="img" aria-label="GoodReadence mark"><path d="M8 15c9-3 17-1 24 5v31c-7-6-15-8-24-5z"/><path d="M56 15c-9-3-17-1-24 5v31c7-6 15-8 24-5z"/><path d="M32 20v31"/><path d="M13 23c5-1 10 0 14 3M51 23c-5-1-10 0-14 3"/></svg></span> GoodReadence</span><button id="importBook" class="primary">＋ Add books</button></header>
+      <header class="library-header"><span class="wordmark" id="brandHome" role="button" tabindex="0" title="Back to home" style="cursor:pointer"><span class="brand-icon" aria-hidden="true"><svg class="brand-mark" viewBox="0 0 64 64" role="img" aria-label="GoodReadence mark"><path d="M8 15c9-3 17-1 24 5v31c-7-6-15-8-24-5z"/><path d="M56 15c-9-3-17-1-24 5v31c7-6 15-8 24-5z"/><path d="M32 20v31"/><path d="M13 23c5-1 10 0 14 3M51 23c-5-1-10 0-14 3"/></svg></span> GoodReadence</span><div class="library-actions"><button id="prepOpen" class="secondary">Prepare a book</button><button id="installApp" class="secondary" hidden>Install app</button><button id="importBook" class="primary">＋ Add books</button></div></header>
       <section class="feature">
-        <div class="feature-copy"><p id="featureLabel">Your reading room</p><h1 id="featureTitle">A place to read.</h1><p id="featureInfo">Bring your PDFs and EPUBs. Read offline, and pick up where you left off.</p><button id="featureAction" class="primary">Add your first book</button></div>
+        <div class="feature-copy"><p id="featureLabel">Your reading room</p><h1 id="featureTitle">A place to read.</h1><p id="featureInfo">Bring PDFs, EPUBs, Office documents or images. Read privately, and pick up where you left off.</p><button id="featureAction" class="primary">Add your first book</button></div>
         <div class="cover-stage" aria-hidden="true"><div class="volume volume-back"></div><div class="volume volume-front"><span>GoodReadence</span><i></i><img id="featureCover" hidden alt=""></div></div>
       </section>
       <small id="msg" role="status">Your books stay on this device. Nothing is uploaded.</small><div id="stats" hidden></div>
@@ -260,7 +262,7 @@ main{background:var(--room)}
 <div id="pp" hidden><div class="pb"><div class="ph"><b id="ptt"></b><button id="px" aria-label="Close">✕</button></div><div id="pc"></div></div></div>
 <div id="sp" hidden><div class="pb"><div class="ph"><b>Choose a cover</b><button id="sx" aria-label="Close">✕</button></div><div id="sg"></div></div></div>
 <div id="cf" hidden><div class="cb"><p id="cq"></p><div class="cr"><button id="cn">Cancel</button><button id="cy">Remove</button></div></div></div>
-<input id="f" type="file" accept=".pdf,.epub,application/pdf,application/epub+zip" multiple hidden>
+<input id="f" type="file" accept=".pdf,.epub,.docx,.pptx,.jpg,.jpeg,.png,application/pdf,application/epub+zip" multiple hidden>
 <nav id="bar">
   <div class="g n">
     <button id="mn" title="Index, search, pages and marks" aria-label="Menu">☰</button>
@@ -296,9 +298,10 @@ let busy=false,anim=false,q=Promise.resolve(),strips=[],shades=[];
 let bookSession=0,openRequest=0;
 function releasePdf(doc){if(doc)doc.destroy().catch(console.error)}
 function resetReader(){
+  window.readerReset?.();
   bookSession++;ver++;tk++;busy=false;anim=false;cache.clear();LK.clear();
   sh.hidden=true;sh.textContent='';book.classList.remove('turn');
-  Ls.lastChild.style.opacity=Rs.lastChild.style.opacity=0;
+  Ls.querySelector('.sd').style.opacity=Rs.querySelector('.sd').style.opacity=0;
   if(io)io.disconnect();vis.clear();releasePdf(pdf);pdf=null;
 }
 function storageError(error){console.error(error);toast('Changes could not be saved. Device storage may be full or unavailable.')}
@@ -324,7 +327,7 @@ async function openPdf(file,b){
     if(session!==bookSession){releasePdf(doc);return}
     pdf=doc;n=doc.numPages;ratio=v.width/v.height;zoom=1;s=0;single=undefined;cache.clear();
     key='fb:'+(b?b.id:(doc.fingerprints?.[0]||file.name+file.size));
-    let sv={};try{sv=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}
+    let sv=b?.annotations||{};if(!b?.annotations)try{sv=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}
     pp=Math.max(0,Math.min((b?b.last:sv.p)|0,n-1));bm=sv.bm||[];hl=sv.hl||{};ix={n:0,t:[],run:0};did++;bk=b||null;$('#ch').hidden=false;chip();tabTo('');toc();
     $('#empty').hidden=true;book.hidden=false;sl.max=n;sl.disabled=false;document.body.classList.remove('lib');autoSes();
     fit();
@@ -345,16 +348,15 @@ function get(p,w,ok){
     const c=document.createElement('canvas');c.width=Math.round(vp.width);c.height=Math.round(vp.height);
     const x=c.getContext('2d');
     await pg.render({canvasContext:x,viewport:vp,background:'#ffffff'}).promise;
-    pg.cleanup();
     if(v!==ver||doc!==pdf){cache.delete(key);return null}
-    if(tone===4){x.globalCompositeOperation='difference';x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height)}
-    x.globalCompositeOperation='multiply';x.fillStyle=PAPER[tone];x.fillRect(0,0,c.width,c.height);
+    if(tone===4){if(window.applyImageSafeNight)await window.applyImageSafeNight(pg,c,vp);else{x.globalCompositeOperation='difference';x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height)}}
+    if(tone!==4){x.globalCompositeOperation='multiply';x.fillStyle=PAPER[tone];x.fillRect(0,0,c.width,c.height)}
     if(!single){
       const r=p%2===0,g=x.createLinearGradient(r?0:c.width,0,r?c.width*.1:c.width*.9,0);
       g.addColorStop(0,'rgb(205,195,180)');g.addColorStop(1,'rgb(255,255,255)');
-      x.fillStyle=g;x.fillRect(0,0,c.width,c.height);
+      x.globalCompositeOperation='multiply';x.fillStyle=g;x.fillRect(0,0,c.width,c.height);x.globalCompositeOperation='source-over';
     }
-    e.px=c.width*c.height;trim();
+    pg.cleanup();e.px=c.width*c.height;trim();
     return c;
   }).catch(()=>{cache.delete(key);return null});
   return e.pr;
@@ -370,7 +372,7 @@ function preload(){
 
 /* Layout */
 function fit(){
-  const vw=stage.clientWidth,vh=stage.clientHeight,sg=vw<vh*ratio*1.6;
+  const room=getComputedStyle(stage),vw=stage.clientWidth-parseFloat(room.paddingLeft)-parseFloat(room.paddingRight)-12,vh=stage.clientHeight-parseFloat(room.paddingTop)-parseFloat(room.paddingBottom)-12,sg=(window.readerView==='single'||window.readerView==='scroll')?true:window.readerView==='spread'?false:vw<vh*ratio*1.6;
   if(sg!==single){
     if(single===undefined){single=sg;s=Math.min(single?pp:Math.ceil(pp/2),maxs())}
     else{const p=single?s:Math.min(2*s,n-1);single=sg;s=single?p:Math.ceil(p/2)}
@@ -382,9 +384,9 @@ function layout(){
   W=baseW*zoom;H=W/ratio;
   book.classList.toggle('one',single);
   book.style.cssText=`--w:${W}px;--h:${H}px;--paper:${bgp()}`;
-  stage.style.touchAction=zoom>1?'pan-x pan-y':'none';
+  stage.style.touchAction=window.readerView==='scroll'?'pan-x pan-y':zoom>1?'pan-x pan-y':'none';
   $('#zl').textContent=Math.round(zoom*100)+'%';
-  ver++;show();
+  ver++;cache.clear();show();
 }
 function shift(k,instant){
   const sx=zoom===1&&!single?(k===0?-W/2:(n%2===0&&k===maxs()?W/2:0)):0;
@@ -410,13 +412,15 @@ function fill(slot,c,p){if(c!==undefined){slot.p=p;marks(slot,p);lnk(slot,p)}
   if(c)slot.prepend(c);
 }
 async function show(){
+  if(window.readerView==='scroll'&&pdf){++tk;window.renderContinuous?.();return}
   const t=++tk,w=wpx(),[l,r]=slots(s);
   const [cl,cr]=await Promise.all([get(l,w),get(r,w)]);
   if(t!==tk||busy)return;
   fill(Ls,l<0||l>=n?null:cl||undefined,l);fill(Rs,r>=n?null:cr||undefined,r);
-  shift(s,true);ui();if(resizePending){resizePending=false;fit()}else preload();
+  shift(s,true);window.decorateBook?.();ui();if(resizePending){resizePending=false;fit()}else preload();
 }
 function ui(){
+  window.updateReaderExtras?.();window.decorateBook?.();
   const [l,r]=slots(s);
   lab.textContent=(single?[s+1]:[l>=0&&l<n?l+1:0,r<n?r+1:0].filter(Boolean)).join('–')+' / '+n;
   sl.value=single?s+1:Math.min(r+1,n);
@@ -454,6 +458,7 @@ function run(d){
   });
 }
 async function turn(d){
+  if(window.readerView==='scroll'){window.scrollReaderTo?.((+sl.value-1)+d);return}
   const s2=s+d;
   if(!pdf||busy||s2<0||s2>maxs())return;
   busy=true;const session=bookSession;
@@ -480,15 +485,15 @@ const PT=[{n:'Soft paper',l:.7,d:1000},{n:'Hardcover',l:.12,d:1300},{n:'Quick fl
 const SN=[{n:'Soft paper',t:'bandpass',f:[2600,4200],q:.6,g:.9,ev:20,cg:.5,tf:140,tg:.12},{n:'Crisp page',t:'highpass',f:[2200,3800],q:.7,g:.8,ev:45,cg:.9,tf:200,tg:.07},{n:'Hardcover',t:'lowpass',f:[900,1800],q:.6,g:1.1,ev:12,cg:.4,tf:90,tg:.5},{n:'Parchment',t:'bandpass',f:[1500,2600],q:.8,g:.9,ev:70,cg:.8,tf:160,tg:.1},{n:'No sound'},{n:'Thin paperback',t:'highpass',f:[1450,3100],q:.65,g:.42,ev:35,cg:.32,tf:110,tg:.045},{n:'Linen paper',t:'bandpass',f:[920,2450],q:.72,g:.55,ev:26,cg:.27,tf:95,tg:.06},{n:'Newsprint',t:'highpass',f:[900,2900],q:.55,g:.68,ev:52,cg:.5,tf:85,tg:.04},{n:'Glossy magazine',t:'bandpass',f:[1800,5200],q:1.2,g:.52,ev:11,cg:.34,tf:190,tg:.08}];
 let pageVolume=.5;
 let th=0,pt=0,am=0,av=.5,tm,lib=[],bk=null,did=0,pp=0,sn=0,tu=0,br=0,mk=0,mkc=0,er=0,hist=[],bm=[],hl={},key='',ix={n:0,t:[],run:0},lastTap=0,qt,mr,AC,nb,io,pj=0;
-try{const P=JSON.parse(localStorage.getItem('fb:pf')||'{}');pageVolume=P.pageVolume??.5;th=(P.th|0)%THEMES.length;pt=(P.pt|0)%PT.length;av=P.av==null?.5:+P.av;sn=P.sn==null?(P.mute?4:0):(P.sn|0)%SN.length;tu=P.tu|0;br=P.br|0}catch(e){}
+try{const P=JSON.parse(localStorage.getItem('fb:pf')||'{}');pageVolume=P.pageVolume??.5;th=(P.th|0)%THEMES.length;pt=(P.pt|0)%PT.length;av=P.av==null?.5:+P.av;sn=P.sn==null?(P.mute?4:0):(P.sn|0)%SN.length;tu=P.tu|0;br=P.br|0;am=Math.max(0,Math.min(14,P.am|0))}catch(e){}
 theme();$('#mute').textContent=SN[sn].n;$('#dim').style.opacity=BR[br];tuck(tu);
 const cp=()=>{const [l,r]=slots(s);return single?s:(r<n?r:l)};
 const bgp=()=>tone===4?'#0b0b0b':PAPER[tone];
 function save(){savePreferences();if(pdf){track();saveAnnotations()}}
-function savePreferences(){try{localStorage.setItem('fb:pf',JSON.stringify({th,sn,br,pt,av,tu,pageVolume}))}catch(e){storageError(e)}}
-function saveAnnotations(){try{if(key)localStorage.setItem(key,JSON.stringify({p:cp(),bm,hl}))}catch(e){storageError(e)}}
+function savePreferences(){try{localStorage.setItem('fb:pf',JSON.stringify({th,sn,br,pt,av,tu,pageVolume,am}))}catch(e){storageError(e)}}
+function saveAnnotations(){const annotation={p:cp(),bm,hl};if(bk){bk.annotations=annotation;putB(bk)}else try{if(key)localStorage.setItem(key,JSON.stringify(annotation))}catch(e){storageError(e)}}
 function item(t,p,d=0){const b=document.createElement('button');b.className='i';b.textContent=t;b.style.paddingLeft=8+d*14+'px';if(p!=null)b.onclick=()=>go(p);return b}
-function go(p){if(busy)return;s=Math.min(single?p:Math.ceil(p/2),maxs());show();tabTo('');dw.classList.remove('on')}
+function go(p){if(busy)return;if(window.readerView==='scroll'){window.scrollReaderTo?.(p);tabTo('');return}s=Math.min(single?p:Math.ceil(p/2),maxs());show();tabTo('');dw.classList.remove('on')}
 function marks(slot,p){const h=slot.querySelector('.hl');h.textContent='';(hl[p]||[]).forEach(([x,y,w,v,c])=>{const e=document.createElement('i');e.style.cssText=`left:${x*100}%;top:${y*100}%;width:${w*100}%;height:${v*100}%;background:${c}`;h.append(e)})}
 let sec='';
 function tabTo(t){
@@ -592,6 +597,7 @@ addEventListener('pointerdown',()=>{try{AC=AC||new AudioContext();if(AC.state===
 function zoomAt(z,fx,fy){setZoom(z);stage.scrollLeft=fx*book.offsetWidth-stage.clientWidth/2;stage.scrollTop=fy*book.offsetHeight-stage.clientHeight/2}
 const ptr=new Map();let pd=0,pz=1,pr=1;
 stage.addEventListener('pointerdown',e=>{
+  if(window.readerView==='scroll')return;
   ptr.set(e.pointerId,e);if(ptr.size===1)pj=0;
   if(ptr.size===2){const [a,b]=[...ptr.values()];pd=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);pz=zoom;pr=1;pj=1;dr=1}
 });
@@ -669,6 +675,7 @@ async function chapters(doc){
 }
 async function addBooks(files){
   files=files.filter(f=>f);if(!files.length)return;
+  if(window.prepareImports&&!window.skipPrep){files=await window.prepareImports(files);if(!files.length)return}
   if(!window.pdfjsLib){say('The PDF engine didn’t load. Keep the vendor folder beside this HTML file and reload.');return}
   try{await idb}catch(e){if(/\.epub$/i.test(files[0].name)){toast('Device storage is unavailable.');return}openPdf(files[0]);return}
   let last;
@@ -677,7 +684,7 @@ async function addBooks(files){
     last=lib.find(b=>b.id===id);if(last)continue;
     say('Adding “'+file.name+'”…');
     let doc;try{
-      if(/\.epub$/i.test(file.name)){const epub=await readEpub(file);const b={id,name:epub.title,format:'epub',n:epub.chapters.length,last:0,ts:Date.now()};b.cover=cover(b,0).toDataURL();await storeBook(file,b);lib.push(b);last=b;continue}
+      if(/\.(epub|docx|pptx)$/i.test(file.name)){const epub=/\.epub$/i.test(file.name)?await readEpub(file):await window.readOffice(file);const b={id,name:epub.title,format:/\.epub$/i.test(file.name)?'epub':'office',n:epub.chapters.length,last:0,ts:Date.now()};b.cover=cover(b,0).toDataURL();await storeBook(file,b);lib.push(b);last=b;continue}
       doc=await pdfjsLib.getDocument({isEvalSupported:false,data:new Uint8Array(await file.arrayBuffer())}).promise;const pg=await doc.getPage(1),v0=pg.getViewport({scale:1}),vp=pg.getViewport({scale:240/v0.width}),c=document.createElement('canvas');
       c.width=vp.width;c.height=vp.height;
       await pg.render({canvasContext:c.getContext('2d'),viewport:vp,background:'#ffffff'}).promise;
@@ -694,7 +701,7 @@ async function openBook(b){
   const f=await dbx('f','readonly',s=>s.get(b.id)).catch(()=>null);
   if(request!==openRequest)return;
   if(!f){say('That book’s file is missing. Add it again.');return}
-  if(b.format==='epub'){try{const epub=await readEpub(f);if(request===openRequest){if(pdf)home();showEpub(b,epub)}}catch(error){toast(error.message)}return}
+  if(b.format==='epub'||b.format==='office'){try{const epub=b.format==='office'?await window.readOffice(f):await readEpub(f);if(request===openRequest){if(pdf)home();showEpub(b,epub)}}catch(error){toast(error.message)}return}
   openPdf(f,b);
 }
 function wrapText(x,t,cx,y,w,lh){let l='';t.split(' ').forEach(wd=>{const m=l?l+' '+wd:wd;if(x.measureText(m).width>w&&l){x.fillText(l,cx,y);y+=lh;l=wd}else l=m});x.fillText(l,cx,y)}
@@ -723,7 +730,7 @@ function styles(b){
   const sp=$('#sp'),g=$('#sg');g.textContent='';sp.hidden=false;
   const tile=(label,src,fn,ph)=>{const t=document.createElement('button');t.className='ct';let im;if(src){im=new Image();im.src=src}else{im=document.createElement('i');im.textContent=ph||''}t.append(im,label);t.onclick=fn;g.append(t);return im};
   const set=c=>{b.cover=c.toDataURL('image/jpeg',.9);putB(b);shelf();sp.hidden=true};
-  if(b.format!=='epub'){const o=tile('Original',null,async()=>{try{set(await origCover(b))}catch(e){toast('Couldn’t read the original cover')}},'…');
+  if(b.format!=='epub'&&b.format!=='office'){const o=tile('Original',null,async()=>{try{set(await origCover(b))}catch(e){toast('Couldn’t read the original cover')}},'…');
   origCover(b).then(c=>{const im=new Image();im.src=c.toDataURL('image/jpeg',.7);o.replaceWith(im)}).catch(()=>{});}
   tile('Upload image',null,()=>{sp.hidden=true;upload(b)},'+');
   CS.forEach((d,k)=>tile(d[0],cover(b,k).toDataURL('image/jpeg',.7),()=>set(cover(b,k))));
@@ -792,7 +799,7 @@ $('#featureAction').onclick=()=>featured?openBook(featured):$('#f').click();
   }
 }
 function readingPosition(entry){
-  return entry.fin?'Finished':(entry.format==='epub'?'Chapter ':'Page ')+((entry.last||0)+1)+' of '+entry.n;
+  return entry.fin?'Finished':(entry.format==='epub'||entry.format==='office'?'Chapter ':'Page ')+((entry.last||0)+1)+' of '+entry.n;
 }
 $('#importBook').onclick=()=>$('#f').click();
 $('#enterLibrary').onclick=()=>{const intro=$('#intro');intro.classList.add('leaving');setTimeout(()=>{intro.hidden=true;intro.classList.remove('leaving')},520);try{localStorage.setItem('gr:introSeen','1')}catch(e){}};
@@ -835,13 +842,13 @@ function renderStats(el){
   g=S.goal,d0=Dy(),cur=g.t==='p'?d0.p:Math.floor((d0.m+(ses&&ses.run?(Date.now()-ses.t0)/1e3:0))/60),pc=Math.min(100,Math.round(cur/g.v*100));
   el.innerHTML="<div class='cd'><b>"+fire(streak())+streak()+"</b><span>day streak</span></div><div class='cd'><b>"+fin+"</b><span>books completed</span></div><div class='cd'><b>"+ch+"</b><span>chapters completed</span></div><div class='cd'><b>"+t+"</b><span>min per session</span></div><div class='gl'>Today: "+cur+" / "+g.v+(g.t==='p'?' pages':' minutes')+"<i><u style='width:"+pc+"%'></u></i></div>";
 }
-function addPages(k){const d=Dy(),b=d.p;d.p+=k;sv();if(S.goal.t==='p'&&b<S.goal.v&&d.p>=S.goal.v)toast('Daily goal reached ✦')}
+function addPages(k){const d=Dy(),b=d.p;d.p+=k;if(bk)bk.readPages=(bk.readPages||0)+k;sv();if(S.goal.t==='p'&&b<S.goal.v&&d.p>=S.goal.v)toast('Daily goal reached ✦')}
 const secs=()=>ses?ses.acc+(ses.run?(Date.now()-ses.t0)/1e3:0):0;
 function chip(){$('#ch').textContent=ses&&ses.run?'⏸ '+fmt(secs()):ses?'▶ '+fmt(secs())+' · paused':'▶ Start session'}
 function ssTab(){if(sec!=='ss')return;renderStats($('#ssx'));$('#gt').textContent=S.goal.t==='p'?'Pages':'Minutes';$('#gv').textContent=S.goal.v;$('#sb').textContent=ses&&ses.run?'Pause':'Start'}
 function sesToggle(){
   if(!ses)ses={acc:0,run:0,t0:0};
-  if(ses.run){const e=(Date.now()-ses.t0)/1e3;ses.acc+=e;ses.run=0;Dy().m+=e;sv()}else{ses.t0=Date.now();ses.run=1}
+  if(ses.run){const e=(Date.now()-ses.t0)/1e3;ses.acc+=e;ses.run=0;Dy().m+=e;if(bk)bk.readSeconds=(bk.readSeconds||0)+e;sv()}else{ses.t0=Date.now();ses.run=1}
   chip();ssTab();
 }
 function autoSes(){sesEnd();if(!document.hidden)sesToggle()}
@@ -865,7 +872,7 @@ $('#sb').onclick=$('#ch').onclick=()=>{sesToggle();if(ses)ses.man=!ses.run};$('#
 $('#pt').textContent=PT[pt].n;$('#av').value=av;
 $('#pt').onclick=()=>{pt=(pt+1)%PT.length;$('#pt').textContent=PT[pt].n;savePreferences()};
 // One local recording at a time. No synthetic beds or mixed ambience sources.
-if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('/audio-cache.js').catch(()=>{});
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='127.0.0.1'||location.hostname==='localhost'))navigator.serviceWorker.register('/audio-cache.js').catch(()=>{});
 let ambSession=null,ambSerial=0,ambMessage='Choose a recording. Each plays for over ten minutes before repeating.';
 function ambNotice(message){
   ambMessage=message;document.querySelectorAll('[data-amb-status]').forEach(el=>el.textContent=message);
@@ -919,7 +926,7 @@ function amb(){
 }
 addEventListener('pagehide',stopAmb);
 $('#am').innerHTML=AMB.map((n,i)=>"<option value='"+i+"'>"+n+"</option>").join('');
-$('#am').onchange=()=>{am=+$('#am').value;amb()};
+$('#am').value=am;$('#am').onchange=()=>{am=+$('#am').value;amb();savePreferences()};
 $('#av').oninput=()=>{av=+$('#av').value;ambientVolume();savePreferences()};
 chip();loadLib();
 
@@ -953,7 +960,7 @@ stage.addEventListener('pointermove',e=>{
 });
 stage.addEventListener('pointerup',e=>{
   const dx=e.clientX-x0,dy=e.clientY-y0;
-  if(!pj&&e.pointerType==='touch'&&zoom===1&&Math.abs(dx)>50&&Math.abs(dx)>2*Math.abs(dy)&&!mk&&!er){dr=2;turn(dx<0?1:-1)}
+  if(window.readerView!=='scroll'&&!pj&&e.pointerType==='touch'&&zoom===1&&Math.abs(dx)>50&&Math.abs(dx)>2*Math.abs(dy)&&!mk&&!er){dr=2;turn(dx<0?1:-1)}
 });
 book.addEventListener('click',e=>{
   if(dr)return;
@@ -977,9 +984,9 @@ addEventListener('drop',e=>{e.preventDefault();addBooks([...e.dataTransfer.files
 let resizePending=false,rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(pdf){if(busy)resizePending=true;else fit()}},150)});
 </script>
 <dialog id="epReader"><div class="epControls"><button id="epHome">Library</button><select id="epChapter" aria-label="Chapter"></select></div><div id="epScroll"><article id="epText"></article></div><div id="epPanel" hidden></div><div class="epControls"><button id="epPrev">‹</button><button id="epNext">›</button><button id="epType">Aa</button><button id="epBookmark">Bookmark</button><button id="epHighlight">Highlight</button><button id="epMarks">Saved marks</button><button id="epAudio">Sound</button><button id="epFull">Fullscreen</button></div></dialog><script>/* Read the EPUB package and spine locally. Only text enters the reader DOM. */
-async function readEpub(file) {
+async function readArchive(file) {
   const MAX_FILE=100*1024*1024,MAX_ENTRIES=5000,MAX_XML=8*1024*1024,MAX_TOTAL_XML=32*1024*1024;
-  if(file.size>MAX_FILE)throw Error('This EPUB is larger than the 100 MB import limit.');
+  if(file.size>MAX_FILE)throw Error('This document is larger than the 100 MB import limit.');
   const bytes = new Uint8Array(await file.arrayBuffer());
   if(bytes.length<22)throw Error('Invalid EPUB archive.');
   const view = new DataView(bytes.buffer), decoder = new TextDecoder();
@@ -1026,6 +1033,10 @@ async function readEpub(file) {
     if(doc.querySelector('parsererror')) throw Error('Unreadable EPUB chapter.');
     return doc;
   }
+  return {xml,entries};
+}
+async function readEpub(file){
+  const {xml}=await readArchive(file);
   const container=await xml('META-INF/container.xml');
   const path=container.querySelector('rootfile').getAttribute('full-path'), pkg=await xml(path);
   const items=new Map([...pkg.querySelectorAll('manifest > item')].map(el=>[el.id,el.getAttribute('href')]));
@@ -1120,5 +1131,5 @@ function showEpub(entry,publication){
   window.addEventListener('pagehide',saveEntry);dialog.addEventListener('close',()=>window.removeEventListener('pagehide',saveEntry),{once:true});
   panel.hidden=true;dialog.showModal();styleText();render(entry.scroll||0);
 }
-</script></body>
+</script><script src="reader-addons.js" defer></script></body>
 </html>

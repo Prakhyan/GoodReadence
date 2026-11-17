@@ -6,16 +6,25 @@ GoodReadence is a personal PDF and EPUB reader with page turns, bookmarks, highl
 
 ## Try the reader
 
-1. Open the live Vercel website on your phone or computer once it has been deployed. The GitHub repository is where the code lives; it is not the live website.
-2. In the reader, choose **Add a book** and pick a PDF or EPUB from your device.
+1. Open [GoodReadence](https://goodreadence.vercel.app) on your phone or computer. The GitHub repository is where the code lives.
+2. Choose **Add books** for a PDF, EPUB, DOCX, PPTX or JPG/PNG images. Office documents open as readable text; export them as PDF to keep their original layout.
 3. Use the reader's settings to choose one ambience recording, change its volume, or turn ambience off.
 
 The reader keeps selected books and reading progress in this browser on this device. It does not upload books to a GoodReadence account or sync them between devices. Browser data can be cleared or removed by the browser, so keep separate copies of books that matter to you.
+
+Choose **Prepare a book** to merge PDFs, extract pages or chapters, make an image book, or compress a copy. Compression changes pages into images; your original file is kept unchanged. The reader's new controls offer single page, spread or scroll views, reading backdrops, local notes, and read-aloud with an installed device voice. The home page has a light/dark switch.
+
+After one online visit, the app can reopen saved books offline. Supporting browsers show **Install app**; on iPhone, use Safari's **Share → Add to Home Screen**. Previously cached ambience can also play offline.
+
+See the [feature checklist and limitations](docs/FEATURE-IMPLEMENTATION.md) for the blueprint's implementation status.
 
 ## Project files, in plain language
 
 - `index.html` — the main reading app. This is the page Vercel opens first.
 - `reading-room.css` — colors, layout, and mobile styling.
+- `premium.css` — the logo palette, appearance switch, preparation dialogs and new reader controls.
+- `reader-addons.js` — file preparation, Office import, notes, views and read-aloud.
+- `audio-cache.js`, `manifest.webmanifest`, and `icon-*.png` — offline caching and installation support.
 - `epub.js` — code that opens EPUB books.
 - `vendor/` — the local PDF reading tools used by the app.
 - `ambience/` — sound recordings, their list, and credit/licence information.
