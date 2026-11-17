@@ -1,5 +1,14 @@
 # Changelog
 
+## Toolbar, freehand and information refresh — 2026-11-18
+
+- Combined View, Desk, Notes, Draw and Read aloud into the bottom toolbar and moved the menu and its panels to the bottom.
+- Added vector freehand highlighting for mouse, pen and touch, with adjustable size, four colours, stroke erasing, session undo and clear-page controls. Drawings persist with each book in IndexedDB and appear in flip and scroll views.
+- Replaced the supplied raster logo with an original CC0 book-and-bookmark mark, matching favicon and installation icons.
+- Made light the default appearance and shared explicit saved light/dark choices across Home, About, Updates, FAQ, Contact and 404, including back/forward navigation.
+- Rewrote About with a longer product introduction, published the full release history, and expanded the FAQ to 43 product questions.
+- Limited social links to Contact, using linked service icons and the corrected LinkedIn profile at `https://www.linkedin.com/in/prakhyan/`.
+
 ## Blueprint additions — 2026-11-18
 
 - Added the supplied logo, saved home-page light/dark switch, and ivory/charcoal/violet library styling.

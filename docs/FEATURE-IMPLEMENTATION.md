@@ -4,9 +4,11 @@ This checklist maps the supplied Local Flipbook Features and Strategy Blueprint 
 
 ## Start here
 
-- **Home:** supplied logo, saved light/dark switch, and working library/home navigation.
+- **Home:** original book-and-bookmark logo, saved light/dark switch, and working library/home navigation.
 - **Library:** charcoal, ivory and violet palette. Choose **Prepare a book** for file tools.
-- **Reader:** a new row offers View, Desk, Notes, and Read aloud.
+- **Reader:** the bottom toolbar offers View, Desk, Notes, Draw, and Read aloud.
+- **Toolbar refresh:** these controls now share the bottom toolbar. Draw adds mouse/pen/finger highlighting, adjustable size and colour, stroke erasing and session undo. The menu and settings panels open from the bottom.
+- **Brand and information refresh:** the original CC0 book-and-bookmark mark replaces the earlier supplied logo. About, Updates, Contact and 43 product FAQs share an explicit appearance setting; light is the default. Social profiles appear only on Contact.
 
 ## Implemented, in order
 

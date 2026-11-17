@@ -15,7 +15,7 @@
 <!-- System serif fonts work offline. -->
 <style>
 :root{--fg:#1c1c1e;--sf:#0000000a;--bd:#00000022;--ac:#2563eb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#e8e8e6;--bar:#fff;--ink:#1c1c1e}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101114;--bar:#18191d;--fg:#e6e6e8;--ink:#e6e6e8;--sf:#ffffff12;--bd:#ffffff26;--ac:#8ab4ff}}
+
 :root[data-theme="dark"]{--bg:#101114;--bar:#18191d;--fg:#e6e6e8;--ink:#e6e6e8;--sf:#ffffff12;--bd:#ffffff26;--ac:#8ab4ff}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 html,body{height:100%;margin:0}
@@ -165,7 +165,7 @@ body.lib #bar,body.lib #bh{display:none!important}
 #intro{position:fixed;inset:0;z-index:40;display:grid;grid-template-columns:1fr 1fr;align-items:center;align-content:safe center;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;background:#f5f5f1;color:#263129;padding:clamp(26px,8vw,116px);box-sizing:border-box;animation:introFade .8s ease both}#intro[hidden]{display:none}.intro-content{position:relative;z-index:2;max-width:520px;animation:introRise .8s .12s both}.intro-logo{width:72px;height:72px;border-radius:23px;background:#30473a;display:grid;place-items:center;margin-bottom:38px;box-shadow:0 10px 28px #263b2d22}.brand-mark{width:48px;height:48px;fill:none;stroke:#eef0e7;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.intro-kicker{color:#526a59;font-size:13px;letter-spacing:.09em;text-transform:uppercase;font-weight:650;margin:0 0 12px}#intro h1{font:500 clamp(48px,6.5vw,88px)/.99 Georgia,serif;letter-spacing:-.06em;margin:0 0 20px;color:#25352b}.intro-copy{max-width:38ch;color:#59635a;font-size:17px;line-height:1.65;margin:0 0 26px}.intro-note{font-size:12px;color:#7a8179;margin-top:22px}.intro-art{height:min(72vh,620px);position:relative;display:grid;place-items:center;animation:introRise .9s .25s both}.intro-halo{position:absolute;width:min(40vw,490px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#dce5d7 0%,#e9ede5 52%,#f5f5f1 72%);animation:haloIn 1.2s both}.intro-book{position:absolute;width:clamp(170px,22vw,270px);aspect-ratio:2/3;border-radius:5px 13px 13px 5px;box-shadow:5px 5px #f8f6ed,8px 9px #aaa99d,16px 27px 45px #15261e30}.intro-book-back{background:#b18b65;transform:translate(12px,7px) rotate(10deg)}.intro-book-front{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:28px;background:linear-gradient(145deg,#58735f,#2c4738);transform:translate(-23px,-5px) rotate(-7deg);animation:bookArrive .95s .35s cubic-bezier(.2,.8,.2,1) both}.intro-book-front i{width:35%;aspect-ratio:1;border:1px solid #d7dfce;transform:rotate(45deg);border-radius:7px}.intro-book-front b{width:42%;height:1px;background:#d7dfce}.intro-spark{position:absolute;color:#879b81;font-family:Georgia,serif}.spark-one{right:8%;top:22%;font-size:24px;animation:twinkle 3s ease-in-out infinite}.spark-two{left:12%;bottom:20%;font-size:44px;animation:twinkle 2.5s .4s ease-in-out infinite}.brand-icon{display:grid;place-items:center;width:32px;height:32px}.brand-icon .brand-mark{width:25px;height:25px;stroke:#f0f2e9}.intro-content .primary{font-size:15px;padding:14px 22px;box-shadow:0 6px 18px #263b2d20}.intro-content .primary span{padding-left:10px}.intro-content .primary:hover{transform:translateY(-1px)}#intro.leaving{animation:introExit .5s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes introFade{from{opacity:0}to{opacity:1}}@keyframes introRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}@keyframes haloIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}@keyframes bookArrive{from{opacity:0;transform:translate(20px,18px) rotate(2deg) scale(.94)}to{opacity:1;transform:translate(-23px,-5px) rotate(-7deg) scale(1)}}@keyframes twinkle{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:1;transform:scale(1.08)}}@keyframes introExit{to{opacity:0;visibility:hidden;transform:translateY(-8px)}}
 @media(max-width:700px){#intro{grid-template-columns:1fr;align-content:safe center;padding:28px 28px 20px.intro-content{max-width:100%}.intro-logo{width:58px;height:58px;border-radius:19px;margin-bottom:25px}.intro-logo .brand-mark{width:40px;height:40px}#intro h1{font-size:clamp(48px,14vw,72px)}.intro-copy{font-size:15px}.intro-art{position:absolute;right:-14%;bottom:-14%;height:42vh;width:68vw;opacity:.44;pointer-events:none}.intro-book{width:clamp(130px,36vw,195px)}.intro-halo{width:66vw}}
-@media(prefers-color-scheme:dark){#intro{background:#171c18;color:#e8ece5}#intro h1{color:#e8ece5}.intro-copy{color:#bdc7bc}.intro-note{color:#909a91}.intro-kicker{color:#a7bea9}.intro-halo{background:radial-gradient(circle,#36463a,#252d27 55%,#171c18 75%)}.intro-book-front{background:linear-gradient(145deg,#59745e,#344b3b)}}
+
 @media(prefers-reduced-motion:reduce){#intro,#intro *{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
 </style>
 <style>body,button,input,select,#empty,#tabs button,#pn button,#pc button,.epControls{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -203,15 +203,7 @@ button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visi
 @media(hover:hover){.book-link:hover img{transform:translateY(-3px)}.primary:hover{background:#36513f}}
 @media(max-width:600px){.library-header{height:62px;margin-bottom:15px}.feature{grid-template-columns:62% 38%;min-height:260px}.feature-copy{padding:22px 0 22px 19px}.volume{width:23vw}.shelf-header{align-items:start;flex-direction:column}.filters{width:100%}.filters input{min-width:0;flex:1}#shelf{grid-template-columns:repeat(2,minmax(0,1fr))}.epControls{gap:4px}#epReader button{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.book-link img{transition:none}}
-@media(prefers-color-scheme:dark){
- #empty{background:#191c1a;color:#eceee8}
- .library-header{border-color:#373d38}
- .feature{background:linear-gradient(115deg,#303d33,#24332b)}
- #featureLabel,#featureInfo,#empty #msg{color:#c4cfc1}
- .primary{background:#e1e9dc;color:#26372c}
- .filters>*{background:#292e2a;color:#e6ece4;border-color:#454c45}
- .shelf-card summary{color:#26372c}
-}
+
 
 /* Reading controls share the same quiet visual language as the library. */
 :root{--room:#f7f7f4;--room-line:#dfe2dc;--room-green:#31483a;--room-shadow:0 10px 32px #17251a12}
@@ -227,7 +219,7 @@ main{background:var(--room)}
 #epReader{background:#f7f7f4;color:#272a26}#epScroll{scroll-behavior:smooth}#epText{font-family:Georgia,serif;line-height:1.78;letter-spacing:.005em}#epText p{margin:0 0 1.2em}.epControls{padding:10px max(14px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom,0px));gap:7px;border-color:#e4e6e1;background:#f9faf7ed;backdrop-filter:blur(18px)}#epReader button,#epReader select{border:1px solid #e0e3dd;border-radius:999px;background:#fff;color:#303830;transition:transform .16s,background .16s}#epReader button:active{transform:scale(.96)}#epReader button:hover{background:#f0f3ee}#epPanel{background:#f1f3ef;border-radius:15px;margin:8px}#epPanel button{border-radius:12px!important}
 #empty{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 @media(max-width:700px){#stage{padding:10px 6px}#bar{padding-inline:8px;gap:3px}#bar .g.t{gap:3px}#bar button{min-width:34px;height:36px;padding:4px 7px}#bar #pl{min-width:4em;font-size:11px}#bar .g.n{gap:2px}#epReader .epControls{gap:4px;padding-inline:8px}#epReader button{padding:7px 10px}#epText{font-size:inherit}}
-@media(prefers-color-scheme:dark){:root{--room:#171a18;--room-line:#343a35;--room-green:#d6e5d5}body,main,#empty{background:#171a18;color:#e7eae5}#stage{background:radial-gradient(ellipse at 50% 43%,#282d29,#171a18 74%)}#bar,#bh,#dr,#mp{background:#222723ed;color:#e5e9e3;border-color:#3b433c}#bar button,#dh button,#tabs button{color:#e3e8e1}#bar button:hover:not(:disabled),#tabs button{background:#2c322d}#tabs button.a{background:#39493d;color:#e2eee1}#epReader{background:#191c19;color:#e8eae5}#epReader .epControls{background:#202420ed;border-color:#343a35}#epReader button,#epReader select{background:#292e29;color:#e8eae5;border-color:#424942}#epPanel{background:#242a25}.pb{background:#222723;color:#e8eae5}}
+
 @media(prefers-reduced-motion:reduce){#book,#bar button,#epReader button,#epReader select,.book-link img{transition:none!important}#epScroll{scroll-behavior:auto}}
 
 .leaf{width:var(--w);height:var(--h);position:absolute;transform-origin:left center;transform-style:preserve-3d;will-change:transform}.leaf>div{position:absolute;inset:0;background:var(--paper);backface-visibility:hidden;-webkit-backface-visibility:hidden}.leaf>div+div{transform:rotateY(180deg)}.leaf canvas{width:100%;height:100%;display:block}.leaf>div:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000,transparent);opacity:var(--shade,0)}#book{filter:none}#book.nt{transition:none}#pp .pb,#sp .pb,#pc select,#pc option,#pc button{background:var(--bar);color:var(--ink)}
@@ -237,18 +229,18 @@ main{background:var(--room)}
 #book::after{transform:translate(5px,5px);box-shadow:1px 4px 0 #aaa291}
 </style>
 <link rel="stylesheet" href="premium.css"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png">
-<script>try{document.documentElement.dataset.appearance=localStorage.getItem("gr:appearance")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light")}catch(e){}</script>
+<script src="appearance.js"></script>
 </head>
 <body class="lib">
 <section id="intro" aria-labelledby="introTitle"><button id="appearanceToggle" class="appearance-toggle" type="button" aria-label="Switch appearance">Appearance</button>
-  <div class="intro-content"><div class="intro-logo"><img src="logo.jpeg" alt="GoodReadence logo" width="108" height="72"></div><p class="intro-kicker">A little room for stories</p><h1 id="introTitle">Make space<br>for a good read.</h1><p class="intro-copy">Bring a book you love. Settle in, find your place, and read at your own pace.</p><button id="enterLibrary" class="primary">Enter your library <span aria-hidden="true">→</span></button><p class="intro-note">Your books are read in this browser and stored on this device.</p><nav aria-label="Product information" style="display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;font-size:13px"><a href="about.html">About</a><a href="faq.html">Help &amp; FAQ</a><a href="updates.html">Updates</a><a href="contact.html">Contact</a><a href="https://www.instagram.com/goodreadence/" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://x.com/GoodReadence" rel="noopener noreferrer" aria-label="GoodReadence on X" title="X"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22H17l-4.9-7.4L5.6 22H2.4l8.3-9.5L.8 2h6.4l4.5 6.8L18.9 2zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20z"/></svg></a></nav><p style="font-size:12px;margin-top:20px">© 2026 Prakhyan Nagarajan · GoodReadence</p></div><div class="intro-art" aria-hidden="true"><div class="intro-halo"></div><div class="intro-book intro-book-back"></div><div class="intro-book intro-book-front"><i></i><b></b></div><span class="intro-spark spark-one">✳</span><span class="intro-spark spark-two">·</span></div></section>
+  <div class="intro-content"><div class="intro-logo"><img src="brand-mark.svg" alt="GoodReadence logo" width="80" height="80"></div><p class="intro-kicker">A little room for stories</p><h1 id="introTitle">Make space<br>for a good read.</h1><p class="intro-copy">Bring a book you love. Settle in, find your place, and read at your own pace.</p><button id="enterLibrary" class="primary">Enter your library <span aria-hidden="true">→</span></button><p class="intro-note">Your books are read in this browser and stored on this device.</p><nav aria-label="Product information" style="display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;font-size:13px"><a href="about.html">About</a><a href="faq.html">Help &amp; FAQ</a><a href="updates.html">Updates</a><a href="contact.html">Contact</a></nav><p style="font-size:12px;margin-top:20px">© 2026 Prakhyan Nagarajan · GoodReadence</p></div><div class="intro-art" aria-hidden="true"><div class="intro-halo"></div><div class="intro-book intro-book-back"></div><div class="intro-book intro-book-front"><i></i><b></b></div><span class="intro-spark spark-one">✳</span><span class="intro-spark spark-two">·</span></div></section>
 <main>
   <div id="stage">
     <div id="book" hidden><div id='L' class='pg'><div class='hl'></div><div class='ln'></div><i class='sd'></i></div><div id='R' class='pg'><div class='hl'></div><div class='ln'></div><i class='sd'></i></div><div id="sh"></div></div>
   </div>
   <div id="empty">
     <div class="library-frame">
-      <header class="library-header"><span class="wordmark" id="brandHome" role="button" tabindex="0" title="Back to home" style="cursor:pointer"><span class="brand-icon" aria-hidden="true"><svg class="brand-mark" viewBox="0 0 64 64" role="img" aria-label="GoodReadence mark"><path d="M8 15c9-3 17-1 24 5v31c-7-6-15-8-24-5z"/><path d="M56 15c-9-3-17-1-24 5v31c7-6 15-8 24-5z"/><path d="M32 20v31"/><path d="M13 23c5-1 10 0 14 3M51 23c-5-1-10 0-14 3"/></svg></span> GoodReadence</span><div class="library-actions"><button id="prepOpen" class="secondary">Prepare a book</button><button id="installApp" class="secondary" hidden>Install app</button><button id="importBook" class="primary">＋ Add books</button></div></header>
+      <header class="library-header"><span class="wordmark" id="brandHome" role="button" tabindex="0" title="Back to home" style="cursor:pointer"><span class="brand-icon" aria-hidden="true"><img src="brand-mark.svg" alt="" width="32" height="32"></span> GoodReadence</span><div class="library-actions"><button id="prepOpen" class="secondary">Prepare a book</button><button id="installApp" class="secondary" hidden>Install app</button><button id="importBook" class="primary">＋ Add books</button></div></header>
       <section class="feature">
         <div class="feature-copy"><p id="featureLabel">Your reading room</p><h1 id="featureTitle">A place to read.</h1><p id="featureInfo">Bring PDFs, EPUBs, Office documents or images. Read privately, and pick up where you left off.</p><button id="featureAction" class="primary">Add your first book</button></div>
         <div class="cover-stage" aria-hidden="true"><div class="volume volume-back"></div><div class="volume volume-front"><span>GoodReadence</span><i></i><img id="featureCover" hidden alt=""></div></div>
@@ -384,7 +376,7 @@ function layout(){
   W=baseW*zoom;H=W/ratio;
   book.classList.toggle('one',single);
   book.style.cssText=`--w:${W}px;--h:${H}px;--paper:${bgp()}`;
-  stage.style.touchAction=window.readerView==='scroll'?'pan-x pan-y':zoom>1?'pan-x pan-y':'none';
+  stage.style.touchAction=window.freehandActive?'none':window.readerView==='scroll'?'pan-x pan-y':zoom>1?'pan-x pan-y':'none';
   $('#zl').textContent=Math.round(zoom*100)+'%';
   ver++;cache.clear();show();
 }
@@ -1131,5 +1123,5 @@ function showEpub(entry,publication){
   window.addEventListener('pagehide',saveEntry);dialog.addEventListener('close',()=>window.removeEventListener('pagehide',saveEntry),{once:true});
   panel.hidden=true;dialog.showModal();styleText();render(entry.scroll||0);
 }
-</script><script src="reader-addons.js" defer></script></body>
+</script><script src="reader-addons.js" defer></script><script src="freehand.js" defer></script></body>
 </html>

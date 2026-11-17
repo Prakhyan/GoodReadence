@@ -33,15 +33,7 @@ button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visi
 @media(hover:hover){.book-link:hover img{transform:translateY(-3px)}.primary:hover{background:#36513f}}
 @media(max-width:600px){.library-header{height:62px;margin-bottom:15px}.feature{grid-template-columns:62% 38%;min-height:260px}.feature-copy{padding:22px 0 22px 19px}.volume{width:23vw}.shelf-header{align-items:start;flex-direction:column}.filters{width:100%}.filters input{min-width:0;flex:1}#shelf{grid-template-columns:repeat(2,minmax(0,1fr))}.epControls{gap:4px}#epReader button{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.book-link img{transition:none}}
-@media(prefers-color-scheme:dark){
- #empty{background:#191c1a;color:#eceee8}
- .library-header{border-color:#373d38}
- .feature{background:linear-gradient(115deg,#303d33,#24332b)}
- #featureLabel,#featureInfo,#empty #msg{color:#c4cfc1}
- .primary{background:#e1e9dc;color:#26372c}
- .filters>*{background:#292e2a;color:#e6ece4;border-color:#454c45}
- .shelf-card summary{color:#26372c}
-}
+
 
 /* Reading controls share the same quiet visual language as the library. */
 :root{--room:#f7f7f4;--room-line:#dfe2dc;--room-green:#31483a;--room-shadow:0 10px 32px #17251a12}
@@ -57,7 +49,7 @@ main{background:var(--room)}
 #epReader{background:#f7f7f4;color:#272a26}#epScroll{scroll-behavior:smooth}#epText{font-family:Georgia,serif;line-height:1.78;letter-spacing:.005em}#epText p{margin:0 0 1.2em}.epControls{padding:10px max(14px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom,0px));gap:7px;border-color:#e4e6e1;background:#f9faf7ed;backdrop-filter:blur(18px)}#epReader button,#epReader select{border:1px solid #e0e3dd;border-radius:999px;background:#fff;color:#303830;transition:transform .16s,background .16s}#epReader button:active{transform:scale(.96)}#epReader button:hover{background:#f0f3ee}#epPanel{background:#f1f3ef;border-radius:15px;margin:8px}#epPanel button{border-radius:12px!important}
 #empty{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 @media(max-width:700px){#stage{padding:10px 6px}#bar{padding-inline:8px;gap:3px}#bar .g.t{gap:3px}#bar button{min-width:34px;height:36px;padding:4px 7px}#bar #pl{min-width:4em;font-size:11px}#bar .g.n{gap:2px}#epReader .epControls{gap:4px;padding-inline:8px}#epReader button{padding:7px 10px}#epText{font-size:inherit}}
-@media(prefers-color-scheme:dark){:root{--room:#171a18;--room-line:#343a35;--room-green:#d6e5d5}body,main,#empty{background:#171a18;color:#e7eae5}#stage{background:radial-gradient(ellipse at 50% 43%,#282d29,#171a18 74%)}#bar,#bh,#dr,#mp{background:#222723ed;color:#e5e9e3;border-color:#3b433c}#bar button,#dh button,#tabs button{color:#e3e8e1}#bar button:hover:not(:disabled),#tabs button{background:#2c322d}#tabs button.a{background:#39493d;color:#e2eee1}#epReader{background:#191c19;color:#e8eae5}#epReader .epControls{background:#202420ed;border-color:#343a35}#epReader button,#epReader select{background:#292e29;color:#e8eae5;border-color:#424942}#epPanel{background:#242a25}.pb{background:#222723;color:#e8eae5}}
+
 @media(prefers-reduced-motion:reduce){#book,#bar button,#epReader button,#epReader select,.book-link img{transition:none!important}#epScroll{scroll-behavior:auto}}
 
 .leaf{width:var(--w);height:var(--h);position:absolute;transform-origin:left center;transform-style:preserve-3d;will-change:transform}.leaf>div{position:absolute;inset:0;background:var(--paper);backface-visibility:hidden;-webkit-backface-visibility:hidden}.leaf>div+div{transform:rotateY(180deg)}.leaf canvas{width:100%;height:100%;display:block}.leaf>div:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000,transparent);opacity:var(--shade,0)}#book{filter:none}#book.nt{transition:none}#pp .pb,#sp .pb,#pc select,#pc option,#pc button{background:var(--bar);color:var(--ink)}

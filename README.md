@@ -14,6 +14,10 @@ The reader keeps selected books and reading progress in this browser on this dev
 
 Choose **Prepare a book** to merge PDFs, extract pages or chapters, make an image book, or compress a copy. Compression changes pages into images; your original file is kept unchanged. The reader's new controls offer single page, spread or scroll views, reading backdrops, local notes, and read-aloud with an installed device voice. The home page has a light/dark switch.
 
+The bottom toolbar also offers **Draw**: choose a highlighter colour and size, draw with a mouse, stylus or finger, and use Erase or Undo to adjust marks. Drawings are saved with the local book; they do not alter the original PDF. The three-line menu and its panels open from the bottom.
+
+The site starts in light mode. Choosing dark mode explicitly saves that preference across the home and information pages. Social links are collected on Contact. The current book-and-bookmark artwork is original and dedicated under CC0; see [branding details](docs/BRANDING.md).
+
 After one online visit, the app can reopen saved books offline. Supporting browsers show **Install app**; on iPhone, use Safari's **Share → Add to Home Screen**. Previously cached ambience can also play offline.
 
 See the [feature checklist and limitations](docs/FEATURE-IMPLEMENTATION.md) for the blueprint's implementation status.
@@ -24,6 +28,9 @@ See the [feature checklist and limitations](docs/FEATURE-IMPLEMENTATION.md) for 
 - `reading-room.css` — colors, layout, and mobile styling.
 - `premium.css` — the logo palette, appearance switch, preparation dialogs and new reader controls.
 - `reader-addons.js` — file preparation, Office import, notes, views and read-aloud.
+- `freehand.js` — local freehand highlighting, sizes, colours, erasing and undo.
+- `appearance.js`, `site.css` — shared appearance and information-page styling.
+- `brand-mark.svg`, `favicon.svg` — original CC0 book-and-bookmark artwork.
 - `audio-cache.js`, `manifest.webmanifest`, and `icon-*.png` — offline caching and installation support.
 - `epub.js` — code that opens EPUB books.
 - `vendor/` — the local PDF reading tools used by the app.
