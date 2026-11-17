@@ -1,5 +1,5 @@
 # Legal drafts — not for publication
 
-These drafts are prepared from the inspected local reader and are not final policies or legal advice. They intentionally do not invent an operator’s legal identity, address, jurisdiction, hosting provider, log retention, or age policy. Resolve the launch questions in `../LAUNCH-READINESS.md`, verify the deployed service, and obtain qualified legal review before presenting these documents as binding or final.
+These drafts are based on the inspected reader. The owner reports that a lawyer reviewed the earlier drafts. The owner is identified as Prakhyan Nagarajan and the app has no minimum-age gate. Update these files with verified hosting/log details, confirm the intended jurisdiction and child-related duties, and check that the lawyer's review covers the updated owner and age wording before publication.
 
-Contact supplied for the project: [goodreadence@proton.me](mailto:goodreadence@proton.me). Product/brand name: GoodReadence. These facts do not identify the legal operator.
+Owner-supplied facts: Prakhyan Nagarajan owns GoodReadence; project contact: [goodreadence@proton.me](mailto:goodreadence@proton.me). No postal address or registered company details were supplied.

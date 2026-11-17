@@ -1,21 +1,41 @@
 # GoodReadence
 
-GoodReadence is a personal reading app for PDF and EPUB books. It includes a local library, reading progress, bookmarks, highlights, search, reading goals, themes, page-turn sounds, and recorded ambience.
+GoodReadence is a personal PDF and EPUB reader with page turns, bookmarks, highlights, reading goals, and background sounds. It is owned by Prakhyan Nagarajan.
 
-## Run locally
+**© 2026 Prakhyan Nagarajan · GoodReadence. All rights reserved.**
 
-Open `index.html` in a current desktop browser. Keep `vendor/`, `ambience/`, `epub.js`, and `reading-room.css` beside it. Browser file restrictions can vary. A local static web server is recommended when PDF workers or browser storage do not work from a `file:` URL.
+## Try the reader
 
-Imported books and reading state are stored in the browser using IndexedDB and localStorage. This repository does not provide an upload service, user accounts, or a cloud backup service. Browser storage can be cleared or evicted. Keep independent copies of important books.
+1. Open the live Vercel website on your phone or computer once it has been deployed. The GitHub repository is where the code lives; it is not the live website.
+2. In the reader, choose **Add a book** and pick a PDF or EPUB from your device.
+3. Use the reader's settings to choose one ambience recording, change its volume, or turn ambience off.
 
-EPUB imports are limited to 100 MB, 5,000 archive entries, 8 MB per extracted XML entry, and 32 MB total extracted XML to limit memory use from unusually large archives.
+The reader keeps selected books and reading progress in this browser on this device. It does not upload books to a GoodReadence account or sync them between devices. Browser data can be cleared or removed by the browser, so keep separate copies of books that matter to you.
 
-## Before public launch
+## Project files, in plain language
 
-The `docs/legal-drafts/` files are working drafts, not final policies. Do not present them as final until the operator identity, hosting and log practices, jurisdiction, audience, and legal review are complete. The security and deployment audit is in `docs/LAUNCH-READINESS.md`.
+- `index.html` — the main reading app. This is the page Vercel opens first.
+- `reading-room.css` — colors, layout, and mobile styling.
+- `epub.js` — code that opens EPUB books.
+- `vendor/` — the local PDF reading tools used by the app.
+- `ambience/` — sound recordings, their list, and credit/licence information.
+- `about.html`, `faq.html`, `contact.html`, `updates.html` — the information and help pages.
+- `vercel.json` — website hosting and security settings for Vercel.
+- `docs/` — internal launch notes and legal working drafts. Vercel is configured to leave this folder off the public website.
 
-The site has not been deployed by this repository setup. A real domain is needed before creating canonical URLs and a sitemap. No Vercel project, DNS zone, analytics, or monitoring service has been connected here.
+## GitHub and Vercel
 
-## Sound credits
+- **GitHub** stores the project files. The `main` branch is the current version.
+- **Vercel** turns the GitHub project into a website and gives it a shareable address ending in `.vercel.app`.
+- To view the reader on a phone, open that Vercel address. Opening a GitHub file shows the code, not the app.
 
-See [`ambience/CREDITS.html`](ambience/CREDITS.html) for recording sources and license notices.
+The project is a static website: it has no sign-in, payment, or cloud book storage. Deployment settings should use the repository root, with no build command and `.` as the output directory unless Vercel detects the static site automatically.
+
+## Help and credits
+
+- [Help and common questions](faq.html)
+- [Contact Prakhyan](mailto:goodreadence@proton.me)
+- [Sound sources and licences](ambience/CREDITS.html)
+- [Launch and security checklist](docs/LAUNCH-READINESS.md) (internal)
+
+The legal working drafts have been reviewed by a lawyer according to the owner. They are still kept internal until the live hosting details and any required public contact information are confirmed.

@@ -1,6 +1,6 @@
 # Product Disclaimer — unpublished draft
 
-**Draft status:** Not for publication until the operator, intended audience, governing jurisdiction, product behavior, and counsel review are complete. Reviewed 16 November 2026.
+**Draft status:** The owner identifies himself as Prakhyan Nagarajan and reports lawyer review. Updated 17 November 2026. Confirm live service details and governing jurisdiction before publication.
 
 GoodReadence is a tool for reading PDF and EPUB files in a browser. It does not sell books or grant rights in books. You are responsible for the files you choose and for obtaining any rights required for your use.
 

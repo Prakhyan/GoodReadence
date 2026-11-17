@@ -1,10 +1,10 @@
 # Privacy notice — draft, not for publication
 
-**Draft status:** The legal operator, hosting/log practices, operating jurisdiction, and intended audience are unconfirmed. This is not a final privacy policy. Last reviewed 16 November 2026.
+**Draft status:** The owner identifies himself as Prakhyan Nagarajan. Hosting/log practices and operating jurisdiction still need to be checked against the deployed service. There is no minimum age gate; children may use the site, so child-specific duties need review. This is an internal draft, not a legal-compliance claim. Updated 17 November 2026; the owner reports prior lawyer review.
 
 ## About this notice
 
-GoodReadence is a personal PDF and EPUB reader. The product name is known, but the individual or entity legally operating the service has not been provided. Before publication, identify that operator and provide a working address or other legally appropriate contact details.
+GoodReadence is a personal PDF and EPUB reader owned by Prakhyan Nagarajan, according to the product owner. General and privacy enquiries can be sent to goodreadence@proton.me. No postal or business address has been supplied. GoodReadence is not represented here as an incorporated company or registered business.
 
 ## Books and reading data
 
@@ -26,7 +26,7 @@ Books and reading state are stored to provide the reader features you use. Local
 
 ## Children and international use
 
-Whether children are an intended audience and whether the service will target users internationally have not been decided. Complete this section and any required safeguards before launch.
+The product has no minimum-age gate and is open to anyone; children may therefore use it. The owner has not stated that GoodReadence is designed specifically for children. Whether the site is intentionally directed at children or targeted internationally still needs to be confirmed, and any child-related duties and safeguards need review before launch.
 
 ## Security and changes
 
@@ -34,4 +34,4 @@ GoodReadence uses browser storage and third-party open-source PDF code. No secur
 
 ## Contact
 
-For privacy questions, contact [goodreadence@proton.me](mailto:goodreadence@proton.me). The legal operator identity and correspondence address must be supplied before publication. Do not treat this draft as a substitute for required grievance or data-protection contact details.
+For privacy questions, contact [goodreadence@proton.me](mailto:goodreadence@proton.me). The owner identifies himself as Prakhyan Nagarajan. A postal/business address and any legally required grievance or data-protection contact details have not been supplied; verify whether they are required before publication.

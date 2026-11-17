@@ -1,8 +1,8 @@
 # Copyright and Intellectual Property Notice — unpublished draft
 
-**Draft status:** Not for publication until GoodReadence's legal operator and ownership of the brand, software, and original assets are confirmed and counsel has reviewed this notice. Reviewed 16 November 2026.
+**Draft status:** The owner identifies himself as Prakhyan Nagarajan and reports lawyer review. Updated 17 November 2026. Confirm this attribution with counsel and keep third-party ownership/licence distinctions before publication.
 
-GoodReadence is the product name supplied for this project. The legal person or entity that owns or operates the product has not been identified. This draft therefore makes no claim that a company, registered business, or particular person owns the brand or software.
+GoodReadence is the product name. The owner identifies Prakhyan Nagarajan as the owner of GoodReadence. This does not represent the product as an incorporated company or registered business.
 
 The reader includes third-party open-source components and separately licensed sound recordings. Their license and attribution details are listed in the project's dependency inventory and sound credits. Those notices do not transfer ownership of third-party material to GoodReadence.
 

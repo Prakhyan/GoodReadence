@@ -1,20 +1,20 @@
 # GoodReadence launch-readiness audit
 
-Reviewed 16 November 2026 against the public GitHub repository and the saved reader source used to populate this repository.
+Reviewed 17 November 2026 against GitHub `main`, the saved reader source, the user's supplied owner/age details, and the latest access response from Vercel.
 
 ## Launch decision
 
 - **COMPLETE:** Static project package, information pages, initial browser headers, local audio/PDF assets, Vercel exclusion for internal documents, source inventory, and draft legal documents are prepared. The checks listed below passed where stated.
-- **NEEDS MY INPUT:** Legal operator identity and acceptable public contact/address, final confirmation that India is the operating jurisdiction, intended age group (the voice note says both “not a child audience” and “3+”), whether the service is intentionally targeted internationally, and a real domain. Vercel is the preferred host; anonymous Vercel Web Analytics is preferred over Google Analytics, but neither Vercel nor analytics is connected or enabled. No monitoring service was selected.
-- **NEEDS PROFESSIONAL REVIEW:** Counsel must confirm the applicable legal roles/duties, final privacy notice and terms, copyright complaint procedure, and the correct operator/grievance details. A security specialist should review a current PDF.js upgrade and file parser limits before production.
+- **NEEDS MY INPUT:** Confirm India as the starting operating jurisdiction, whether the service is intentionally targeted internationally, and whether the Vercel team-access request has been approved. The owner supplied is Prakhyan Nagarajan; product contact is goodreadence@proton.me. No minimum age is set and the site is open to anyone, including children. Vercel is the preferred host; anonymous Vercel Web Analytics is preferred over Google Analytics, but neither is enabled yet. No monitoring service was selected.
+- **NEEDS PROFESSIONAL REVIEW:** The owner says a lawyer has reviewed the policy drafts. The jurisdiction-specific applicability and any child-related duties still require confirmation against the final hosting, actual audience, and service behavior. A security specialist should review a current PDF.js upgrade and file parser limits before production.
 
-**Production status: not ready to launch.** The static site is packaged for a Vercel project with no build step, but no hosted preview exists, so headers, HTTPS, host logs, and actual provider behavior have not been verified. The legal documents are drafts, not public site pages. Do not publish as a finished public product until missing details, counsel review, production checks, and required regressions are complete.
+**Production status: not ready to launch.** The static site is packaged for Vercel with no build step. Vercel team access is awaiting the owner's approval, so the existing project and any preview could not yet be inspected. Headers, HTTPS, host logs, and actual provider behavior remain unverified. The legal documents are internal drafts, not public site pages. Do not publish as a finished public product until hosting facts are verified and required checks are complete.
 
-**Cost and connected services:** GitHub is the connected source repository. No Vercel project, deployment, domain, DNS change, or paid service was activated, and no cost was incurred. Vercel is the preferred host but remains unconnected. The user prefers anonymous Vercel Web Analytics over Google Analytics; analytics is not enabled. Cloudflare, Google Analytics, Sentry, Resend, accounts, payments, and backend storage are not configured. Any hosting plan/bandwidth costs depend on the owner's Vercel account and usage and were not assessed by activating a service.
+**Cost and connected services:** GitHub is the connected source repository. Vercel is connected to this assistant, but its `good-readence` team has not yet granted access to this connection. No Vercel project, deployment, domain, DNS change, or paid service was activated, and no cost was incurred. The user prefers anonymous Vercel Web Analytics over Google Analytics; analytics is not enabled. Cloudflare, Google Analytics, Sentry, Resend, accounts, payments, and backend storage are not configured. A default `.vercel.app` address is preferred; no custom paid domain was purchased.
 
 ## Status
 
-**Not ready for public launch.** The GitHub repository originally contained only a README and `.gitignore`. The current branch now includes the saved reader and its required assets, a PDF.js mitigation, an initial Vercel header configuration, and this audit. No deployment has been performed.
+**Not ready for public launch.** The GitHub repository originally contained only a README and `.gitignore`. The current branch now includes the saved reader and its required assets, a PDF.js mitigation, an initial Vercel header configuration, and this audit. Vercel deployment status is unknown until team access is approved.
 
 ## Architecture and data flow
 
@@ -31,7 +31,7 @@ Reviewed 16 November 2026 against the public GitHub repository and the saved rea
 - The reader embeds PDF.js 3.11.174. Mozilla advisory CVE-2024-4367 describes arbitrary JavaScript execution from a malicious PDF for affected PDF.js versions when `isEvalSupported` is true. The reader’s three PDF load paths now set `isEvalSupported:false`, Mozilla’s documented workaround. This reduces that specific risk. It does not replace upgrading to a currently supported PDF.js release and reviewing its worker, compatibility, and security history.
 - The EPUB reader reads the selected archive into memory. It now rejects source files over 100 MB, archives with over 5,000 entries, any extracted XML entry over 8 MB, and more than 32 MB total extracted XML. It bounds central-directory and local-entry offsets and streams deflate output before accepting it. Smoke tests passed for a valid EPUB, malformed input, an oversized file, and an entry that declares excessive expanded size. This does not replace a maintained ZIP library or fuzzing against adversarial archives.
 - `vercel.json` sets an initial CSP and basic browser security headers. The CSP permits inline and data scripts because the bundled reader uses embedded scripts. That weakens script restrictions. It must be tested on a Vercel preview before production. HSTS is omitted until HTTPS and domain configuration are verified.
-- No Vercel build, deploy, environment variables, DNS, GitHub Actions, API keys, or connected analytics/Sentry/Resend services were found in the original repository. No domain is supplied.
+- No Vercel build/deploy configuration, environment variables, DNS, GitHub Actions, API keys, or connected analytics/Sentry/Resend services were found in the original repository. No custom domain has been selected; a default Vercel address is preferred.
 
 ## Dependencies and licensing
 
@@ -67,7 +67,7 @@ Provider references: [Vercel Web Analytics privacy](https://vercel.com/docs/anal
 
 ## Not implemented or still pending
 
-- Final public policy pages, clickwrap, analytics preference/consent interface, or a grievance-officer designation. Drafts for Terms, Acceptable Use, Copyright/IP, complaint/takedown process, and Disclaimer now accompany the Privacy and Contact drafts under `docs/legal-drafts/`; they remain unpublished and require review. The operator's legal name/business identity, acceptable contact/address, confirmed operating jurisdiction, intended age group, international targeting, and host/log practices remain unresolved. No cookie banner is currently needed to describe app-created cookies because the app has no analytics or app-created cookies; reassess before enabling analytics or adding other tracking.
+- Final public policy pages, clickwrap, analytics preference/consent interface, or a grievance-officer designation. Drafts for Terms, Acceptable Use, Copyright/IP, complaint/takedown process, and Disclaimer accompany the Privacy and Contact drafts under `docs/legal-drafts/`. The owner reports lawyer review; confirm the updated owner and age wording with counsel before those drafts are published. Hosting/log practices and the final legal applicability assessment remain unverified. No cookie banner is currently needed to describe app-created cookies because the app has no analytics or app-created cookies; reassess before enabling analytics or adding other tracking.
 - About, FAQ, updates, contact, and custom 404 pages are implemented. Information pages share navigation/footer. Final legal policy pages remain drafts and are excluded from Vercel uploads.
 - Custom domain, canonical URLs, sitemap, production robots policy, and social sharing image. No fake domain was added. A placeholder domain is intentionally not used in metadata or sitemap.
 - Actual deployment, browser network inspection, host log/retention disclosure, headers verification, domain/DNS configuration, and production smoke tests.
@@ -77,10 +77,10 @@ Provider references: [Vercel Web Analytics privacy](https://vercel.com/docs/anal
 
 ## Next decisions
 
-1. Provide the legal operator name/business identity and acceptable public contact/address; confirm India as the initial operating jurisdiction.
-2. Resolve the age-audience conflict (“not a child audience” versus “3+”) and whether the service will intentionally target users outside India.
-3. Select a real domain and import the GitHub repository into Vercel. Before enabling Vercel Analytics, confirm its generated route and review notice/consent requirements. No purchase, DNS edit, or paid service has been made.
-4. Have Indian counsel review the unpublished legal drafts and applicability questions before publication.
+1. Approve the Vercel team access request, then inspect the existing project and deployment before changing anything.
+2. Confirm whether India is the starting operating jurisdiction and whether the product is intentionally marketed internationally. The site has no age gate and is open to anyone; review any child-specific duties.
+3. Use a default Vercel `.vercel.app` address if available. Do not buy a custom domain without a separate budget decision. Before enabling Vercel Analytics, confirm its generated route and review notice/consent requirements.
+4. Ask counsel to confirm that the revised owner and age statements remain covered by the reported legal review before publishing the policy pages.
 5. Upgrade PDF.js and complete the full regression, accessibility, browser, and security checks before production.
 
 ## Verification performed
@@ -90,8 +90,8 @@ Provider references: [Vercel Web Analytics privacy](https://vercel.com/docs/anal
 - Microsoft Edge mobile emulation at 390 px passed a generated one-page PDF import/render with no horizontal overflow. This does not replace testing on physical Android and iOS devices.
 - Microsoft Edge browser check passed for all 14 ambience recordings: each file decoded and played locally for more than 600 seconds, one track played at a time, previous sources stopped on switching, volume applied, Off and rapid switching worked, and selected end-crossfades completed. The test did not listen subjectively to the audio; a human listening check is still needed for sound quality and incidental background noises.
 - After replacing the train source, mobile emulation verified playback of the new 722.05-second recording from `train-rails.mp3`; no subjective listening verification was performed.
-- No full PDF import/annotation/backup workflow or cross-browser/accessibility/security scan was performed. No hosted preview was available, so Vercel headers, logs, and mobile production behavior remain unverified.
-- Build configuration is static: root `index.html`, no package/build command required. Vercel is only a prepared option; no project is connected here. `.vercelignore` excludes internal `docs/` files from deployment uploads.
+- No full PDF import/annotation/backup workflow or cross-browser/accessibility/security scan was performed. Vercel team access was blocked pending owner approval, so headers, logs, and mobile production behavior remain unverified.
+- Build configuration is static: root `index.html`, no package/build command required. Vercel is connected to this assistant, but project access is waiting for owner approval. `.vercelignore` excludes internal `docs/` files from deployment uploads.
 
 ## Change record
 

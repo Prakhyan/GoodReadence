@@ -1,12 +1,12 @@
 # Terms of Use — unpublished draft
 
-**Draft status:** Not for publication or reliance until the operator, intended audience, governing jurisdiction, product behavior, and legal review are confirmed. Reviewed 16 November 2026.
+**Draft status:** The owner identifies himself as Prakhyan Nagarajan and reports lawyer review. Updated 17 November 2026. Confirm the jurisdiction, intended audience, live product behavior, and that the revised wording remains within the reported review before publication.
 
-> **Publication blockers:** Identify the person or entity operating GoodReadence; confirm the service's minimum age and intended audience; confirm governing law and forum with counsel; review the live product and privacy notice. This draft does not create a claim that access alone is acceptance.
+> **Publication checks:** Confirm the governing law and forum with counsel; review the live product and privacy notice. The site has no minimum-age gate and is open to anyone. This draft does not create a claim that access alone is acceptance.
 
 ## About this draft
 
-GoodReadence is a browser-based PDF and EPUB reading interface. The site has no reader account, payment, or cloud library in the reviewed build. The product and its legal operator are distinct concepts; the legal operator's identity has not been provided.
+GoodReadence is a browser-based PDF and EPUB reading interface owned by Prakhyan Nagarajan, according to the owner. The reviewed build has no reader account, payment, or cloud library.
 
 ## Use of the service
 
@@ -16,7 +16,7 @@ The reader processes selected documents in the browser in the reviewed build. It
 
 ## Intellectual property
 
-GoodReadence branding, original interface code, and original design elements are not transferred to users by use of the reader. The legal owner of the brand and software must be identified before publication. Third-party components and audio remain governed by their own notices and licenses. Opening a file does not transfer ownership of that file to GoodReadence or grant anyone new rights to copy or distribute it.
+GoodReadence branding, original interface code, and original design elements are not transferred to users by use of the reader. The owner identifies Prakhyan Nagarajan as the owner of GoodReadence; third-party components, marks, and audio remain governed by their own notices and licenses. Opening a file does not transfer ownership of that file to GoodReadence or grant anyone new rights to copy or distribute it.
 
 ## Availability and third parties
 
@@ -32,4 +32,4 @@ The operator may need to restrict access to address security, legal, or operatio
 
 ## Contact
 
-Email [goodreadence@proton.me](mailto:goodreadence@proton.me) with “Legal notice” in the subject. This email is the supplied product contact, not a verified legal operator identity or designated statutory officer.
+Email [goodreadence@proton.me](mailto:goodreadence@proton.me) with “Legal notice” in the subject. This is the product contact and does not designate a statutory officer.

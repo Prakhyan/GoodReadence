@@ -8,6 +8,12 @@
 - Verified a generated PDF import and render at a 390 px mobile viewport in Edge emulation, with no horizontal overflow. Physical phone testing remains outstanding.
 - Verified the replacement train audio decodes and plays for more than ten minutes in Edge emulation.
 
+## Owner and beginner updates — 2026-11-17
+
+- Added Prakhyan Nagarajan's owner name and a © 2026 notice to the public information page footers.
+- Rewrote the repository README in plain language, including how to view the live app, add a book, and find the main project files.
+- Updated the internal legal drafts and launch checklist with the supplied owner and no-age-gate details; hosting, jurisdiction, and child-related review remain open.
+
 ## Unreleased audit build — 2026-11-16
 
 - Imported the existing local GoodReadence reader into the GitHub repository.
