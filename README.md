@@ -55,3 +55,9 @@ The project is a static website: it has no sign-in, payment, or cloud book stora
 - [Launch and security checklist](docs/LAUNCH-READINESS.md) (internal)
 
 The legal working drafts have been reviewed by a lawyer according to the owner. They are still kept internal until the live hosting details and any required public contact information are confirmed.
+
+## Publishing update notices
+
+Keep Updates current for every approved live release. The navigation badge compares the published update page fingerprint with the last version the visitor opened. `release.json` provides a release identifier and offline fallback; advance it when publishing a new approved release.
+
+The home page contains the full About story. Merge accepts repeated additions of PDF, DOCX, PPTX, EPUB and JPG/PNG files, within the existing device memory limits. Office/EPUB merge conversion produces text-based flattened pages; export as PDF first for faithful layout. Desk texture credits are in `textures/CREDITS.md`.

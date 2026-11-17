@@ -1,5 +1,15 @@
 # Changelog
 
+## Premium reading update — 2026-11-18
+
+- Added additive mixed-document merging, reordering and per-file removal; retained device size limits.
+- Moved the full About story into the scrolling home page, with the new tagline and rounded links with unread-release badges.
+- Added a floating brush palette, more visible reader tools, premium stats, direct goals and bar/line/area reading-time charts.
+- Removed page-turn audio, refined mobile cover text and introduced progress-dependent page stacks.
+- Expanded desks with locally served CC0 wood texture photographs and additional procedural finishes.
+- Added read-aloud pauses and cancellation on page/chapter changes; retained local device voices.
+
+
 ## Toolbar, freehand and information refresh — 2026-11-18
 
 - Combined View, Desk, Notes, Draw and Read aloud into the bottom toolbar and moved the menu and its panels to the bottom.
