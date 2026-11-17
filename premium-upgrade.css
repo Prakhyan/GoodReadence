@@ -8,3 +8,5 @@
 #stage[data-desk=wood],#stage[data-desk=walnut]{background:linear-gradient(110deg,#0005,transparent 40%,#0003),url('textures/walnut.jpg') center/cover}#stage[data-desk=oak]{background:linear-gradient(110deg,#0002,transparent,#fff1),url('textures/oak.jpg') center/cover}.info-nav a[href*="about"],.info-nav a[href="faq.html"],.info-nav a[href="updates.html"],.info-nav a[href="contact.html"]{border:1px solid var(--line);border-radius:13px;padding:7px 12px}
 
 #intro:not(.leaving){animation:none}
+
+.release-dot[hidden]{display:none!important}

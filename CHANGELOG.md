@@ -1,5 +1,15 @@
 # Changelog
 
+## Reader refinements and ten classics — 2026-11-18
+
+- Improved landing contrast, navigation placement, About colour, footer placement and subtle sparkles.
+- Fixed stable one-time update acknowledgement across pages, including hidden-dot CSS.
+- Restored paper rustle, removed the end-click oscillator, and installed a new CC0 rain/thunder source.
+- Shortened touch turn animations, reduced animation-only copies, queued quick turns and fixed Midnight pages.
+- Bounded read-aloud to the current page/spread, with pauses and end-of-scope stopping.
+- Added a growing ember-style streak flame and a ten-title downloadable classic library with provenance and original licences.
+
+
 ## Premium reading update — 2026-11-18
 
 - Added additive mixed-document merging, reordering and per-file removal; retained device size limits.

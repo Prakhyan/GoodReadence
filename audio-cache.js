@@ -1,11 +1,12 @@
 /* Cache selected recordings on disk while their first playback streams. */
 const AUDIO_CACHE='goodreadence-audio-v2';
-const APP_CACHE='goodreadence-app-v6';
-const SHELL=['/index.html','/premium.css','/premium-upgrade.css','/premium-upgrade.js','/release.json','/textures/walnut.jpg','/textures/oak.jpg','/reader-addons.js','/brand-mark.svg','/appearance.js','/site.css','/freehand.js','/favicon.svg','/manifest.webmanifest','/icon-192.png','/icon-512.png','/vendor/pdf-lib.min.js','/about.html','/faq.html','/contact.html','/updates.html','/ambience/CREDITS.html'];
+const APP_CACHE='goodreadence-app-v7';
+const SHELL=['/index.html','/premium.css','/premium-upgrade.css','/reader-refinements.css','/reader-refinements.js','/library.html','/library.css','/library.js','/premium-upgrade.js','/release.json','/textures/walnut.jpg','/textures/oak.jpg','/reader-addons.js','/brand-mark.svg','/appearance.js','/site.css','/freehand.js','/favicon.svg','/manifest.webmanifest','/icon-192.png','/icon-512.png','/vendor/pdf-lib.min.js','/about.html','/faq.html','/contact.html','/updates.html','/ambience/CREDITS.html'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(APP_CACHE);await cache.addAll(SHELL);await self.skipWaiting()})()));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const name of await caches.keys())if(name.startsWith('goodreadence-app-')&&name!==APP_CACHE)await caches.delete(name);await self.clients.claim()})()));
 self.addEventListener('fetch',event=>{
   const url=new URL(event.request.url);
+  if(url.pathname.startsWith('/public-books/'))return; // Manual downloads never enter the app cache or HTML fallback.
   if(url.origin===self.location.origin&&event.request.method==='GET'&&(SHELL.includes(url.pathname)||event.request.mode==='navigate')){
     event.respondWith((async()=>{const cache=await caches.open(APP_CACHE);try{const response=await fetch(event.request);if(response.ok)event.waitUntil(cache.put(event.request,response.clone()).catch(()=>{}));return response}catch(error){const cached=await cache.match(event.request)||await cache.match('/index.html');if(cached)return cached;throw error}})());return;
   }

@@ -61,3 +61,11 @@ The legal working drafts have been reviewed by a lawyer according to the owner. 
 Keep Updates current for every approved live release. The navigation badge compares the published update page fingerprint with the last version the visitor opened. `release.json` provides a release identifier and offline fallback; advance it when publishing a new approved release.
 
 The home page contains the full About story. Merge accepts repeated additions of PDF, DOCX, PPTX, EPUB and JPG/PNG files, within the existing device memory limits. Office/EPUB merge conversion produces text-based flattened pages; export as PDF first for faithful layout. Desk texture credits are in `textures/CREDITS.md`.
+
+## Reader refinements and the public library
+
+Paper rustle is restored, with the end-click oscillator removed. Mobile turns use shorter animations and smaller animation-only canvases; static pages keep their normal resolution. The Midnight desk applies the Midnight paper theme. Read-aloud covers only the visible PDF page or spread and stops at the end. Its voice quality depends on installed local device voices.
+
+`library.html` offers ten source-credited EPUB classics. The archives are served under `public-books/` for manual download, outside app caching and HTML fallbacks. Original Project Gutenberg licences are retained; source editions state public-domain status in the USA, with local rules noted on the library page. `public-books/catalog.json` records source links, mirrors and file hashes.
+
+Update badges now use one stable release identifier shared by every page and retain acknowledged release IDs. When publishing an approved new release, update the shared identifier in `premium-upgrade.js` and the matching `release.json` entry, alongside Updates. Do not use per-request server headers as release identifiers.
