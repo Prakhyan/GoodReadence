@@ -1,6 +1,6 @@
 # 200-book expansion review
 
-Status: local review only. Not pushed to GitHub or deployed to Vercel.
+Status: reviewed and approved for publication as version 1.1.0.
 
 Total collection: 300 books (100 existing + 200 new). Each new edition has a complete PDF, matching source cover, original EPUB, credits, source link and author information. 75 additions have a verified Open Library rating; others display Not rated yet.
 
