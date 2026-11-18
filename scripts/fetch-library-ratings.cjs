@@ -1,0 +1,5 @@
+// Cache small batches of official Open Library Search API results, not one request per book.
+const fs=require('node:fs');const existing=JSON.parse(fs.readFileSync('public-books/catalog.json','utf8'));
+const rows=[...existing.map(b=>[b.id,b.title]),...require('./library-expansion.json')];
+const unique=[...new Map(rows.map(b=>[b[0],b])).values()];
+(async()=>{fs.mkdirSync('research/ratings',{recursive:true});for(let i=0;i<unique.length;i+=10){const file=`research/ratings/batch-${i}.json`;if(fs.existsSync(file))continue;const q=unique.slice(i,i+10).map(b=>'title:"'+b[1].replace(/"/g,'')+'"').join(' OR ');const url='https://openlibrary.org/search.json?'+new URLSearchParams({q,fields:'key,title,author_name,author_key,ratings_average,ratings_count',limit:'100'});const r=await fetch(url,{headers:{'User-Agent':'GoodReadence/1.0 (goodreadence@proton.me)'},signal:AbortSignal.timeout(60000)});if(!r.ok)throw Error('Open Library '+r.status);fs.writeFileSync(file,await r.text());console.log('Ratings batch',i);await new Promise(r=>setTimeout(r,1500))}})().catch(e=>{console.error(e);process.exitCode=1});

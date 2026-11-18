@@ -68,3 +68,10 @@
 - Added actual source-edition covers, verified page counts, author biographies and full edition credits.
 - Kept free original EPUB downloads and manual-only book downloads.
 - Added reproducible conversion, completeness checks and library browser checks.
+
+## 2026-11-18 — A hundred-book library
+
+- Added 90 complete classic PDFs, source covers and credits.
+- Paginated browsing (12 cards), full-catalogue search and accessible author/book pop-ups.
+- Dated, attributed Open Library scores where verified; no fabricated ratings.
+- Direct checked PDF import into the reader’s existing IndexedDB shelf, duplicate protection, cancellation and error recovery.

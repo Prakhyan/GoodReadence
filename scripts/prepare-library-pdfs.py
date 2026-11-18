@@ -3,7 +3,7 @@ Run from the repository root, then run scripts/build-library-pdfs.cjs.
 No chapter, paragraph, or licence truncation; source EPUBs remain available.
 Requires lxml and Pillow. The build report is used to check PDF completeness.
 """
-import base64, hashlib, html as esc, json, mimetypes, posixpath, re, zipfile
+import base64, hashlib, html as esc, json, mimetypes, posixpath, re, zipfile, os
 from pathlib import Path
 from urllib.parse import unquote
 from lxml import etree, html
@@ -15,8 +15,12 @@ OUT = ROOT / 'research/library-print'
 OUT.mkdir(parents=True, exist_ok=True)
 books = json.loads((ROOT/'public-books/catalog.json').read_text(encoding='utf8'))
 ns = {'o':'http://www.idpf.org/2007/opf'}
-report = []
+report = json.loads((OUT/'source-report.json').read_text(encoding='utf8')) if (OUT/'source-report.json').exists() else []
+report_by_slug = {r['slug']:r for r in report}
+report=[]
 for b in books:
+    if os.environ.get('LIBRARY_INCREMENTAL') and b['slug'] in report_by_slug and (OUT/(b['slug']+'.html')).exists():
+        report.append(report_by_slug[b['slug']]);continue
     source = b.get('sourceFile', b['file'])
     z = zipfile.ZipFile(ROOT/source)
     container = etree.fromstring(z.read('META-INF/container.xml'))
@@ -49,6 +53,7 @@ for b in books:
         for bad in body.xpath('.//script|.//iframe'):
             bad.drop_tree()
         for el in body.iter():
+            if not isinstance(el.tag,str):continue
             for attr in list(el.attrib):
                 if attr.startswith('on'): del el.attrib[attr]
             if el.get('src'):
