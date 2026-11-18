@@ -61,3 +61,10 @@
 - Added explicitly marked, unpublished legal drafts for review.
 - Added local reader/audio assets and preserved the ambience credit page.
 - Not deployed. No host, domain, analytics, or monitoring provider was activated.
+
+## 2026-11-18 — Complete PDF library
+
+- Converted every source section of all ten classic editions to PDF, retaining covers, illustrations, credits and licences.
+- Added actual source-edition covers, verified page counts, author biographies and full edition credits.
+- Kept free original EPUB downloads and manual-only book downloads.
+- Added reproducible conversion, completeness checks and library browser checks.
