@@ -1,6 +1,6 @@
 /* Cache selected recordings on disk while their first playback streams. */
 const AUDIO_CACHE='goodreadence-audio-v2';
-const APP_CACHE='goodreadence-app-v19';
+const APP_CACHE='goodreadence-app-v20';
 const SHELL=['/index.html','/portability.css','/portable-data.js','/portability-ui.js','/device-transfer.js','/cloud-sync.js','/cloud-config.json','/cloud-callback.html','/cloud-callback.js','/privacy.html','/vendor/fflate.min.js','/vendor/qrcode.js','/vendor/jsQR.js','/premium.css','/discovery.css','/premium-upgrade.css','/reader-refinements.css','/reader-refinements.js','/library.html','/library.css','/library.js','/library-data.json','/library-sync.js','/premium-upgrade.js','/release.json','/update-manager.js','/textures/walnut.jpg','/textures/oak.jpg','/reader-addons.js','/brand-mark.svg','/appearance.js','/site.css','/freehand.js','/favicon.svg','/manifest.webmanifest','/icon-192.png','/icon-512.png','/vendor/pdf-lib.min.js','/about.html','/faq.html','/contact.html','/updates.html','/ambience/CREDITS.html'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(APP_CACHE);await cache.addAll(SHELL);await self.skipWaiting()})()));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const name of await caches.keys())if(name.startsWith('goodreadence-app-')&&name!==APP_CACHE)await caches.delete(name);await self.clients.claim()})()));

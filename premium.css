@@ -1,3 +1,5 @@
+/* Suppress the browser's touch flash; keyboard focus styles stay visible. */
+html{-webkit-tap-highlight-color:transparent}
 :root{--surface:#f7f5f2;--surface-raised:#fffdfa;--text:#28242e;--muted:#696271;--line:#ddd6e3;--violet:#6949a0}
 :root[data-appearance=dark]{--surface:#15131a;--surface-raised:#211c29;--text:#f0ebf6;--muted:#beb3cc;--line:#41364f;--violet:#c5a5ff}
 #intro,#empty{background:var(--surface);color:var(--text)}
