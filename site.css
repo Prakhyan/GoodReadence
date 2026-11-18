@@ -5,3 +5,5 @@ html{min-height:100%;background:var(--surface);scroll-behavior:smooth;scroll-pad
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 [hidden]{display:none!important}
+
+.app-version{margin-top:1rem!important;color:var(--muted,#777)!important;font-size:.78rem!important;letter-spacing:.04em}
