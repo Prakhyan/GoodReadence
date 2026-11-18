@@ -4,10 +4,17 @@ from pathlib import Path
 import pymupdf
 root=Path(__file__).resolve().parents[1]
 books=json.loads((root/'public-books/catalog.json').read_text(encoding='utf8'))
-sources={b['slug']:b for b in json.loads((root/'research/library-print/source-report.json').read_text(encoding='utf8'))}
+report=root/'research/library-print/source-report.json'
+compact=root/'research/library-print/verification-samples.json'
+use_compact=compact.exists() and compact.stat().st_mtime>=report.stat().st_mtime
+sources={b['slug']:b for b in json.loads((compact if use_compact else report).read_text(encoding='utf8'))}
 def normalized(text):
     text=re.sub(r'\[p\d+\]','',text)
     return re.sub(r'\s+','',unicodedata.normalize('NFKC',text)).lower().replace('\u00ad','')
+if not use_compact:
+    for entry in sources.values():entry['normalizedLength']=len(normalized(entry.pop('text')))
+    compact.write_text(json.dumps(list(sources.values()),ensure_ascii=False),encoding='utf8')
+
 def save():
     target=root/'public-books/catalog.json'
     temp=target.with_suffix('.json.tmp')
@@ -19,7 +26,9 @@ def save():
         except OSError:
             if attempt==9:raise
             time.sleep(.3)
+checked=0
 for b in books:
+    if os.environ.get('LIBRARY_READY_ONLY') and not (root/b['file']).exists():continue
     if str(b['id']) in os.environ.get('LIBRARY_SKIP_IDS','').split(','):continue
     if os.environ.get('LIBRARY_RESUME_VERIFIED') and b.get('sha256') and b.get('pages') and b.get('sourceSections')==sources[b['slug']]['sections']:
         continue
@@ -33,10 +42,11 @@ for b in books:
     # PDF line breaks can split words; the section samples use whitespace-free comparison.
     if missing: raise AssertionError((b['slug'],'Missing section samples',missing[:2]))
     assert 'gutenberg' in text.lower() and 'license' in text.lower()
-    assert len(norm)>=len(normalized(source['text']))*.98,(b['slug'],'Text lost')
+    assert len(norm)>=source['normalizedLength']*.98,(b['slug'],'Text lost')
     b['pages']=len(pdf);b['bytes']=(root/b['file']).stat().st_size
     b['sha256']=digest
     b['sourceSections']=source['sections']
     print(b['slug'],b['pages'],'pages;',source['sections'],'sections checked')
-    save()
+    checked+=1
+    if checked%10==0:save()
 save()

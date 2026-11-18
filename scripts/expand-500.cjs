@@ -1,0 +1,6 @@
+const fs=require('node:fs');
+const pause=ms=>new Promise(r=>setTimeout(r,ms));
+async function part(url,start,end){for(let n=0;n<3;n++){try{const r=await fetch(url,{headers:{Range:`bytes=${start}-${end}`},signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('HTTP '+r.status);return {data:Buffer.from(await r.arrayBuffer()),size:Number(r.headers.get('content-range')?.split('/')[1])}}catch(e){if(n===2)throw e;await pause(500)}}}
+async function download(url,file){if(fs.existsSync(file))return;const first=await part(url,0,1023);if(!first.size)throw Error('Missing range size');const bytes=Buffer.alloc(first.size);first.data.copy(bytes);let offset=1024;await Promise.all(Array.from({length:3},async()=>{while(offset<bytes.length){const start=offset;offset+=65536;const end=Math.min(bytes.length-1,start+65535),p=await part(url,start,end);if(p.data.length!==end-start+1)throw Error('Incomplete range');p.data.copy(bytes,start)}}));fs.writeFileSync(file,bytes)}
+module.exports={download};
+if(require.main===module){fs.mkdirSync('research/expansion-500',{recursive:true});download('https://gutenberg.pglaf.org/cache/epub/feeds/pg_catalog.csv.gz','research/expansion-500/catalog.csv.gz').then(()=>console.log('Source catalogue downloaded')).catch(e=>{console.error(e);process.exitCode=1})}
