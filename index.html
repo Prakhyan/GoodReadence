@@ -253,7 +253,7 @@ main{background:var(--room)}
       <header class="library-header"><span class="wordmark" id="brandHome" role="button" tabindex="0" title="Back to home" style="cursor:pointer"><span class="brand-icon" aria-hidden="true"><img src="brand-mark.svg" alt="" width="32" height="32"></span> GoodReadence</span><div class="library-actions"><button id="prepOpen" class="secondary">Prepare a book</button><button id="installApp" class="secondary" hidden>Install app</button><button id="importBook" class="primary">＋ Add books</button></div></header>
       <section class="feature">
         <div class="feature-copy"><p id="featureLabel">Your reading room</p><h1 id="featureTitle">A place to read.</h1><p id="featureInfo">Bring PDFs, EPUBs, Office documents or images. Read privately, and pick up where you left off.</p><button id="featureAction" class="primary">Add your first book</button></div>
-        <div class="cover-stage" aria-hidden="true"><div class="volume volume-back"></div><div class="volume volume-front"><span>GoodReadence</span><i></i><img id="featureCover" hidden alt=""></div></div>
+        <div class="cover-stage" aria-hidden="true"><div class="volume volume-back"></div><div class="volume volume-front"><span>Good<br>Readence</span><i></i><img id="featureCover" hidden alt=""></div></div>
       </section>
       <small id="msg" role="status">Your books stay on this device. Nothing is uploaded.</small><div id="stats" hidden></div>
       <section id="collection" hidden><div class="shelf-header"><h2>Your shelf <small id="bookCount"></small></h2><div class="filters"><input id="shelfQuery" type="search" placeholder="Find a book" aria-label="Find a book by title"><select id="shelfOrder" aria-label="Sort books"><option value="recent">Recent</option><option value="title">Title A–Z</option></select></div></div><div id="shelf"></div></section></div>
@@ -382,6 +382,7 @@ function fit(){
     else{const p=single?s:Math.min(2*s,n-1);single=sg;s=single?p:Math.ceil(p/2)}
   }
   baseW=Math.min(single?vw:vw/2,vh*ratio);
+  if(single&&matchMedia('(max-width:600px)').matches)baseW=vw;
   layout();
 }
 function layout(){
