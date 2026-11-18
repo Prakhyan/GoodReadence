@@ -10,7 +10,7 @@ GoodReadence is a personal PDF and EPUB reader with page turns, bookmarks, highl
 2. Choose **Add books** for a PDF, EPUB, DOCX, PPTX or JPG/PNG images. Office documents open as readable text; export them as PDF to keep their original layout.
 3. Use the reader's settings to choose one ambience recording, change its volume, or turn ambience off.
 
-The reader keeps selected books and reading progress in this browser on this device. It does not upload books to a GoodReadence account or sync them between devices. Browser data can be cleared or removed by the browser, so keep separate copies of books that matter to you.
+The reader keeps selected books and reading progress in this browser on this device. There is no GoodReadence reader account or book-storage backend. You can move books with full ZIP backups or direct QR/WebRTC transfer. Optional personal-cloud connections are implemented but require provider registration before public activation. Browser data can be cleared or removed by the browser, so keep separate copies of books that matter to you.
 
 Choose **Prepare a book** to merge PDFs, extract pages or chapters, make an image book, or compress a copy. Compression changes pages into images; your original file is kept unchanged. The reader's new controls offer single page, spread or scroll views, reading backdrops, local notes, and read-aloud with an installed device voice. The home page has a light/dark switch.
 
@@ -45,7 +45,7 @@ See the [feature checklist and limitations](docs/FEATURE-IMPLEMENTATION.md) for 
 - **Vercel** turns the GitHub project into a website and gives it a shareable address ending in `.vercel.app`.
 - To view the reader on a phone, open that Vercel address. Opening a GitHub file shows the code, not the app.
 
-The project is a static website: it has no sign-in, payment, or cloud book storage. Deployment settings should use the repository root, with no build command and `.` as the output directory unless Vercel detects the static site automatically.
+The project is a static website with no GoodReadence account backend, payment backend or server-side book storage. Optional cloud connections authenticate directly with the user’s provider. Deployment settings should use the repository root, with no build command and `.` as the output directory unless Vercel detects the static site automatically.
 
 ## Help and credits
 
@@ -66,8 +66,24 @@ The home page contains the full About story. Merge accepts repeated additions of
 
 Paper rustle is restored, with the end-click oscillator removed. Mobile turns use shorter animations and smaller animation-only canvases; static pages keep their normal resolution. The Midnight desk applies the Midnight paper theme. Read-aloud covers only the visible PDF page or spread and stops at the end. Its voice quality depends on installed local device voices.
 
-`library.html` offers 100 complete, source-credited PDF classics, with original-edition covers, author biographies, page counts and freely available source EPUBs. The archives are served under `public-books/` for manual download, outside app caching and HTML fallbacks. Original Project Gutenberg licences are retained; source editions state public-domain status in the USA, with local rules noted on the library page. `public-books/catalog.json` records source links, mirrors and file hashes.
+`library.html` offers 500 complete, source-credited PDF classics, with original-edition covers, author biographies, page counts and freely available source EPUBs. The archives are served under `public-books/` for manual download, outside app caching and HTML fallbacks. Original Project Gutenberg licences are retained; source editions state public-domain status in the USA, with country-specific review recorded in the project documentation. `public-books/catalog.json` records source links, mirrors and file hashes.
 
 Update badges now use one stable release identifier shared by every page and retain acknowledged release IDs. When publishing an approved new release, update the shared identifier in `premium-upgrade.js` and the matching `release.json` entry, alongside Updates. Do not use per-request server headers as release identifiers.
 
-The public catalogue displays 12 books per page, searches all 100 titles, and adds selected PDFs directly to the existing private browser library. Author details and dated Open Library ratings live in an in-page dialog. See `docs/PUBLIC-LIBRARY.md` for sources, licence attribution and build checks.
+The public catalogue displays 12 books per page, searches all 500 titles, and adds selected PDFs directly to the existing private browser library. Author details and dated Open Library ratings live in an in-page dialog. See `docs/PUBLIC-LIBRARY.md` for sources, licence attribution and build checks.
+
+## Backup, notes export and device transfer (1.3.0)
+
+Choose **Backup & transfer** in the personal library. Full ZIP backups include original files, reading data and settings; selected-book backups let you split a large shelf into smaller archives. Restore previews contents before changing storage and keeps conflicting copies unless you choose to replace matching books. Clearing site data still removes the local library; the external ZIP is what lets you restore it afterward.
+
+Shelf book menus and Margin notes offer **Export notes** as Markdown or text. Selectable PDF/EPUB highlight text is included when available. Freehand shapes stay in the ZIP backup and are described by page in text exports.
+
+**Device transfer** uses a sending QR plus a reply QR to establish a direct encrypted WebRTC data channel. There is no book-storage relay. Same-Wi-Fi is preferred; Google STUN is optional for different networks, and no TURN relay is configured. Camera frames stay on the scanning device. Keep both apps open.
+
+Cloud connections are **not active yet**: the owner must register Google Drive, Dropbox and/or OneDrive and supply public client IDs. [Beginner setup instructions](docs/CLOUD-SETUP.md) explain each registration. No client secret belongs in the static app. Cloud transport and conflict handling are tested with simulated provider APIs; actual provider sign-in requires live registrations and testing. Tokens stay in memory. Cloud books upload once by content hash; reading updates use per-device manifests.
+
+Limits: ZIP backups 1 GB total / 300 MB per book; cloud books 128 MB; QR transfer 128 MB including saved marks and archive overhead. Clouds use the owner of each connected account’s storage allowance. The app has no always-running background sync service.
+
+New source files: `portable-data.js`, `portability-ui.js`, `portability.css`, `device-transfer.js`, `cloud-sync.js`, `cloud-config.json`, and `cloud-callback.*`. Dependencies and licences are in `vendor/PORTABILITY-CREDITS.md`. [Privacy & data](privacy.html) describes the optional data flows.
+
+Local preview: `node scripts/serve-local.cjs` → http://127.0.0.1:8799. Tests: `node scripts/check-portability.cjs`, `node scripts/check-transfer-edges.cjs`, `node scripts/check-cloud-sync.cjs` with `GR_BASE_URL` set to the preview URL. Cloud tests simulate account/provider responses and do not prove real registration approval.
