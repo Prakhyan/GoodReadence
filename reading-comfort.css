@@ -3,7 +3,23 @@
 #book::before{left:0;right:50%;transform:translateY(var(--left-stack,0px))}
 #book::after{left:50%;right:0;transform:translateY(var(--right-stack,7px))}
 #book>.pg{z-index:3}
-.hardcover{position:absolute;top:-3px;height:calc(100% + 8px);width:calc(50% + 5px);z-index:0;pointer-events:none;border:1px solid #36263c;box-sizing:border-box;background:linear-gradient(100deg,#38263f,#5d4366 45%,#44304d);box-shadow:0 1px 0 #a48baf66,inset 0 0 0 1px #ffffff12,0 5px 12px #0003;border-radius:3px;}
+.hardcover{position:absolute;top:-3px;height:calc(100% + 8px);width:calc(50% + 5px);z-index:0;pointer-events:none;border:1px solid var(--cover-border,#36263c);box-sizing:border-box;background:linear-gradient(100deg,var(--cover-shadow,#38263f),var(--cover-colour,#5d4366) 45%,var(--cover-shadow,#44304d));box-shadow:0 1px 0 #a48baf66,inset 0 0 0 1px #ffffff12,0 5px 12px #0003;border-radius:3px;}
+/* The animated sheet must sit above the static page faces, not behind them. */
+#book{perspective:7000px}
+#book>#sh{z-index:6}
+#book.turn{transition:transform var(--turn-duration,700ms) cubic-bezier(.2,.75,.24,1)}
+html[data-book-cover=none] .hardcover{display:none!important}
+.cover-choice{display:flex;align-items:center;gap:9px;min-width:0}
+#coverColourPreview{width:17px;height:20px;border-radius:3px;border:1px solid #0002;flex-shrink:0;background:var(--cover-colour,#5d4366)}
+html[data-book-cover=none] #coverColourPreview{background:linear-gradient(135deg,transparent 46%,#a97d87 47% 53%,transparent 54%)}
+#bookCoverColour{max-width:170px;font:inherit;color:var(--ink);background:var(--sf);border:1px solid var(--bd);padding:8px;border-radius:9px}
+.reading-details{margin:32px 0;padding:28px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(140deg,#b89edc15,#dfb47c12)}
+.reading-details h2{font:clamp(27px,3vw,37px)/1.2 Georgia;color:var(--violet);margin:0 0 22px}
+.reading-details ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 28px}
+.reading-details li{position:relative;padding-left:24px;line-height:1.6;font-size:13px;color:var(--muted)}
+.reading-details li::before{content:'✦';position:absolute;left:0;top:0;color:var(--violet);font-size:14px}
+.reading-details strong{display:block;font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px}
+@media(max-width:650px){.reading-details{padding:23px 20px}.reading-details ul{grid-template-columns:1fr;gap:18px}}
 .hardcover-left{left:-5px;transform:translateY(calc(var(--left-stack,0px) + 2px));border-right:0;border-radius:4px 1px 1px 5px}
 .hardcover-right{right:-5px;transform:translateY(calc(var(--right-stack,7px) + 2px));border-left:0;border-radius:1px 5px 5px 1px}
 #book.one::before,#book.one .hardcover-left,#book[data-at-start=true]::before,#book[data-at-start=true] .hardcover-left{display:none}

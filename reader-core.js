@@ -158,9 +158,10 @@ function pose(progress){
   sh.firstChild.style.transform='rotateY('+(-180*progress)+'deg)';
   sh.firstChild.style.setProperty('--shade',.18*Math.sin(Math.PI*progress));
 }
+function turnDuration(){return matchMedia('(prefers-reduced-motion: reduce)').matches?1:Math.min(PT[pt].d,(lowMemory||matchMedia('(pointer:coarse)').matches)?420:700)}
 function run(d){
   return new Promise(res=>{
-    const t0=performance.now(),D=matchMedia('(prefers-reduced-motion: reduce)').matches?1:Math.min(PT[pt].d,(lowMemory||matchMedia('(pointer:coarse)').matches)?420:700),session=bookSession;
+    const t0=performance.now(),D=turnDuration(),session=bookSession;
     anim=true;pose(d>0?0:1);sh.hidden=false;snd(null,D);
     const f=now=>{
       if(session!==bookSession){res();return}
@@ -186,13 +187,13 @@ async function turn(d){
   if(!cF||(!single&&B<n&&!cB)||(l1>=0&&l1<n&&!fL)||(r1<n&&!fR)){busy=false;fit();toast('Page could not be turned. Try again.');return}
   buildSheet(cF,cB);
   fill(Ls,mL,mid[0]);fill(Rs,mR,mid[1]);
-  shift(s2);
-  book.classList.add('turn');await run(d);
+  book.style.setProperty('--turn-duration',turnDuration()+'ms');book.classList.add('turn');shift(s2);
+  await run(d);
   if(session!==bookSession)return;
   fill(Ls,l1<0?null:fL,l1);fill(Rs,r1>=n?null:fR,r1);book.classList.remove('turn');
   sh.hidden=true;sh.textContent='';
   Ls.querySelector('.sd').style.opacity=Rs.querySelector('.sd').style.opacity=0;
-  s=s2;busy=false;if(d>0)addPages(single?1:2);ui();preload();if(window.pendingTurn){const direction=Math.sign(window.pendingTurn);window.pendingTurn-=direction;requestAnimationFrame(()=>turn(direction))}
+  s=s2;busy=false;if(d>0)addPages(single?1:2);ui();if(resizePending){resizePending=false;fit()}else preload();if(window.pendingTurn){const direction=Math.sign(window.pendingTurn);window.pendingTurn-=direction;requestAnimationFrame(()=>turn(direction))}
 }
 
 /* Extras: highlights, bookmarks, drawer, search, contents, thumbnails, sound, preferences */

@@ -107,3 +107,9 @@ EPUB Aa controls add line spacing, margins and line width alongside serif/sans f
 The reader is now split into `reader-core.js` and `reader-epub.js`. `pdf-engine.js` loads pinned local PDF.js 6.5.438 modules, supporting fonts/maps and decoders. Use the live site or `node scripts/serve-local.cjs`; browser restrictions prevent a full module-based reader from running by double-clicking a file URL. There is no runtime Node app or install/build step on Vercel. `package.json`/the lockfile describe the vendored dependency inventory for auditing; updating versions also requires refreshing the bundle hashes in `vendor/PINS.json`.
 
 See [security review and limits](docs/SECURITY-REVIEW.md). Checks: `node scripts/check-reading-comfort.cjs`, `node scripts/check-vendor-pins.cjs`, the existing reader/backup/cloud regression scripts, and `npm audit`. Cloud and malicious-provider fixtures are simulated; live account activation and an independent penetration test are not claimed.
+
+## Page turns and cover choices (1.6.0)
+
+The reader menu is centered again. The turning sheet now paints above the static pages and hardcover, with a calmer perspective. Centering motion uses the same duration as the flip; deferred resizing finishes as soon as the turn completes. Forward/backward, repeated taps, first/last boundaries, phone single-page mode and reduced motion are covered by `scripts/check-page-turns.cjs`, including mid-turn screenshots and hit testing against distinctly coloured PDF pages.
+
+Settings → Book cover offers ten colours and No book cover. The local `gr:bookCover` preference is included in full backups. Colour choice uses inherited CSS variables, so page fitting does not clear it. About now includes eight additional concise feature points.

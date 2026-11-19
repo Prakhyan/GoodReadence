@@ -24,7 +24,7 @@
 .settings-footer svg{width:17px;height:17px}
 #pp{justify-content:flex-end;padding-right:16px;padding-left:16px}
 #pp .pb{width:min(610px,100%);height:min(64dvh,680px);max-height:calc(100dvh - var(--toolbar-height,100px) - 28px)}
-#dr{left:auto;right:16px;max-width:min(570px,calc(100vw - 32px));width:100%;margin:0}
+#dr{left:16px;right:16px;max-width:min(570px,calc(100vw - 32px));width:auto;margin-inline:auto}
 #dr #dh{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 12px 0}
 #dr #dh button{min-width:0;width:100%;height:40px;text-align:center;border:1px solid var(--bd);background:var(--sf);font-size:13px;display:inline-flex;align-items:center;justify-content:center;gap:7px}
 #dr #tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:12px}
@@ -113,7 +113,7 @@
   #about .feature-summary article{padding:20px}
   #pp{padding:8px 8px calc(var(--toolbar-height,110px) + 8px)}
   #pp .pb{height:min(65dvh,650px);max-height:calc(100dvh - var(--toolbar-height,110px) - 24px)}
-  #dr{right:8px;bottom:8px;max-width:calc(100vw - 16px)}
+  #dr{left:8px;right:8px;bottom:8px;max-width:570px}
   #bar{padding:7px 8px calc(7px + env(safe-area-inset-bottom,0px));gap:7px}
   #bar>.g.n{flex:1 1 100%;order:0;gap:5px}
   #bar>.g.t{flex:1;order:1}

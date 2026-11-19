@@ -1,6 +1,14 @@
 /* Opt-in protection reminders and explicitly requested, word-only online lookup. */
 (()=>{
   'use strict';
+  const coverColours=[['plum','Plum','#5d4366'],['midnight','Midnight','#27242d'],['navy','Navy','#2c3c59'],['ocean','Ocean','#397079'],['forest','Forest','#39594b'],['olive','Olive','#73714c'],['burgundy','Burgundy','#783f50'],['terracotta','Terracotta','#a9634b'],['sand','Sand','#b9a181'],['ivory','Ivory','#ded6c5']];
+  const coverRow=document.createElement('div');coverRow.className='row';coverRow.innerHTML='<label for="bookCoverColour">Book cover</label><span class="cover-choice"><i id="coverColourPreview" aria-hidden="true"></i><select id="bookCoverColour" aria-label="Book cover colour"></select></span>';
+  document.querySelector('#tn').closest('.row').after(coverRow);
+  const coverSelect=document.querySelector('#bookCoverColour');for(const[id,label]of coverColours)coverSelect.add(new Option(label,id));coverSelect.add(new Option('No book cover','none'));
+  function applyCover(value){const colour=coverColours.find(c=>c[0]===value),choice=colour?colour[0]:value==='none'?'none':'plum',hex=colour?.[2]||coverColours[0][2],shade=factor=>'#'+hex.slice(1).match(/../g).map(part=>Math.round(parseInt(part,16)*factor).toString(16).padStart(2,'0')).join('');document.documentElement.dataset.bookCover=choice;document.documentElement.style.setProperty('--cover-colour',hex);document.documentElement.style.setProperty('--cover-shadow',shade(.68));document.documentElement.style.setProperty('--cover-border',shade(.55));coverSelect.value=choice}
+  try{applyCover(localStorage.getItem('gr:bookCover')||'plum')}catch{applyCover('plum')}
+  coverSelect.onchange=()=>{applyCover(coverSelect.value);try{localStorage.setItem('gr:bookCover',coverSelect.value)}catch{}};
+  addEventListener('storage',event=>{if(event.key==='gr:bookCover')applyCover(event.newValue)});
   for(const side of ['left','right']){const cover=document.createElement('div');cover.className='hardcover hardcover-'+side;cover.setAttribute('aria-hidden','true');book.prepend(cover)}
   const decorate=window.decorateBook;window.decorateBook=()=>{
     decorate?.();if(!pdf)return;const page=Math.max(0,Math.min(n-1,cp())),depth=Math.min(8,2+Math.log10(Math.max(2,n))*2),progress=n>1?page/(n-1):1;
