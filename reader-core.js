@@ -657,7 +657,7 @@ function setZoom(v){
   if(!pdf)return;
   v=Math.round(Math.max(1,Math.min(4,v))*100)/100;if(v===zoom)return;
   const fx=(stage.scrollLeft+stage.clientWidth/2)/stage.scrollWidth,fy=(stage.scrollTop+stage.clientHeight/2)/stage.scrollHeight;
-  zoom=v;layout();
+  zoom=v;$('#zo').disabled=zoom<=1;$('#zi').disabled=zoom>=4;layout();
   stage.scrollLeft=fx*stage.scrollWidth-stage.clientWidth/2;
   stage.scrollTop=fy*stage.scrollHeight-stage.clientHeight/2;
 }
