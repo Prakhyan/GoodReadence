@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 1.8.1
+
+A familiar mark, finely finished.
+
+- A refined G-and-bookmark identity in a richer plum finish.
+- Coordinated website, browser, phone and sharing icons.
+
 ## Version 1.8.0
 
 A reading room worth discovering.
