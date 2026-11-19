@@ -36,7 +36,7 @@
 #bar .c{display:flex;align-items:center}
 #bar #bm,#bar #quickMarks{width:40px;height:38px;display:inline-flex;align-items:center;justify-content:center;padding:7px}
 #bar #bm svg,#bar #quickMarks svg{width:23px;height:23px}
-#bar #bm[aria-pressed=true]{color:var(--ac);background:var(--sf)}
+#bar #bm[aria-pressed=true]{color:#303238;background:#e8e8eb}
 #bh{opacity:.32;transition:opacity .2s ease}
 #bh.revealed,#bh:focus-visible{opacity:1}
 @media(hover:hover) and (pointer:fine){

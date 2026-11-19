@@ -117,3 +117,7 @@ Settings → Book cover offers ten colours and No book cover. The local `gr:book
 ## Toolbar polish (1.6.2)
 
 Zoom buttons and +/- keyboard shortcuts change by one percentage point, clamped to 100–400%, with integer-percent rounding. Desktop pointer users get an inset, rounded toolbar. The show/hide tab is translucent at rest; pointer hover, keyboard focus, or clicking/tapping outside the book reveals it. A desk interaction reveals the tab for four seconds without opening the tools or changing the current page. Toolbar reserved height includes desktop margins so centered panels stay above it. Touch layouts retain their full-width controls.
+
+## Release presentation (1.6.3)
+
+Updates is a concise history organized by published semantic versions, newest first. Keep public notes focused on delivered product benefits; omit dates and internal troubleshooting history. Keep earlier version entries rather than overwriting them. The saved bookmark marker uses charcoal on a neutral chip for clear contrast across reader themes. `updates.css` is cached with the app shell.
