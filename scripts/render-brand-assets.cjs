@@ -1,11 +1,11 @@
-// One vector master supplies the website, browser, iOS and Android icons.
+// The supplied image master supplies the website, browser, iOS and Android icons.
 const fs=require('node:fs');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 (async()=>{const master=fs.readFileSync('brand-mark.svg','utf8');fs.writeFileSync('favicon.svg',master);
  const browser=await chromium.launch({headless:true,channel:process.env.BROWSER_CHANNEL||(process.platform==='win32'?'msedge':undefined)});
  try{const page=await browser.newPage({deviceScaleFactor:1});
   for(const [file,size,maskable]of [['icon-192.png',192,false],['icon-512.png',512,false],['apple-touch-icon.png',180,false],['icon-maskable-512.png',512,true]]){
-   const svg=maskable?master.replace('id="gr-tile" width="96" height="96" rx="24"','id="gr-tile" width="96" height="96" rx="0"').replace(/<rect id="gr-keyline"[^>]*\/>/,'').replace('<g id="gr-symbol"','<g transform="translate(8 8) scale(.833333)"><g id="gr-symbol"').replace('</svg>','</g></svg>'):master;
+   const svg=master; // The supplied artwork already has generous safe-area padding.
    await page.setViewportSize({width:size,height:size});await page.setContent('<style>html,body{margin:0;width:100%;height:100%;background:transparent}svg{display:block;width:100%;height:100%}</style>'+svg);await page.screenshot({path:file,omitBackground:true});console.log('Rendered',file,size+'×'+size);
   }
   // Embed the exact master, so the social image cannot drift into a second logo.

@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.8.2
+
+A new signature.
+
+- A purple page-stack and sparkle identity across the reading room, app icons and sharing previews.
+
 ## Version 1.8.1
 
 A familiar mark, finely finished.
