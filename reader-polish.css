@@ -22,7 +22,7 @@
 .settings-footer{display:flex;justify-content:flex-end;margin-top:18px;padding-top:16px;border-top:1px solid var(--bd)}
 .settings-footer .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;font:inherit;font-size:13px}
 .settings-footer svg{width:17px;height:17px}
-#pp{justify-content:flex-end;padding-right:16px;padding-left:16px}
+#pp{justify-content:center;align-items:center;padding:16px 16px calc(var(--toolbar-height,100px) + 16px)}
 #pp .pb{width:min(610px,100%);height:min(64dvh,680px);max-height:calc(100dvh - var(--toolbar-height,100px) - 28px)}
 #dr{left:16px;right:16px;max-width:min(570px,calc(100vw - 32px));width:auto;margin-inline:auto}
 #dr #dh{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 12px 0}
