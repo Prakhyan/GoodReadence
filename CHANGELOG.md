@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 1.8.0
+
+A reading room worth discovering.
+
+- Individual pages for every classic, with book details, author information and Read now.
+- Public catalogue browsing that works before JavaScript loads.
+- Clearer search listings, share previews and standalone About and Help pages.
+
 ## Version 1.7.0
 
 More worlds to get lost in.

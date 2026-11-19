@@ -8,4 +8,13 @@
     const intro=document.querySelector('#intro');if(intro)intro.hidden=true;
     try{localStorage.setItem('gr:introSeen','1')}catch{}
   }
+  const requested=new URLSearchParams(location.search).get('open');
+  if(requested&&/^\d+$/.test(requested)){
+    const openRequested=async()=>{
+      await loadLib();
+      const entry=lib.find(book=>String(book.catalogId)===requested);
+      if(entry){const url=new URL(location.href);url.searchParams.delete('open');history.replaceState(null,'',url);await openBook(entry)}
+    };
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',openRequested,{once:true});else openRequested();
+  }
 })();

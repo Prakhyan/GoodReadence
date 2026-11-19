@@ -27,7 +27,41 @@
     }
   ],
   "framework": null,
-  "buildCommand": null,
+  "buildCommand": "node scripts/build-static-site.cjs",
   "installCommand": "echo \"Using bundled static assets\"",
-  "outputDirectory": "."
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/updates",
+      "destination": "/updates.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/library",
+      "destination": "/library.html"
+    },
+    {
+      "source": "/help",
+      "destination": "/faq.html"
+    },
+    {
+      "source": "/library/page/:page",
+      "destination": "/library/page/:page.html"
+    },
+    {
+      "source": "/library/:slug",
+      "destination": "/library/:slug.html"
+    }
+  ]
 }

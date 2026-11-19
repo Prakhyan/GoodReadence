@@ -2,7 +2,7 @@
 
 <h1 align="center">GoodReadence</h1>
 <p align="center">Good riddance to bad reads.</p>
-<p align="center"><a href="https://goodreadence.vercel.app/">Open the reading room</a> · <a href="https://goodreadence.vercel.app/library.html">Explore the public library</a> · <a href="https://goodreadence.vercel.app/faq.html">Help & FAQ</a></p>
+<p align="center"><a href="https://goodreadence.vercel.app/">Open the reading room</a> · <a href="https://goodreadence.vercel.app/library">Explore the public library</a> · <a href="https://goodreadence.vercel.app/help">Help & FAQ</a></p>
 
 A free, local-first reading room from **Casid Studio**. Read your own documents or choose from **750 complete classics**, with book-style page turns, a personal shelf and tools for making the next chapter yours.
 
@@ -19,7 +19,9 @@ Books and reading data stay in the current browser by default. Clearing browser 
 
 ## Try it
 
-Visit the [live app](https://goodreadence.vercel.app/), choose **Enter your reading room**, then **Public library** or **Add books**. No account is required. Start with [Help & FAQ](https://goodreadence.vercel.app/faq.html) for installation, supported imports and backups.
+Visit the [live app](https://goodreadence.vercel.app/), choose **Enter your reading room**, then **Public library** or **Add books**. No account is required. Start with [Help & FAQ](https://goodreadence.vercel.app/help) for installation, supported imports and backups.
+
+Explore [Pride and Prejudice](https://goodreadence.vercel.app/library/pride-and-prejudice), [Dracula](https://goodreadence.vercel.app/library/dracula) or [The Adventures of Sherlock Holmes](https://goodreadence.vercel.app/library/adventures-of-sherlock-holmes). Each book has a complete edition, author details and a direct reading link.
 
 ## Run locally
 
@@ -29,7 +31,7 @@ Install Node.js, open a terminal in this folder and run:
 npm run preview
 ```
 
-Open **http://127.0.0.1:8799**. Use this local server rather than opening HTML files directly: workers, modules and browser storage require a proper web origin. The deployed app is static and uses bundled dependencies; it does not need a server-side build.
+Open **http://127.0.0.1:8799**. Use this local server rather than opening HTML files directly: workers, modules and browser storage require a proper web origin. The deployed app is static and uses bundled dependencies. Run `npm run build:static` to regenerate crawlable catalogue and book pages; Vercel runs this dependency-free generation when publishing.
 
 ## Repository map
 

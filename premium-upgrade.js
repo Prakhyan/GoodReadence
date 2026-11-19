@@ -1,7 +1,7 @@
 (() => {
-  const release='2026-11-19-version-history-1.7.0';
+  const release='2026-11-19-version-history-1.8.0';
   function markUpdatesSeen(){try{const seen=new Set(JSON.parse(localStorage.getItem('gr:readReleases')||'[]'));seen.add(release);localStorage.setItem('gr:readReleases',JSON.stringify([...seen].slice(-30)))}catch(_){}document.querySelectorAll('.release-dot').forEach(dot=>dot.hidden=true)}
-  function paintUpdates(){if(location.pathname.endsWith('/updates.html'))markUpdatesSeen();for(const link of document.querySelectorAll('a[href="updates.html"]')){link.classList.add('release-link');let dot=link.querySelector('.release-dot');if(!dot){dot=document.createElement('span');dot.className='release-dot';dot.setAttribute('aria-label','New updates');link.append(dot)}try{dot.hidden=JSON.parse(localStorage.getItem('gr:readReleases')||'[]').includes(release)||localStorage.getItem('gr:releaseSeen')===release}catch(_){}link.addEventListener('click',markUpdatesSeen)}}
+  function paintUpdates(){if(['/updates.html','/updates'].includes(location.pathname))markUpdatesSeen();for(const link of document.querySelectorAll('a[href="updates.html"]')){link.classList.add('release-link');let dot=link.querySelector('.release-dot');if(!dot){dot=document.createElement('span');dot.className='release-dot';dot.setAttribute('aria-label','New updates');link.append(dot)}try{dot.hidden=JSON.parse(localStorage.getItem('gr:readReleases')||'[]').includes(release)||localStorage.getItem('gr:releaseSeen')===release}catch(_){}link.addEventListener('click',markUpdatesSeen)}}
   paintUpdates();addEventListener('pageshow',paintUpdates);addEventListener('storage',paintUpdates);
   if(!document.querySelector('#book'))return;
   $('#mute').closest('.row').hidden=false;$('#pageVolume').closest('.row').hidden=false;

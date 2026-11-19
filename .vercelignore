@@ -3,11 +3,11 @@ docs/
 
 # Test fixtures, automation and project notes stay in GitHub, outside the website.
 research/
-scripts/
 .github/
 README.md
-package.json
-package-lock.json
 CONTRIBUTING.md
 CHANGELOG.md
 .gitattributes
+
+# Generated locally; the hosting build regenerates this artifact.
+dist/

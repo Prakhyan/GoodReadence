@@ -1,6 +1,6 @@
 {
   "name": "goodreadence-vendored-dependencies",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "private": true,
   "description": "Pinned versions of libraries served locally by the static GoodReadence app.",
   "scripts": {
@@ -9,7 +9,9 @@
     "check:vendor": "node scripts/check-vendor-pins.cjs",
     "test:library": "node scripts/check-library-expansion.cjs",
     "test:library:additions": "node scripts/check-library-additions.cjs",
-    "test:presentation": "node scripts/check-library-presentation.cjs"
+    "test:presentation": "node scripts/check-library-presentation.cjs",
+    "build:static": "node scripts/build-static-site.cjs",
+    "test:discoverability": "node scripts/check-discoverability.cjs"
   },
   "dependencies": {
     "pdfjs-dist": "6.5.438",
