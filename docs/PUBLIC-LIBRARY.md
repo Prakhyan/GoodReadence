@@ -1,39 +1,43 @@
-# Public library: complete PDF editions
+# Public-library maintenance
 
-All 100 catalogue books are complete PDFs converted from the retained Project Gutenberg EPUB editions. They are not previews. The cover displayed on each card is extracted from that same edition and appears at the start of its PDF. Page counts describe our PDF pagination, not the original printed edition.
+The catalogue contains **750 complete PDF editions**. Each record links a locally hosted PDF, the original EPUB, its source cover and edition credits. The interface renders 12 cards at a time; search and genre filters apply to the entire catalogue. PDFs download only when a reader chooses to add one.
 
-Every EPUB spine item is processed in reading order, including front matter, all chapters, illustrations, credits and the full Project Gutenberg licence. Original EPUB downloads remain freely available in each card's credits. Copyright status is edition- and jurisdiction-specific; the catalogue retains the source's US public-domain statement.
+## Rights screening
 
-Conversion happens when publishing the library, not on a reader's device. PDF and cover downloads are excluded from the app's service-worker cache. Personal imported books continue using the existing local-first workflow.
+The intended markets for this review are **India, the United States, the United Kingdom and the European Union**. Free access or an author credit alone is not permission to redistribute a copyrighted edition.
 
-## Rebuild after changing a source edition
+For the latest 250 additions, the source must explicitly identify the edition as **public domain in the USA**. Every listed creative contributor, including translators, illustrators and editors in the RDF and EPUB metadata, must have an identifiable death date **no later than 1900**. Unknown or conflicting identities are held out. The review also rejects later copyright notices requiring separate investigation, partial volumes, abridgments, adaptations and overlapping editions. Sources with ambiguous translation or illustration credits are not used to fill quotas.
 
-From the repository root, with Python (`lxml`, `Pillow`, `pypdf`) and Node (`playwright`, installed Edge) available:
+This deliberately conservative contributor cutoff is stricter than the earlier batch’s 1945 threshold. Earlier editions remain individually documented in [the machine-readable review](library-rights-review.json); the new rule must not be retroactively claimed for them. Metadata screening cannot establish every historical or national exception. It is a documented selection process, not a legal certification or a promise of universal clearance.
 
-1. `python scripts/prepare-library-pdfs.py`
-2. `node scripts/build-library-pdfs.cjs`
-3. `python scripts/verify-library-pdfs.py`
-4. `node scripts/render-public-library.cjs`
+Primary references:
 
-`PLAYWRIGHT_MODULE` can point to an existing Playwright installation; `BROWSER_CHANNEL` defaults to `msedge`. The preparation script currently processes the EPUB sources used by all 100 titles. Other source formats must first be converted into a complete edition and checked before publication; this is not a universal Office-file converter.
+- [Project Gutenberg permission](https://www.gutenberg.org/policy/permission) and [terms of use](https://www.gutenberg.org/policy/terms_of_use.html): retain edition licences and credits; the source’s US status does not establish foreign status. Bulk retrieval uses the PGLAF mirror.
+- [India Copyright Act](https://copyright.gov.in/documents/copyright_act_1957.pdf): section 22 sets the ordinary literary-work term at the author’s life plus 60 years.
+- [UK copyright term guidance](https://www.gov.uk/guidance/copyright-term): the ordinary literary-work term is life plus 70 years.
+- [EU Directive 2006/116/EC](https://eur-lex.europa.eu/eli/dir/2006/116/oj/eng): harmonized ordinary life-plus-70 terms, with provisions concerning previously longer national protection.
+- [US Copyright Office’s 2026 public-domain overview](https://blogs.loc.gov/copyright/2025/12/lifecycle-of-copyright-1930-works-in-the-public-domain/?loclr=blogtea): US publication dates and edition-specific contributions still matter.
 
-The verification checks text samples from every spine section and total retained text, and records PDF page counts, file sizes and SHA-256 checksums. Inspect rendered sample pages as well. Never replace the full source with an excerpt or silently cut long books.
+Original Gutenberg licences and production credits remain in both the source files and the PDFs. Do not remove them to make a book look cleaner. The app does not claim a new copyright in the source text or source cover.
 
-Author biographies and their reference links live in `public-books/authors.json`. Full digitisation credits, source identifiers and edition hashes live in `public-books/catalog.json` and are rendered into the library. Source material is obtained from the official PGLAF mirror; source credits are preserved, not claimed as GoodReadence's work.
+## Latest batch
 
+250 additions take the collection from 500 to 750. Nine of the ten formerly under-ten genres now have at least ten titles. Gothic satire has two: it was kept narrowly classified rather than padded with unrelated titles. Six existing short works were more accurately classified as novellas or short stories; no existing book was removed.
 
-## Browsing and personal storage
+The review records source URLs, contributor dates, source hashes and EPUB spine/word counts. Duplicate IDs, normalized titles and duplicate extracted source text are rejected. Reader ratings are attributed Open Library snapshots when an exact title/author match has a real rating count; unavailable ratings remain unavailable. Author profiles retain reference links and attribution where text is reproduced.
 
-Only 12 cards exist in the DOM at a time. Search and genre filters operate on the entire local catalogue; filtering resets pagination. Covers use lazy loading. No book PDF is requested until Add to my library is chosen.
+## Preparation pipeline
 
-Book/author details appear in an accessible native dialog with Escape, a close button and focus return. Wikipedia excerpts are attributed and linked under CC BY-SA 4.0; biographies written for the original collection retain their source links. Notable works are informational and are not all necessarily available in this collection.
+Run from the repository root. Python tools need `lxml`, `Pillow` and `PyMuPDF`. Browser printing uses the pinned Playwright development dependency. `LIBRARY_REVIEW_DIR` selects a local, ignored batch folder, containing `baseline.json`, `curated-baseline.json`, `candidates.json` and `pool.json`. Keep a copy of the pre-batch catalogue there before editing. Historical selection scripts are in `scripts/archive/library/` for provenance, not unattended reuse.
 
-Adding a book fetches one PDF at a time, checks its size and SHA-256, then stores the PDF and metadata together in one IndexedDB transaction in the reader's existing `casid` database. Stable catalogue IDs prevent duplicates and protect existing reading progress. Storage/network failures permit retry; readers can cancel before saving. Original EPUB/PDF file downloads remain optional inside credits. The app is local-first; browser data deletion still removes stored books.
+1. Curate source candidates and a duplicate-free pool using source subjects, actual contents and underserved genres. Do not use titles alone to infer rights.
+2. Run `node scripts/screen-library-additions.cjs` to check RDF contributor dates and the US statement.
+3. Run `node scripts/download-library-additions.cjs` to retrieve source editions from the mirror. Run `python scripts/validate-library-additions.py` to inspect actual EPUB metadata, complete spines and identity. This writes the working catalogue; review its accepted and held reports.
+4. Run `node scripts/enrich-library-additions.cjs`. It writes a separate enrichment report. Review exact work matches and merge accepted metadata only after any catalogue writers finish.
+5. Set `LIBRARY_INCREMENTAL=1`, then run `python scripts/prepare-library-pdfs.py`. This prepares self-contained print HTML from **every spine section**, retaining images and licences. Run `node scripts/build-library-pdfs.cjs` to print missing PDFs. There is no chapter or page cutoff.
+6. Run `python scripts/verify-library-pdfs.py`: every source section must have a surviving text sample, the extracted PDF must retain at least 98% of normalized source text, and the licence must be present. The script records PDF page counts, byte sizes and SHA-256 hashes.
+7. Run `node scripts/render-public-library.cjs`. Do not manually edit generated `library-data.json` or `library.html`.
+8. Run `python scripts/audit-library.py` and inspect the generated page contact sheets. `AUDIT_NEW_ONLY=1` limits PDF/hash checks and visual sheets to the newest 250; the default audits the entire catalogue. Remove unused reserve assets from the deployment folder and retain held evidence in local research.
+9. Run the preview server and `npm run test:library`. Check complete direct import, saved reading progress, offline reopening, pagination, global search, no automatic PDF preloads and bounded rendering memory. Update release metadata and publish only after these checks pass.
 
-## Ratings
-
-Ratings are dated snapshots from the official Open Library Search API, fetched in small batches and matched by title and author. The UI identifies Open Library, links the work, shows vote count and retrieval date, and explains that the score spans editions. Unmatched or unrated works explicitly have no verified score; they are never assigned a fabricated zero. Visitors do not contact rating services just by browsing. Refresh snapshots before promising current ratings.
-
-## Expanding/rebuilding
-
-The selected 90 additions are in `scripts/library-expansion.json`. `fetch-library-expansion.cjs` obtains full EPUBs from the official PGLAF mirror, with retries and resumable existing-file checks. `import-expanded-catalog.py` checks ZIP integrity, language, public-domain metadata and title identity before adding records. `fetch-author-profiles.cjs`, `fetch-library-ratings.cjs`, and `enrich-library.py` prepare attributed details. Run prepare/build/verify/render in order; `LIBRARY_INCREMENTAL=1` skips already prepared/built books. Verification requires PyMuPDF. Rechecked hashes are retained in the catalogue. `check-library-expansion.cjs` verifies pagination, global search, dialog controls, direct import, persistence, offline reading and failed-download recovery.
+The current addition validator targets a 250-book batch. Change its explicit batch target intentionally for future expansions. Do not run two catalogue-writing scripts concurrently. A source EPUB is never overwritten with a generated PDF.

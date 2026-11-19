@@ -1,18 +1,26 @@
-# Dependencies and license inventory
+# Dependencies and third-party credits
 
-Reviewed 16 November 2026 against the checked-in release files. This is a source inventory, not a substitute for checking each upstream license and notice before distribution.
+The static application serves its runtime libraries locally. Exact versions and file hashes are recorded in `package.json`, `package-lock.json` and `vendor/PINS.json`. Run `npm run check:vendor` after any dependency update.
 
-| Component | Included version / location | Purpose | License and follow-up |
-|---|---|---|---|
-| PDF.js | 3.11.174, bundled in `index.html` and mirrored in `vendor/pdf.min.js` + `vendor/pdf.worker.min.js` | PDF parsing, rendering, text search | Apache-2.0; bundled source includes its license banner. Preserve upstream notices. Version is old and should be upgraded after compatibility review. |
-| EPUB parser | `epub.js`, project code | Reads EPUB ZIP directory and XHTML using browser APIs | No third-party package dependency identified in this file; obtain/confirm the project author’s license before public release. |
-| Ambience recordings | `ambience/*.mp3` | Optional local audio | CC0 and CC BY recordings. Source, author, license, excerpt duration, and edits are recorded in `ambience/CREDITS.html` and `ambience/catalog.json`. Preserve attribution for CC BY items. |
-| Fonts | System font stack | Interface typography | No Google Fonts or remote font request was found in the app. Uses fonts already available on the device. |
-| JavaScript/CSS runtime | Inline app code and `reading-room.css` | Reader interface | No npm package manifest or lockfile is present. No app analytics, error reporting, CDN script, or external API was found in source inspection. |
+| Component | Version | Licence / purpose |
+| --- | --- | --- |
+| PDF.js (`pdfjs-dist`) | 6.5.438 | Apache-2.0; PDF display, workers, fonts, character maps and image decoders |
+| fflate | 0.8.3 | MIT; archive compression and document/backup handling |
+| pdf-lib | 1.17.1 | MIT; PDF preparation tools |
+| qrcode-generator | 1.4.4 | MIT; device-pairing QR codes |
+| jsQR | 1.4.0 | Apache-2.0; camera QR decoding |
+| Playwright | 1.62.1 | Apache-2.0; development-only browser checks and PDF publication |
 
-## Distribution checks
+Retain upstream licence files and notices shipped in `vendor/`. Python publication tools use lxml, Pillow and PyMuPDF; these are developer tools, not downloaded by app users. Browser printing creates the public-library PDFs once, before publication.
 
-- The app’s source assets are served locally by the static site; outbound web requests occur when a user follows a linked source/credit or social/contact URL.
-- The sound licenses are individual recording licenses, not an endorsement or blanket license for other source materials.
-- Confirm the author/owner and license of the app’s original code, visual design, and `epub.js` before external distribution. No company ownership or transfer of rights is inferred.
-- Generate a software bill of materials and run a current vulnerability review after choosing the PDF.js upgrade target. There is no package manager lockfile to audit today.
+## Books and biographies
+
+Project Gutenberg source EPUBs and covers retain their original edition licences and production credits. Every book’s **More Info** links the source edition and its original file. See [the rights policy](PUBLIC-LIBRARY.md) and [review data](library-rights-review.json) for screening criteria. The application’s ownership notice does not override book or third-party rights.
+
+Author information links its factual references. Reproduced Wikipedia summaries carry Wikipedia-contributor attribution and CC BY-SA 4.0 credit, with the source article linked. Open Library rating snapshots show the source work, count and check date; an unrated book does not receive an invented score.
+
+## Sound, identity and online services
+
+Recording-specific sources and licence details are listed in [ambience credits](../ambience/CREDITS.html). The original ribbon-monogram artwork has the [separate dedication](BRANDING.md). Social service marks identify their respective services; they are not owned by GoodReadence.
+
+Dictionary and Wikipedia lookups are optional online requests. Optional cloud sign-in requires the owner to register the app with the provider; see [setup](CLOUD-SETUP.md). These integrations do not grant any licence over user-uploaded material. The app uses system fonts rather than downloading a font service at reading time.

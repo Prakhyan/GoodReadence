@@ -1,7 +1,9 @@
-# GoodReadence mark
+# GoodReadence identity
 
-The current `brand-mark.svg` is original geometric artwork created for GoodReadence: an open book with a bookmark, on a rounded plum square. It uses no stock artwork, fonts, image generator or third-party icon package.
+GoodReadence is a product of **Casid Studio**. The public ownership line is **© 2026 Casid Studio · GoodReadence**. The product-initiative credit belongs in Help & FAQ.
 
-The artwork in `brand-mark.svg`, its copy in `favicon.svg`, and the matching `icon-192.png` and `icon-512.png` exports are dedicated to the public domain under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/).
+The current `brand-mark.svg` is an original white ribbon-style G monogram on a rounded purple square. It uses geometric vector paths, with no stock image, generated bitmap or icon font. `favicon.svg` and the install icons follow the same identity.
 
-This dedication concerns copyright in this artwork. It does not claim trademark registration or guarantee that no other business uses a similar book shape. The X, Instagram and LinkedIn marks on Contact identify their respective services and are separate from the GoodReadence artwork.
+The artwork in `brand-mark.svg`, `favicon.svg`, `icon-192.png` and `icon-512.png` is dedicated under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). This is a copyright dedication for those assets, not a trademark registration or a licence over the entire application.
+
+Service logos on Contact identify their respective services and retain their owners’ rights.
