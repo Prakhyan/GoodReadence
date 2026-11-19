@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path');
 const {origin,esc,books,bookPath,metadata,documentPage,card}=require('./seo-tools.cjs');
 const release=JSON.parse(fs.readFileSync('release.json')),catalog=JSON.parse(fs.readFileSync('library-data.json'));
-const absolute=file=>origin+'/'+file,write=(file,html)=>{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,html)};
+const absolute=file=>origin+'/'+file,write=(file,html)=>{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,html.replace(/[ \t]+\r?$/gm,''))};
 const urls=['/','/about','/help','/updates','/contact','/privacy','/library'];
 const appSchema={'@context':'https://schema.org','@graph':[
  {'@type':'Organization','@id':origin+'/#organization',name:'Casid Studio',url:origin,logo:absolute('brand-mark.svg')},
