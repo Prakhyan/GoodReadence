@@ -37,7 +37,14 @@
 #bar #bm,#bar #quickMarks{width:40px;height:38px;display:inline-flex;align-items:center;justify-content:center;padding:7px}
 #bar #bm svg,#bar #quickMarks svg{width:23px;height:23px}
 #bar #bm[aria-pressed=true]{color:var(--ac);background:var(--sf)}
-#readerTools{flex:1 0 100%;justify-content:center;gap:8px;border-top:1px solid var(--bd);padding-top:8px;min-width:0}
+#bh{opacity:.32;transition:opacity .2s ease}
+#bh.revealed,#bh:focus-visible{opacity:1}
+@media(hover:hover) and (pointer:fine){
+  #bar{width:min(1080px,calc(100% - 32px));margin:8px auto 12px;border:1px solid var(--bd);border-radius:22px;box-sizing:border-box;box-shadow:0 8px 28px #00000018;flex:none}
+  #bh:hover{opacity:1}
+}
+@media(prefers-reduced-motion:reduce){#bh{transition:none}}
+#readerTools{flex:1 0 100%;justify-content:center;gap:8px;border-top:1px solid var(--bd);padding-top:8px;min-width:0;box-sizing:border-box;max-width:100%}
 #readerTools>label{border:1px solid var(--bd);border-radius:10px;padding:0 9px;background:var(--sf);gap:6px;font-size:11px;min-width:0}
 #readerTools select{height:34px;padding:5px 0;font-size:12px}
 #readerTools>button,#readerTools .annotation-toggle{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:7px 11px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);font-size:12px;white-space:nowrap;cursor:pointer;color:var(--ink)}

@@ -113,3 +113,7 @@ See [security review and limits](docs/SECURITY-REVIEW.md). Checks: `node scripts
 The reader menu is centered again. The turning sheet now paints above the static pages and hardcover, with a calmer perspective. Centering motion uses the same duration as the flip; deferred resizing finishes as soon as the turn completes. Forward/backward, repeated taps, first/last boundaries, phone single-page mode and reduced motion are covered by `scripts/check-page-turns.cjs`, including mid-turn screenshots and hit testing against distinctly coloured PDF pages.
 
 Settings → Book cover offers ten colours and No book cover. The local `gr:bookCover` preference is included in full backups. Colour choice uses inherited CSS variables, so page fitting does not clear it. About now includes eight additional concise feature points.
+
+## Toolbar polish (1.6.2)
+
+Zoom buttons and +/- keyboard shortcuts change by one percentage point, clamped to 100–400%, with integer-percent rounding. Desktop pointer users get an inset, rounded toolbar. The show/hide tab is translucent at rest; pointer hover, keyboard focus, or clicking/tapping outside the book reveals it. A desk interaction reveals the tab for four seconds without opening the tools or changing the current page. Toolbar reserved height includes desktop margins so centered panels stay above it. Touch layouts retain their full-width controls.

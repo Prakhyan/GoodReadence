@@ -289,7 +289,7 @@ $('#br').onclick=()=>{br=(br+1)%BR.length;$('#dim').style.opacity=BR[br];brl();s
 const fsb=$('#fs');if(!document.fullscreenEnabled)fsb.hidden=true;
 $('#quickMarks').onclick=()=>tabTo('mk');
 fsb.onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
-function tuck(v){tu=v?1:0;bar.classList.toggle('tuck',!!tu);$('#bh').classList.toggle('o',!tu);setTimeout(()=>{if(pdf&&!busy)fit()},60);savePreferences()}
+function tuck(v){tu=v?1:0;bar.classList.toggle('tuck',!!tu);const handle=$('#bh');handle.classList.toggle('o',!tu);handle.setAttribute('aria-expanded',String(!tu));handle.setAttribute('aria-label',tu?'Show reading tools':'Hide reading tools');setTimeout(()=>{if(pdf&&!busy)fit()},60);savePreferences()}
 $('#bh').onclick=()=>tuck(!tu);
 document.addEventListener('fullscreenchange',()=>{tuck(!!document.fullscreenElement);setTimeout(()=>{if(pdf&&!busy)fit()},250)});
 function snd(k,ms){
@@ -655,7 +655,7 @@ chip();loadLib();
 /* Controls */
 function setZoom(v){
   if(!pdf)return;
-  v=Math.max(1,Math.min(4,v));if(v===zoom)return;
+  v=Math.round(Math.max(1,Math.min(4,v))*100)/100;if(v===zoom)return;
   const fx=(stage.scrollLeft+stage.clientWidth/2)/stage.scrollWidth,fy=(stage.scrollTop+stage.clientHeight/2)/stage.scrollHeight;
   zoom=v;layout();
   stage.scrollLeft=fx*stage.scrollWidth-stage.clientWidth/2;
@@ -664,8 +664,8 @@ function setZoom(v){
 $('#f').onchange=e=>{addBooks([...e.target.files]);e.target.value=''};
 $('#pv').onclick=()=>turn(-1);
 $('#nx').onclick=()=>turn(1);
-$('#zi').onclick=()=>setZoom(zoom+.5);
-$('#zo').onclick=()=>setZoom(zoom-.5);
+$('#zi').onclick=()=>setZoom(zoom+.01);
+$('#zo').onclick=()=>setZoom(zoom-.01);
 $('#tn').onclick=()=>{th=(th+1)%THEMES.length;theme();if(pdf){ver++;layout()}savePreferences()};
 sl.oninput=()=>{lab.textContent=sl.value+' / '+n};
 sl.onchange=()=>{
@@ -698,8 +698,8 @@ addEventListener('keydown',e=>{
   if(sec||dw.classList.contains('on')||e.target.closest('input,select,textarea,dialog'))return;
   if(e.key==='ArrowRight'||e.key==='PageDown')turn(1);
   else if(e.key==='ArrowLeft'||e.key==='PageUp')turn(-1);
-  else if(e.key==='+'||e.key==='=')setZoom(zoom+.5);
-  else if(e.key==='-')setZoom(zoom-.5);
+  else if(e.key==='+'||e.key==='=')setZoom(zoom+.01);
+  else if(e.key==='-')setZoom(zoom-.01);
 });
 addEventListener('dragover',e=>e.preventDefault());
 addEventListener('drop',e=>{e.preventDefault();addBooks([...e.dataTransfer.files])});
