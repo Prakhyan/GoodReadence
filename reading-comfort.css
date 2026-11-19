@@ -1,0 +1,31 @@
+/* Quiet hardboard covers and a narrow, changing fore-edge; no extra rendered pages. */
+#book::before,#book::after{z-index:1;border-radius:1px 3px 3px 1px;background:repeating-linear-gradient(0deg,#d9d2c4 0 .6px,#f7f3e9 .6px 1.8px);box-shadow:0 1px 1px #35271c35;pointer-events:none;height:var(--h);top:0;bottom:auto}
+#book::before{left:0;right:50%;transform:translateY(var(--left-stack,0px))}
+#book::after{left:50%;right:0;transform:translateY(var(--right-stack,7px))}
+#book>.pg{z-index:3}
+.hardcover{position:absolute;top:-3px;height:calc(100% + 8px);width:calc(50% + 5px);z-index:0;pointer-events:none;border:1px solid #36263c;box-sizing:border-box;background:linear-gradient(100deg,#38263f,#5d4366 45%,#44304d);box-shadow:0 1px 0 #a48baf66,inset 0 0 0 1px #ffffff12,0 5px 12px #0003;border-radius:3px;}
+.hardcover-left{left:-5px;transform:translateY(calc(var(--left-stack,0px) + 2px));border-right:0;border-radius:4px 1px 1px 5px}
+.hardcover-right{right:-5px;transform:translateY(calc(var(--right-stack,7px) + 2px));border-left:0;border-radius:1px 5px 5px 1px}
+#book.one::before,#book.one .hardcover-left,#book[data-at-start=true]::before,#book[data-at-start=true] .hardcover-left{display:none}
+#book.one::after{inset:0 0 auto 0}
+#book.one .hardcover-right{width:calc(100% + 10px)}
+#book[data-finished=true]::after{transform:none;box-shadow:none}
+.backup-reminder{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:15px 18px;margin:22px 0;border:1px solid var(--line);background:var(--surface-raised);border-radius:15px;color:var(--text);font-size:13px}
+.backup-reminder p{margin:0;line-height:1.5;flex:1 1 240px}
+.backup-reminder button{font:inherit;padding:9px 12px;background:var(--surface);color:var(--violet);border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.backup-reminder[hidden]{display:none}
+.backup-reminder-options{border-top:1px solid var(--line);padding-top:12px;margin-top:20px}
+.backup-reminder-options label{display:flex;align-items:center;gap:9px}
+.ep-type-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+#epPanel .ep-type-controls label{display:flex;flex-direction:column;gap:7px;font-size:12px;padding:8px}
+#epPanel .ep-type-controls select{width:100%;box-sizing:border-box}
+#readerTools #lookupButton{min-width:0}
+#lookupDialog{width:min(540px,calc(100vw - 28px));box-sizing:border-box}
+#lookupDialog .lookup-providers{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+#lookupDialog #lookupResults{border-top:1px solid var(--line);margin-top:18px;padding-top:14px}
+#lookupResults h3{font:24px Georgia;margin:0 0 12px}
+#lookupResults ol{padding-left:22px;line-height:1.7;font-size:14px}
+#lookupResults p{overflow-wrap:anywhere}
+#lookupSelection{position:fixed;z-index:50;border:1px solid var(--line);border-radius:12px;background:var(--surface-raised);color:var(--violet);box-shadow:0 5px 22px #0002;padding:10px 14px;font:13px system-ui;cursor:pointer;max-width:calc(100vw - 24px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lookupSelection[hidden]{display:none!important}
+@media(max-width:600px){.hardcover{top:-2px;height:calc(100% + 6px)}.backup-reminder{gap:9px;padding:14px}.backup-reminder p{flex-basis:100%}.epControls{max-height:28dvh;overflow:auto;flex-shrink:0}#epPanel{flex-shrink:0}}

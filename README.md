@@ -95,3 +95,15 @@ Phone headers use one navigation row and consistent library actions. Page-previe
 About is a shorter feature overview. The original purple-and-white ribbon monogram is supplied as SVG, favicon and install icons. The landing footer and FAQ display the release version. Reading statistics offer 7/30-day views, bar/line/area charts, period totals, daily averages and an accessible daily table. Streak fire uses lightweight SVG/CSS animation with reduced-motion support.
 
 Read-aloud joins PDF line wraps, preserves punctuation and uses longer passages to avoid repeated utterance delays. Natural/premium local voices are preferred when installed; actual speech quality still depends on the device. Reading stops when the current page/spread ends or the user changes pages. `scripts/check-reader-polish.cjs` checks phone layouts, real PDF thumbnails, saved drawing marks, stats and speech scheduling (speech engine simulated). Visual/layout rules are in `reader-polish.css`; control grouping is in `reader-polish.js`.
+
+## Casid Studio and reading comfort (1.5.0)
+
+GoodReadence is a Casid Studio product. The FAQ carries the initiative credit. The homepage and information-page copyright lines use Casid Studio.
+
+The reader now has a quiet hardboard cover and thin paper edges whose remaining depth reaches zero at the last page. Four-page rendering/cache limits remain unchanged. Optional weekly backup reminders live in Backup & transfer; reminders run only inside the open app. Annotation export and optional cloud auto-sync were already implemented; cloud activation still needs provider registrations.
+
+EPUB Aa controls add line spacing, margins and line width alongside serif/sans font choices. Lookup sends only an explicitly requested word or phrase to Free Dictionary API or English Wikipedia. Results are plain text, and it works without sending book files. Lookup requires the internet; typography and saved books work offline.
+
+The reader is now split into `reader-core.js` and `reader-epub.js`. `pdf-engine.js` loads pinned local PDF.js 6.5.438 modules, supporting fonts/maps and decoders. Use the live site or `node scripts/serve-local.cjs`; browser restrictions prevent a full module-based reader from running by double-clicking a file URL. There is no runtime Node app or install/build step on Vercel. `package.json`/the lockfile describe the vendored dependency inventory for auditing; updating versions also requires refreshing the bundle hashes in `vendor/PINS.json`.
+
+See [security review and limits](docs/SECURITY-REVIEW.md). Checks: `node scripts/check-reading-comfort.cjs`, `node scripts/check-vendor-pins.cjs`, the existing reader/backup/cloud regression scripts, and `npm audit`. Cloud and malicious-provider fixtures are simulated; live account activation and an independent penetration test are not claimed.
