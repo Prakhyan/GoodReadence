@@ -77,7 +77,35 @@
   window.stopReadingVoice=stopSpeech;
   function stopSpeech(){speechSerial++;if('speechSynthesis'in window)speechSynthesis.cancel();speechUtterance=null;$('#readerStop').hidden=true}
   $('#readerStop').onclick=stopSpeech;window.addEventListener('pagehide',stopSpeech);
-  async function speakText(text){stopSpeech();const request=speechSerial;if(!('speechSynthesis'in window))throw Error('Read-aloud is unavailable in this browser.');let voices=speechSynthesis.getVoices().filter(v=>v.localService);if(!voices.length){await new Promise(r=>setTimeout(r,400));voices=speechSynthesis.getVoices().filter(v=>v.localService)}if(!voices.length)throw Error('Install a device speech voice to use private read-aloud. No local voice is available in this browser.');if(request!==speechSerial)return;const local=voices.filter(v=>v.lang.startsWith(navigator.language.split('-')[0]));const voice=local.find(v=>/natural|premium|enhanced/i.test(v.name||''))||local.find(v=>v.default)||local[0]||voices[0];const chunks=text.split(/\n+/).filter(t=>t.trim()).flatMap(t=>t.match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[]).flatMap(t=>{const parts=[];let line='';for(const word of t.split(/\s+/)){if((line+' '+word).length>220){parts.push(line);line=word}else line+=(line?' ':'')+word}if(line)parts.push(line);return parts});if(!chunks.length)throw Error('This page has no readable text. Scanned pages need OCR before read-aloud.');const token=speechSerial;$('#readerStop').hidden=false;let i=0;const next=()=>{if(token!==speechSerial)return;if(i>=chunks.length){stopSpeech();return}const utterance=speechUtterance=new SpeechSynthesisUtterance(chunks[i++]);utterance.voice=voice;utterance.lang=voice.lang;utterance.rate=.9;utterance.onend=()=>setTimeout(next,/[.!?]$/.test(utterance.text.trim())?420:250);utterance.onerror=()=>stopSpeech();speechSynthesis.speak(utterance)};next()}
+  // PDF line wraps are layout, not spoken pauses. Let the device voice handle punctuation.
+  function speechChunks(text){
+    const flow=text.replace(/(\p{L})-\s*\n\s*(\p{Ll})/gu,'$1$2').replace(/\s+/g,' ').trim();
+    if(!flow)return [];
+    const sentences=typeof Intl.Segmenter==='function'?[...new Intl.Segmenter(navigator.language,{granularity:'sentence'}).segment(flow)].map(part=>part.segment):flow.match(/[^.!?]+[.!?]+(?:["”’']|\s)*|[^.!?]+$/g)||[flow];
+    const chunks=[];let chunk='';
+    for(const sentence of sentences){for(const part of sentence.match(/.{1,650}(?:\s|$)|.{1,650}/gu)||[]){if(chunk.length+part.length>700&&chunk){chunks.push(chunk.trim());chunk=''}chunk+=part}}
+    if(chunk.trim())chunks.push(chunk.trim());return chunks;
+  }
+  async function speakText(text){
+    stopSpeech();const request=speechSerial;
+    if(!('speechSynthesis'in window))throw Error('Read-aloud is unavailable in this browser.');
+    let voices=speechSynthesis.getVoices().filter(v=>v.localService);
+    if(!voices.length){await new Promise(r=>setTimeout(r,400));voices=speechSynthesis.getVoices().filter(v=>v.localService)}
+    if(!voices.length)throw Error('Install a device speech voice to use private read-aloud. No local voice is available in this browser.');
+    if(request!==speechSerial)return;
+    const local=voices.filter(v=>v.lang.startsWith(navigator.language.split('-')[0]));
+    const voice=local.find(v=>/natural|premium|enhanced/i.test(v.name||''))||local.find(v=>v.default)||local[0]||voices[0];
+    const chunks=speechChunks(text);if(!chunks.length)throw Error('This page has no readable text. Scanned pages need OCR before read-aloud.');
+    const token=speechSerial;$('#readerStop').hidden=false;let i=0;
+    const next=()=>{
+      if(token!==speechSerial)return;if(i>=chunks.length){stopSpeech();return}
+      const utterance=speechUtterance=new SpeechSynthesisUtterance(chunks[i++]);
+      utterance.voice=voice;utterance.lang=voice.lang;utterance.rate=.98;
+      // Whole passages retain the voice's short comma and longer sentence pauses.
+      utterance.onend=()=>{if(token===speechSerial)setTimeout(next,70)};
+      utterance.onerror=()=>{if(token===speechSerial)stopSpeech()};speechSynthesis.speak(utterance);
+    };next();
+  }
   $('#readerSpeak').onclick=safeAction(async()=>{if(!pdf)throw Error('Open a book first.');const doc=pdf,version=ver,request=speechSerial,position=currentPage(),visible=readerView==='scroll'||single?[position]:slots(s).filter(p=>p>=0&&p<n);const parts=[];for(const page of visible){const content=await(await doc.getPage(page+1)).getTextContent();parts.push(content.items.map(item=>item.str+(item.hasEOL?'\n':' ')).join(''))}if(pdf!==doc||ver!==version||request!==speechSerial||busy||currentPage()!==position)return;await speakText(parts.join('\n\n'))});
   const epSpeak=document.createElement('button');epSpeak.textContent='Read aloud';$('#epReader .epControls').append(epSpeak);epSpeak.onclick=safeAction(()=>speakText([...$('#epText').children].map(p=>p.textContent).join('\n\n')));const epStop=document.createElement('button');epStop.textContent='Stop voice';epStop.onclick=stopSpeech;$('#epReader .epControls').append(epStop);$('#epReader').addEventListener('close',stopSpeech);
 

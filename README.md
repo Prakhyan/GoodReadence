@@ -87,3 +87,11 @@ Limits: ZIP backups 1 GB total / 300 MB per book; cloud books 128 MB; QR transfe
 New source files: `portable-data.js`, `portability-ui.js`, `portability.css`, `device-transfer.js`, `cloud-sync.js`, `cloud-config.json`, and `cloud-callback.*`. Dependencies and licences are in `vendor/PORTABILITY-CREDITS.md`. [Privacy & data](privacy.html) describes the optional data flows.
 
 Local preview: `node scripts/serve-local.cjs` → http://127.0.0.1:8799. Tests: `node scripts/check-portability.cjs`, `node scripts/check-transfer-edges.cjs`, `node scripts/check-cloud-sync.cjs` with `GR_BASE_URL` set to the preview URL. Cloud tests simulate account/provider responses and do not prove real registration approval.
+
+## Reading-room polish (1.4.0)
+
+Phone headers use one navigation row and consistent library actions. Page-preview canvases are contained in a responsive grid. Mark up groups the box highlighter, freehand brush, ink controls and erasers; original saved marks and drawing behavior are retained. Backup tools sit at the shelf footer and bottom-right of settings.
+
+About is a shorter feature overview. The original purple-and-white ribbon monogram is supplied as SVG, favicon and install icons. The landing footer and FAQ display the release version. Reading statistics offer 7/30-day views, bar/line/area charts, period totals, daily averages and an accessible daily table. Streak fire uses lightweight SVG/CSS animation with reduced-motion support.
+
+Read-aloud joins PDF line wraps, preserves punctuation and uses longer passages to avoid repeated utterance delays. Natural/premium local voices are preferred when installed; actual speech quality still depends on the device. Reading stops when the current page/spread ends or the user changes pages. `scripts/check-reader-polish.cjs` checks phone layouts, real PDF thumbnails, saved drawing marks, stats and speech scheduling (speech engine simulated). Visual/layout rules are in `reader-polish.css`; control grouping is in `reader-polish.js`.
