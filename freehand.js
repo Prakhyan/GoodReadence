@@ -150,6 +150,12 @@
     const t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy || 1)));
     return Math.hypot(px - ax - t * dx, py - ay - t * dy);
   }
+  // The same drag-box eraser removes rectangular marks and intersecting drawn strokes.
+  window.eraseInkInRect=(page,[x,y,w,h],aspect=1)=>{
+    if(!bk?.ink?.[page]?.length)return;
+    const hits=(a,b,stroke)=>{const pad=stroke.width/2,lo=[x-pad,y-pad*aspect],hi=[x+w+pad,y+h+pad*aspect];let t0=0,t1=1;for(let axis=0;axis<2;axis++){const delta=b[axis]-a[axis];if(Math.abs(delta)<1e-10){if(a[axis]<lo[axis]||a[axis]>hi[axis])return false}else{let enter=(lo[axis]-a[axis])/delta,exit=(hi[axis]-a[axis])/delta;if(enter>exit)[enter,exit]=[exit,enter];t0=Math.max(t0,enter);t1=Math.min(t1,exit);if(t0>t1)return false}}return true};
+    remember(bk,page);bk.ink[page]=bk.ink[page].filter(stroke=>!stroke.points.some((point,i,all)=>hits(all[Math.max(0,i-1)],point,stroke)));paintAll();persist(bk);
+  };
   function eraseAt(p) {
     const mark = active;
     mark.book.ink[mark.page] = mark.book.ink[mark.page].filter(stroke => {

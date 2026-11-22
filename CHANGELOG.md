@@ -1,25 +1,12 @@
 # Changelog
 
-## Version 1.8.3
+## Version 1.9.0
 
-Made for reading on the move.
+Settle into your next chapter.
 
-- Cleaner phone navigation and a larger, transparent logo.
-- Visible book-download and import progress, with clear saved confirmations.
-- Smoother library handoff, protected downloads and helpful file or storage messages.
-
-## Version 1.8.2
-
-A new signature.
-
-- A purple page-stack and sparkle identity across the reading room, app icons and sharing previews.
-
-## Version 1.8.1
-
-A familiar mark, finely finished.
-
-- A refined G-and-bookmark identity in a richer plum finish.
-- Coordinated website, browser, phone and sharing icons.
+- New focus sounds and flexible book brightness.
+- Simpler page marking and a coordinated reading room.
+- Colourful reading milestones to celebrate your progress.
 
 ## Version 1.8.0
 
@@ -36,26 +23,6 @@ More worlds to get lost in.
 - 750 complete classics, with 250 new books across the collection.
 - More fairy tales, nature writing, novellas, poetry and lesser-explored genres.
 - Coordinated library buttons and individually coloured feature cards.
-
-## Version 1.6.3
-
-The finishing touches.
-
-- Refined saved-page markers in neutral charcoal.
-- A concise, version-by-version release history.
-
-## Version 1.6.2
-
-A quieter place for your tools.
-
-- Precise 1% zoom buttons and keyboard controls.
-- A rounded desktop toolbar with a discreet show/hide tab.
-
-## Version 1.6.1
-
-Everything, within reach.
-
-- Centered panels for contents, search, page previews, marks, statistics and settings.
 
 ## Version 1.6.0
 
@@ -79,12 +46,6 @@ Make the room your own.
 - Unified marking tools and clearer bookmark controls.
 - 7- and 30-day statistics with chart choices and a daily breakdown.
 - Refreshed identity, mobile layouts and read-aloud flow.
-
-## Version 1.3.1
-
-Quiet mobile interactions.
-
-- Subtle touch feedback throughout the reading room.
 
 ## Version 1.3.0
 

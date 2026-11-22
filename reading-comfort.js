@@ -14,8 +14,17 @@
     decorate?.();if(!pdf)return;const page=Math.max(0,Math.min(n-1,cp())),depth=Math.min(8,2+Math.log10(Math.max(2,n))*2),progress=n>1?page/(n-1):1;
     book.style.setProperty('--left-stack',(progress*depth).toFixed(2)+'px');
     book.style.setProperty('--right-stack',((1-progress)*depth).toFixed(2)+'px');
+    book.style.setProperty('--cover-depth',Math.max(progress*depth,(1-progress)*depth).toFixed(2)+'px');
     book.dataset.atStart=String(page===0);book.dataset.finished=String(page===n-1);
   };
+  // Book brightness is a rendering control, not a change to the device's display setting.
+  const oldBrightness=document.querySelector('#br'),brightnessRow=oldBrightness.closest('.row');brightnessRow.firstElementChild.textContent='Book brightness';
+  const brightnessControl=document.createElement('span');brightnessControl.className='brightness-control';brightnessControl.innerHTML='<button id="brightnessDown" aria-label="Decrease book brightness">−</button><output id="br" aria-live="polite">100%</output><button id="brightnessUp" aria-label="Increase book brightness">+</button>';oldBrightness.replaceWith(brightnessControl);
+  let brightness=100;try{brightness=Number(localStorage.getItem('gr:brightness'))||Math.round(100-BR[br]*100)}catch{}
+  window.applyBookBrightness=()=>{brightness=Math.max(30,Math.min(160,Math.round(brightness/10)*10));stage.style.setProperty('--book-brightness',brightness+'%');document.querySelector('#dim').style.opacity=0;document.querySelector('#br').textContent=brightness+'%';document.querySelector('#brightnessDown').disabled=brightness<=30;document.querySelector('#brightnessUp').disabled=brightness>=160};
+  const setBrightness=value=>{brightness=value;applyBookBrightness();try{localStorage.setItem('gr:brightness',String(brightness))}catch{}dbx('f','readwrite',store=>store.put(brightness,'gr:brightness')).catch(()=>{})};
+  document.querySelector('#brightnessDown').onclick=()=>setBrightness(brightness-10);document.querySelector('#brightnessUp').onclick=()=>setBrightness(brightness+10);applyBookBrightness();dbx('f','readonly',store=>store.get('gr:brightness')).then(value=>{if(value!=null){brightness=value;applyBookBrightness()}}).catch(()=>{});
+
   const week=7*86400000,read=(key,fallback=null)=>{try{return localStorage.getItem(key)||fallback}catch{return fallback}},write=(key,value)=>{try{localStorage.setItem(key,String(value))}catch{}};
   const options=document.createElement('div');options.className='backup-reminder-options';options.innerHTML='<label><input type="checkbox" id="backupReminders"> Remind me weekly to back up my library</label><p class="portable-note" id="backupReminderInfo">A gentle reminder inside the app. Nothing runs or uploads in the background.</p>';
   document.querySelector('[data-portable-panel=backup]').append(options);

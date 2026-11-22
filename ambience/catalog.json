@@ -254,5 +254,57 @@
     "bytes": 16486266,
     "sha256": "3d34ad26c51cbb9110477e83092afc7e28d5dd9b577555e1b7e88ef737d02fcd",
     "sourceDuration": 1283.05
+  },
+  {
+    "label": "Pink noise",
+    "id": null,
+    "creator": "Casid Studio",
+    "source": "https://ffmpeg.org/ffmpeg-filters.html#anoisesrc",
+    "title": "Pink noise · original generated focus sound",
+    "sourceDuration": 720,
+    "duration": 720.039,
+    "durationInstalled": 720.039,
+    "rating": null,
+    "ratings": null,
+    "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "file": "ambience/pink-noise.mp3",
+    "note": "Soft, balanced pink noise. Original generated audio, with no voices or music.",
+    "bytes": 8640827,
+    "bitrate": 96000,
+    "sha256": "3c1e8757328445801c496b046aea3693009c446ed5ccf6181b5d173d126127b6",
+    "changes": "Original 12-minute continuous FFmpeg anoisesrc output. No sampled recordings or short repeated segments. Mono 44.1 kHz, 96 kbps MP3; 150 ms edge fades.",
+    "generation": {
+      "colour": "pink",
+      "amplitude": 0.18,
+      "seed": 27091,
+      "sampleRate": 44100,
+      "duration": 720
+    }
+  },
+  {
+    "label": "White noise",
+    "id": null,
+    "creator": "Casid Studio",
+    "source": "https://ffmpeg.org/ffmpeg-filters.html#anoisesrc",
+    "title": "White noise · original generated focus sound",
+    "sourceDuration": 720,
+    "duration": 720.039,
+    "durationInstalled": 720.039,
+    "rating": null,
+    "ratings": null,
+    "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "file": "ambience/white-noise.mp3",
+    "note": "Even, quiet white noise. Original generated audio, with no voices or music.",
+    "bytes": 8640827,
+    "bitrate": 96000,
+    "sha256": "30eaa7e6faa47485148cd190c559d6a9ea30d1f096983a198f0a67bc82ca461e",
+    "changes": "Original 12-minute continuous FFmpeg anoisesrc output. No sampled recordings or short repeated segments. Mono 44.1 kHz, 96 kbps MP3; 150 ms edge fades.",
+    "generation": {
+      "colour": "white",
+      "amplitude": 0.1,
+      "seed": 81793,
+      "sampleRate": 44100,
+      "duration": 720
+    }
   }
 ]
