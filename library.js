@@ -17,8 +17,10 @@
     return [...ids.map(id=>lookup.get(id)),...list.filter(b=>!chosen.has(b.id))];
   }
   const discovery=document.createElement('p');discovery.className='daily-discovery-note';discovery.id='dailyDiscovery';grid.before(discovery);
-  const refreshDay=()=>{if(!navigator.onLine||active||dialog.open||page!==1||!books.length)return;books=dailyOrder(books);render()};
+  let displayedDay=dayKey();
+  const refreshDay=()=>{if(!navigator.onLine||active||dialog.open||page!==1||!books.length)return;books=dailyOrder(books);displayedDay=dayKey();render()};
   addEventListener('online',refreshDay);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refreshDay()});
+  setInterval(()=>{if(displayedDay!==dayKey())refreshDay()},60000);
 
   const db=new Promise((resolve,reject)=>{const request=indexedDB.open('casid',1);request.onupgradeneeded=()=>{const d=request.result;if(!d.objectStoreNames.contains('b'))d.createObjectStore('b',{keyPath:'id'});if(!d.objectStoreNames.contains('f'))d.createObjectStore('f')};request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);request.onblocked=()=>reject(Error('Close other GoodReadence tabs and try again.'))});db.catch(()=>{});
   function status(text){$('#libraryStatus').textContent=text;if(active)feedback.update(text)}
