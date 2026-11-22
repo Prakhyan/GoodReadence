@@ -4,7 +4,7 @@ const versionBrand=html=>html.replace(/(?:brand-mark\.svg|favicon\.svg|assets\/s
 const origin='https://goodreadence.vercel.app';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const slug=value=>String(value).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/^(the|an|a)\s+/,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,90).replace(/-$/,'');
-const books=JSON.parse(fs.readFileSync('public-books/catalog.json','utf8')),paths=new Map(),used=new Set(['page','all','genre']);
+const books=JSON.parse(fs.readFileSync('public-books/catalog.json','utf8')).sort(require('./library-order.cjs')),paths=new Map(),used=new Set(['page','all','genre']);
 for(const book of books){let name=book.seoSlug||slug(book.title)||'book-'+book.id;if(used.has(name)){if(book.seoSlug)throw Error('Duplicate persistent book URL: '+name);name+='-'+book.id}used.add(name);paths.set(book.id,'/library/'+name)}
 const bookPath=b=>paths.get(b.id);
 const json=value=>JSON.stringify(value).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
@@ -12,6 +12,7 @@ const short=value=>{const text=String(value).replace(/\s+/g,' ').trim();return t
 function metadata(html,{title,description,path='/',schema,type='website',noindex=false}){
  description=short(description);
  html=html.replace(/<title>[\s\S]*?<\/title>/gi,'').replace(/<meta\b[^>]*(?:name=["'](?:description|robots|twitter:[^"']+)["']|property=["']og:[^"']+["'])[^>]*>/gi,'').replace(/<link\b[^>]*rel=["']canonical["'][^>]*>/gi,'').replace(/<script\b[^>]*id=["']seo-structured-data["'][^>]*>[\s\S]*?<\/script>/gi,'');
+ html=html.replace(/(<nav class="info-nav"[^>]*>)([\s\S]*?)(<\/nav>)/g,(_,start,body,end)=>start+body.replace(/<a\b[^>]*>Home<\/a>/g,'')+end);
  const tags=`<title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="robots" content="${noindex?'noindex, follow':'index, follow, max-image-preview:large'}"><link rel="canonical" href="${origin+path}"><meta property="og:site_name" content="GoodReadence"><meta property="og:type" content="${type}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${origin+path}"><meta property="og:image" content="${origin}/assets/social-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="GoodReadence — a private reading room for PDF and EPUB books"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(description)}"><meta name="twitter:image" content="${origin}/assets/social-preview.png">${schema?`<script type="application/ld+json" id="seo-structured-data">${json(schema)}</script>`:''}`;
  html=html.replace(/<link\b[^>]*rel=["']manifest["'][^>]*>/gi,'');
  const touch=`<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=${brandVersion}">`;

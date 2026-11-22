@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 1.11
+
+A reading room that flows.
+
+A quieter navigation menu, device-aware appearance and installation together in settings. Discover the highest-rated classics or shuffle for something new, with fluid curved page turns and a new reading activity calendar.
+
+Includes: 1.11.0.
+
 ## Version 1.10
 
 More stories. Wherever you read.

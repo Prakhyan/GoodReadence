@@ -1,6 +1,6 @@
 # Public-library maintenance
 
-The catalogue contains **1,000 complete PDF editions**. Each record links a locally hosted PDF, the original EPUB, its source cover and edition credits. The interface renders 12 cards at a time; search and genre filters apply to the entire catalogue. PDFs download only when a reader chooses to add one.
+The catalogue contains **1,000 complete PDF editions**. Each record links a locally hosted PDF, the original EPUB, its source cover and edition credits. The interface renders 12 cards at a time; search and genre filters apply to the entire catalogue. The default order is verified reader average, then rating count and a stable title tie-break. The top 12 remain fixed on page 1. Manual Shuffle randomizes the remaining books and opens page 2; no daily automatic reordering runs. Static HTML uses the same default order. PDFs download only when a reader chooses to add one.
 
 ## Rights screening
 

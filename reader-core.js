@@ -11,7 +11,7 @@ function resetReader(){
   window.pendingTurn=0;
   window.readerReset?.();
   bookSession++;ver++;tk++;busy=false;anim=false;cache.clear();LK.clear();
-  sh.hidden=true;sh.textContent='';book.classList.remove('turn');
+  sh.hidden=true;sh.textContent='';strips=[];shades=[];book.classList.remove('turn');
   Ls.querySelector('.sd').style.opacity=Rs.querySelector('.sd').style.opacity=0;
   if(io)io.disconnect();vis.clear();releasePdf(pdf);pdf=null;
 }
@@ -145,18 +145,24 @@ function ui(){
 
 /* The turning sheet: N strips hinged in a chain so the paper bends as it travels */
 function buildSheet(front,back){
-  const leaf=document.createElement('div');leaf.className='leaf';
-  for(const source of [front,back]){
-    const face=document.createElement('div');leaf.append(face);
-    if(!source)continue;
-    const canvas=document.createElement('canvas');canvas.width=(lowMemory||matchMedia('(pointer:coarse)').matches)?Math.min(source.width,Math.round(W*1.25)):source.width;canvas.height=Math.round(canvas.width*source.height/source.width);
-    canvas.getContext('2d').drawImage(source,0,0,canvas.width,canvas.height);face.append(canvas);
+  const leaf=document.createElement('div');leaf.className='leaf';const count=matchMedia('(prefers-reduced-motion: reduce)').matches?1:(lowMemory||matchMedia('(pointer:coarse)').matches?8:14),width=W/count;
+  strips=[];shades=[Ls.querySelector('.sd'),Rs.querySelector('.sd')];let parent=leaf;
+  for(let i=0;i<count;i++){
+    const hinge=document.createElement('div');hinge.className='curl-segment';hinge.style.width=(width+.6)+'px';hinge.style.left=(i?width:0)+'px';
+    for(const [faceIndex,source]of [front,back].entries()){
+      const face=document.createElement('div');face.className='curl-face'+(faceIndex?' curl-back':'');
+      if(source){const renderWidth=(lowMemory||matchMedia('(pointer:coarse)').matches)?Math.min(source.width,Math.round(W*1.25)):source.width,canvas=document.createElement('canvas');canvas.width=Math.ceil(renderWidth/count)+1;canvas.height=Math.round(renderWidth*source.height/source.width);const sourceX=(faceIndex?count-i-1:i)*source.width/count;canvas.getContext('2d').drawImage(source,sourceX,0,Math.min(source.width-sourceX,source.width/count+1),source.height,0,0,canvas.width,canvas.height);face.append(canvas)}
+      hinge.append(face);
+    }
+    parent.append(hinge);parent=hinge;strips.push(hinge);
   }
   sh.replaceChildren(leaf);
 }
 function pose(progress){
-  sh.firstChild.style.transform='rotateY('+(-180*progress)+'deg)';
-  sh.firstChild.style.setProperty('--shade',.18*Math.sin(Math.PI*progress));
+  const lift=Math.sin(Math.PI*progress),count=strips.length;let previous=0;
+  strips.forEach((hinge,i)=>{const position=(i+.5)/count,angle=-180*progress+42*lift*(2*position-1);hinge.style.transform='rotateY('+(angle-previous)+'deg)';hinge.style.setProperty('--curl-shade',(Math.abs(Math.sin(angle*Math.PI/180))*.13*lift).toFixed(3));previous=angle});
+  if(shades.length){shades[0].style.opacity=(.18*lift*progress).toFixed(3);shades[1].style.opacity=(.22*lift*(1-progress)).toFixed(3)}
+  book.style.setProperty('--turn-spine-opacity',(.6-.25*lift).toFixed(3));
 }
 function turnDuration(){return matchMedia('(prefers-reduced-motion: reduce)').matches?1:Math.min(PT[pt].d,(lowMemory||matchMedia('(pointer:coarse)').matches)?420:700)}
 function run(d){
@@ -166,7 +172,7 @@ function run(d){
     const f=now=>{
       if(session!==bookSession){res();return}
       const u=Math.min(1,(now-t0)/D),e=u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
-      pose(d>0?e:1-e);
+      pose(d>0?e:1-e);window.decorateTurn?.(s,s+d,e);
       if(u<1)requestAnimationFrame(f);else{anim=false;res()}
     };
     requestAnimationFrame(f);
@@ -191,7 +197,7 @@ async function turn(d){
   await run(d);
   if(session!==bookSession)return;
   fill(Ls,l1<0?null:fL,l1);fill(Rs,r1>=n?null:fR,r1);book.classList.remove('turn');
-  sh.hidden=true;sh.textContent='';
+  sh.hidden=true;sh.textContent='';strips=[];shades=[];
   Ls.querySelector('.sd').style.opacity=Rs.querySelector('.sd').style.opacity=0;
   s=s2;busy=false;if(d>0)addPages(single?1:2);ui();if(resizePending){resizePending=false;fit()}else preload();if(window.pendingTurn){const direction=Math.sign(window.pendingTurn);window.pendingTurn-=direction;requestAnimationFrame(()=>turn(direction))}
 }

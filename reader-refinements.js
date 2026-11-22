@@ -5,8 +5,9 @@
   const privacy=$('#intro .intro-note'),credit=[...document.querySelectorAll('.intro-content>p')].find(p=>p.textContent.includes('©'));
   if(privacy)footer.append(privacy);if(credit)footer.append(credit);$('#intro').append(footer);
   const flakes=document.createElement('div');flakes.className='frost-sprinkles';flakes.setAttribute('aria-hidden','true');
-  for(let i=0;i<9;i++){const flake=document.createElement('span');flake.textContent=i%3===0?'✧':'·';flake.style.cssText=`left:${8+(i*29)%85}%;top:${8+(i*17)%80}%;--delay:-${i*.87}s;--duration:${5+i%4}s`;flakes.append(flake)}$('#intro .intro-art').append(flakes);
-  const publicButton=document.createElement('a');publicButton.href='library.html';publicButton.id='publicLibrary';publicButton.className='secondary';publicButton.textContent='Public library';$('#importBook').before(publicButton);
+  const points=[[7,8],[25,3],[46,6],[69,3],[91,9],[94,25],[91,43],[95,64],[91,85],[78,94],[58,96],[37,93],[17,95],[5,82],[3,61],[5,38],[8,23],[84,72],[75,13],[24,83],[92,94],[49,87]];
+  points.forEach(([x,y],i)=>{const flake=document.createElement('span');flake.textContent=i%3===0?'✧':'·';flake.style.cssText='left:'+x+'%;top:'+y+'%;--delay:-'+i*.67+'s;--duration:'+(5+i%5)+'s';flakes.append(flake)});$('#intro .intro-art').append(flakes);
+  const publicButton=document.createElement('a');publicButton.href='library.html';publicButton.id='publicLibrary';publicButton.className='secondary';publicButton.textContent='Public library';$('#importBook').before(publicButton);document.querySelector('.library-actions').append($('#importBook'),$('#prepOpen'),publicButton);
 
   const deskChange=$('#readingDesk').onchange;let previousPaper=null;
   $('#readingDesk').onchange=()=>{deskChange();if($('#readingDesk').value==='midnight'){if(th!==1)previousPaper=th;th=1;theme();savePreferences();if(pdf)fit()}else if(previousPaper!==null){th=previousPaper;previousPaper=null;theme();savePreferences();if(pdf)fit()}};
