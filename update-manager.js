@@ -5,7 +5,7 @@
   const hadController=!!worker.controller;
   let reloading=false;
   worker.addEventListener('controllerchange',()=>{
-    if(hadController&&!reloading){reloading=true;location.reload()}
+    if(hadController&&!reloading){const reloadWhenReady=()=>{if(window.GRImport?.busy){setTimeout(reloadWhenReady,1000);return}reloading=true;location.reload()};reloadWhenReady()}
   });
   const showVersion=async()=>{
     try{

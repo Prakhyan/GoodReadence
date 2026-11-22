@@ -1,6 +1,6 @@
 {
   "name": "goodreadence-vendored-dependencies",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "private": true,
   "description": "Pinned versions of libraries served locally by the static GoodReadence app.",
   "scripts": {
@@ -11,6 +11,7 @@
     "test:library:additions": "node scripts/check-library-additions.cjs",
     "test:presentation": "node scripts/check-library-presentation.cjs",
     "build:static": "node scripts/build-static-site.cjs",
+    "test:mobile": "node scripts/check-mobile-imports.cjs",
     "test:discoverability": "node scripts/check-discoverability.cjs"
   },
   "dependencies": {

@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 1.8.3
+
+Made for reading on the move.
+
+- Cleaner phone navigation and a larger, transparent logo.
+- Visible book-download and import progress, with clear saved confirmations.
+- Smoother library handoff, protected downloads and helpful file or storage messages.
+
 ## Version 1.8.2
 
 A new signature.

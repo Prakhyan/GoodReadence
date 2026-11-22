@@ -370,7 +370,7 @@ function toast(t){const e=$('#ts');e.textContent=t;e.hidden=false;clearTimeout(e
 function theme(){const T=THEMES[th],r=document.documentElement.style,B=T.b||{bg:T.bar,ink:T.ink,sf:T.sf,bd:T.bd,ac:T.ac};tone=T.t;['bg','bar','fg','ink','sf','bd','ac'].forEach(k=>r.setProperty('--'+k,T[k]));[bar,$('#bh')].forEach(e=>e.style.cssText='--bb:'+B.bg+';--ink:'+B.ink+';--sf:'+B.sf+';--bd:'+B.bd+';--ac:'+B.ac);$('#tn').textContent=T.n}
 
 /* Local library (IndexedDB): books, covers, progress */
-const idb=new Promise((ok,no)=>{try{const r=indexedDB.open('casid',1);r.onupgradeneeded=()=>{r.result.createObjectStore('b',{keyPath:'id'});r.result.createObjectStore('f')};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}catch(e){no(e)}});
+const idb=new Promise((ok,no)=>{try{const r=indexedDB.open('casid',1);r.onupgradeneeded=()=>{r.result.createObjectStore('b',{keyPath:'id'});r.result.createObjectStore('f')};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error);r.onblocked=()=>no(Error('Close other GoodReadence tabs and try again.'))}catch(e){no(e)}});
 idb.catch(()=>{});
 const dbx=(s,m,f)=>idb.then(d=>new Promise((ok,no)=>{const t=d.transaction(s,m),q=f(t.objectStore(s));t.oncomplete=()=>ok(q&&q.result);t.onabort=t.onerror=()=>no(t.error)}));
 const writeBook=b=>{window.GRPortable?.touchBook(b);return dbx('b','readwrite',s=>s.put(b)).then(result=>{window.dispatchEvent(new Event('gr:changed'));return result})};
@@ -390,28 +390,45 @@ async function chapters(doc){
     for(const it of o.slice(0,200)){let d=it.dest;if(typeof d==='string')d=await doc.getDestination(d);if(d)r.push(await doc.getPageIndex(d[0]))}
     return [...new Set(r)].sort((a,b)=>a-b)}catch(e){return[]}
 }
+let importingBooks=false;
 async function addBooks(files){
-  files=files.filter(f=>f);if(!files.length)return;
-  if(window.prepareImports&&!window.skipPrep){files=await window.prepareImports(files);if(!files.length)return}
-  if(!window.pdfjsLib){say('The PDF engine didn’t load. Keep the vendor folder beside this HTML file and reload.');return}
-  try{await idb}catch(e){if(/\.epub$/i.test(files[0].name)){toast('Device storage is unavailable.');return}openPdf(files[0]);return}
-  let last;
-  for(const file of files){
-    const id=file.name+'|'+file.size+'|'+file.lastModified;
-    last=lib.find(b=>b.id===id);if(last)continue;
-    say('Adding “'+file.name+'”…');
-    let doc;try{
-      if(/\.(epub|docx|pptx)$/i.test(file.name)){const epub=/\.epub$/i.test(file.name)?await readEpub(file):await window.readOffice(file);const b={id,name:epub.title,format:/\.epub$/i.test(file.name)?'epub':'office',n:epub.chapters.length,last:0,ts:Date.now()};b.cover=cover(b,0).toDataURL();await storeBook(file,b);lib.push(b);last=b;continue}
-      doc=await pdfjsLib.getDocument({isEvalSupported:false,data:new Uint8Array(await file.arrayBuffer())}).promise;const pg=await doc.getPage(1),v0=pg.getViewport({scale:1}),vp=pg.getViewport({scale:240/v0.width}),c=document.createElement('canvas');
-      c.width=vp.width;c.height=vp.height;
-      await pg.render({canvasContext:c.getContext('2d'),viewport:vp,background:'#ffffff'}).promise;
-      const b={id,name:file.name.replace(/\.pdf$/i,''),n:doc.numPages,cover:c.toDataURL('image/jpeg',.8),last:0,max:0,fin:0,chs:await chapters(doc),ts:Date.now()};
-      await storeBook(file,b);lib.push(b);last=b;
-    }catch(e){console.error(e);toast('Couldn’t add this book. Check the PDF and available device storage.')}finally{releasePdf(doc)}
-  }
-  shelf();
-  if(files.length===1&&last)openBook(last);else say('Your books are stored on this device. Cloud sync and transfers are optional.');
+  if(importingBooks)return;
+  files=files.filter(Boolean);if(!files.length)return;
+  importingBooks=true;const feedback=window.GRImport;let last,added=0,errors=[];
+  try{
+    if(window.prepareImports&&!window.skipPrep){files=await window.prepareImports(files);if(!files.length)return}
+    feedback.start('Preparing your book…');
+    await new Promise(resolve=>requestAnimationFrame(()=>setTimeout(resolve,0)));
+    if(!window.pdfjsLib)throw Error('The reader could not load. Reopen the app online and try again.');
+    if(window.GRPDFReady)await window.GRPDFReady;
+    try{await idb}catch(e){throw Error('Your browser cannot save books right now. Allow site storage, leave private browsing, and try again.')}
+    for(const [index,file] of files.entries()){
+      const id=file.name+'|'+file.size+'|'+file.lastModified;
+      last=lib.find(b=>b.id===id);if(last){added++;continue}
+      feedback.update('Reading '+(index+1)+' of '+files.length+': '+file.name);
+      await new Promise(resolve=>setTimeout(resolve,0));
+      let doc;try{
+        if(!file.size)throw Error('This file is empty. Download it fully to your phone before adding it.');
+        if(/\.(epub|docx|pptx)$/i.test(file.name)){
+          const epub=/\.epub$/i.test(file.name)?await readEpub(file):await window.readOffice(file);
+          const entry={id,name:epub.title,format:/\.epub$/i.test(file.name)?'epub':'office',n:epub.chapters.length,last:0,ts:Date.now()};entry.cover=cover(entry,0).toDataURL();
+          feedback.update('Saving '+file.name+' to this device…');await storeBook(file,entry);lib.push(entry);last=entry;added++;continue;
+        }
+        feedback.update('Opening PDF… '+file.name);
+        const task=pdfjsLib.getDocument({isEvalSupported:false,data:new Uint8Array(await file.arrayBuffer())});
+        task.onPassword=()=>{task.destroy();};
+        doc=await task.promise;
+        let thumbnail='';
+        try{const pg=await doc.getPage(1),v0=pg.getViewport({scale:1}),vp=pg.getViewport({scale:180/v0.width}),c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await pg.render({canvasContext:c.getContext('2d'),viewport:vp,background:'#ffffff'}).promise;thumbnail=c.toDataURL('image/jpeg',.78);c.width=c.height=0;}catch(e){console.warn('Cover unavailable; saving the complete PDF.',e)}
+        const entry={id,name:file.name.replace(/\.pdf$/i,''),n:doc.numPages,cover:thumbnail,last:0,max:0,fin:0,chs:[],ts:Date.now()};
+        feedback.update('Saving '+file.name+' to this device…');await storeBook(file,entry);lib.push(entry);last=entry;added++;
+      }catch(e){console.error(e);errors.push(file.name+': '+(e.name==='QuotaExceededError'?'Device storage is full. Free some space and try again.':e.name==='PasswordException'?'Choose an unlocked PDF.':e.message||'Could not read this file. Download it fully to your phone and try again.'))}finally{releasePdf(doc)}
+    }
+    shelf();
+    if(added){say(added+' book'+(added===1?'':'s')+' saved to your library.');feedback.finish(added+' book'+(added===1?' is':'s are')+' saved on this device.'+(errors.length?' '+errors.join(' '):''),last?()=>openBook(last):null)}else feedback.fail(errors.join(' ')||'No books were added. Please try a valid PDF.');
+  }catch(e){feedback?.fail(e.message||'Could not save your book. Please try again.')}finally{importingBooks=false}
 }
+
 async function openBook(b){
   const request=++openRequest;
   say('Opening…');
@@ -420,7 +437,7 @@ async function openBook(b){
   if(!f){say('That book’s file is missing. Add it again.');return}
   b.lastReadAt=Date.now();await putB(b);
   if(b.format==='epub'||b.format==='office'){try{const epub=b.format==='office'?await window.readOffice(f):await readEpub(f);if(request===openRequest){if(pdf)home();showEpub(b,epub)}}catch(error){toast(error.message)}return}
-  openPdf(f,b);
+  return openPdf(f,b);
 }
 function wrapText(x,t,cx,y,w,lh){let l='';t.split(' ').forEach(wd=>{const m=l?l+' '+wd:wd;if(x.measureText(m).width>w&&l){x.fillText(l,cx,y);y+=lh;l=wd}else l=m});x.fillText(l,cx,y)}
 const CS=[['Midnight','#1d2740','#0b1020','#e4cf9e',0],['Ivory','#f5efe3','#e6dcc8','#2c2824',2],['Burgundy','#6a1f31','#2c0b15','#e9cfa0',0],['Emerald','#0f4a3a','#06201a','#e9e1c9',1],['Charcoal','#34353a','#141517','#d79a6a',3],['Teal','#1d5560','#0b2830','#e7efe9',2],['Plum','#4d2a55','#1f0f26','#f0c9d6',1],['Sand','#d9c3a0','#b89a6e','#35281a',3]];
