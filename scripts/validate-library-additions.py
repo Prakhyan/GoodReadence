@@ -3,7 +3,7 @@ import collections,csv,gzip,hashlib,json,os,re,unicodedata,zipfile
 from pathlib import Path
 from lxml import etree,html
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/os.environ.get('LIBRARY_REVIEW_DIR','research/expansion-750')
+OUT=ROOT/os.environ.get('LIBRARY_REVIEW_DIR','research/expansion-1000')
 def key(value):
     value=unicodedata.normalize('NFKD',value).encode('ascii','ignore').decode().lower()
     value=re.split(r'[:;,\[\n]',value)[0];value=re.sub(r'\([^)]*\)','',value)
@@ -66,6 +66,7 @@ for source in pool:
                 sections.append(' '.join(doc.text_content().split()))
             body='\n'.join(sections);words=len(body.split())
             assert words>700,'Source too short to verify as a book edition'
+            assert not(words>500000 and re.search(r'complete.*works|historical romances of|collected.*works',book['title'],re.I)),'Author-wide omnibus overlaps distinct editions; choose a complete individual work'
             assert not re.search(r'(?:copyright|first published|first publication|originally published)[^0-9]{0,80}(?:19[3-9]\d|20\d\d)',body[:12000],re.I),'Later copyright/publication notice needs separate review'
             digest=hashlib.sha256(re.sub(r'\s+','',body).encode()).hexdigest()
             assert digest not in fingerprints,'Duplicate source text'

@@ -6,12 +6,13 @@
   document.querySelector('#tn').closest('.row').after(coverRow);
   const coverSelect=document.querySelector('#bookCoverColour');for(const[id,label]of coverColours)coverSelect.add(new Option(label,id));coverSelect.add(new Option('No book cover','none'));
   function applyCover(value){const colour=coverColours.find(c=>c[0]===value),choice=colour?colour[0]:value==='none'?'none':'plum',hex=colour?.[2]||coverColours[0][2],shade=factor=>'#'+hex.slice(1).match(/../g).map(part=>Math.round(parseInt(part,16)*factor).toString(16).padStart(2,'0')).join('');document.documentElement.dataset.bookCover=choice;document.documentElement.style.setProperty('--cover-colour',hex);document.documentElement.style.setProperty('--cover-shadow',shade(.68));document.documentElement.style.setProperty('--cover-border',shade(.55));coverSelect.value=choice}
-  try{applyCover(localStorage.getItem('gr:bookCover')||'plum')}catch{applyCover('plum')}
+  try{applyCover(localStorage.getItem('gr:bookCover')||'midnight')}catch{applyCover('midnight')}
   coverSelect.onchange=()=>{applyCover(coverSelect.value);try{localStorage.setItem('gr:bookCover',coverSelect.value)}catch{}};
   addEventListener('storage',event=>{if(event.key==='gr:bookCover')applyCover(event.newValue)});
   for(const side of ['left','right']){const cover=document.createElement('div');cover.className='hardcover hardcover-'+side;cover.setAttribute('aria-hidden','true');book.prepend(cover)}
+  for(const name of ['book-ground-shadow','book-spine']){const layer=document.createElement('div');layer.className=name;layer.setAttribute('aria-hidden','true');book.prepend(layer)}
   const decorate=window.decorateBook;window.decorateBook=()=>{
-    decorate?.();if(!pdf)return;const page=Math.max(0,Math.min(n-1,cp())),depth=Math.min(8,2+Math.log10(Math.max(2,n))*2),progress=n>1?page/(n-1):1;
+    decorate?.();if(!pdf)return;const page=Math.max(0,Math.min(n-1,cp())),depth=Math.min(matchMedia('(max-width:700px)').matches?7:12,3+Math.log10(Math.max(2,n))*3),progress=n>1?page/(n-1):1;
     book.style.setProperty('--left-stack',(progress*depth).toFixed(2)+'px');
     book.style.setProperty('--right-stack',((1-progress)*depth).toFixed(2)+'px');
     book.style.setProperty('--cover-depth',Math.max(progress*depth,(1-progress)*depth).toFixed(2)+'px');

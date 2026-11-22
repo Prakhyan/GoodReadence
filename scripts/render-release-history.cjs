@@ -1,0 +1,5 @@
+const fs=require('fs'),entries=JSON.parse(fs.readFileSync('release-history.json'));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const content=entries.map((entry,index)=>`<article class="release release-card${index?'':' latest-release'}" aria-labelledby="release-${entry.version.replace('.','-')}"><div class="release-heading"><span class="release-version">Version ${esc(entry.version)}</span>${index?'':'<span class="release-latest">Latest</span>'}</div><h2 id="release-${entry.version.replace('.','-')}">${esc(entry.title)}</h2><p class="release-summary">${esc(entry.summary)}</p><p class="release-patches" aria-label="Included versions">${entry.patches.map(v=>`<span>${esc(v)}</span>`).join('')}</p></article>`).join('');
+const path='updates.html',old=fs.readFileSync(path,'utf8');fs.writeFileSync(path,old.replace(/(<section class="release-history"[^>]*>)[\s\S]*?(<\/section>)/,'$1'+content+'$2'));
+fs.writeFileSync('CHANGELOG.md','# Changelog\n\n'+entries.map(r=>`## Version ${r.version}\n\n${r.title}\n\n${r.summary}\n\nIncludes: ${r.patches.join(', ')}.\n`).join('\n'));

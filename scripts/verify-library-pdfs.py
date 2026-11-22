@@ -5,9 +5,11 @@ import pymupdf
 from lxml import etree,html
 from urllib.parse import unquote
 root=Path(__file__).resolve().parents[1]
-books=json.loads((root/'public-books/catalog.json').read_text(encoding='utf8'))
-report=root/'research/library-print/source-report.json'
-compact=root/'research/library-print/verification-samples.json'
+catalog=root/os.environ.get('LIBRARY_CATALOG_FILE','public-books/catalog.json')
+print_dir=root/os.environ.get('LIBRARY_PRINT_DIR','research/library-print')
+books=json.loads(catalog.read_text(encoding='utf8'))
+report=print_dir/'source-report.json'
+compact=print_dir/'verification-samples.json'
 use_compact=compact.exists() and compact.stat().st_mtime>=report.stat().st_mtime
 sources={b['slug']:b for b in json.loads((compact if use_compact else report).read_text(encoding='utf8'))}
 def normalized(text):
@@ -18,7 +20,7 @@ if not use_compact:
     compact.write_text(json.dumps(list(sources.values()),ensure_ascii=False),encoding='utf8')
 
 def save():
-    target=root/'public-books/catalog.json'
+    target=catalog
     temp=target.with_suffix('.json.tmp')
     temp.write_text(json.dumps(books,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
     for attempt in range(10):

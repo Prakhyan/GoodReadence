@@ -5,7 +5,7 @@ from PIL import Image,ImageDraw
 import pymupdf
 root=Path(__file__).resolve().parents[1]
 books=json.loads((root/'library-data.json').read_text(encoding='utf8'))
-expected=int(os.environ.get('EXPECTED_LIBRARY_COUNT','750'))
+expected=int(os.environ.get('EXPECTED_LIBRARY_COUNT','1000'))
 assert len(books)==expected and len({b['id'] for b in books})==expected
 assert len(list((root/'public-books').glob('*.pdf')))==expected
 out=root/'research/library-audit';out.mkdir(parents=True,exist_ok=True)

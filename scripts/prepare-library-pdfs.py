@@ -11,9 +11,10 @@ from PIL import Image
 from io import BytesIO
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'research/library-print'
+OUT = ROOT / os.environ.get('LIBRARY_PRINT_DIR','research/library-print')
+CATALOG = ROOT / os.environ.get('LIBRARY_CATALOG_FILE','public-books/catalog.json')
 OUT.mkdir(parents=True, exist_ok=True)
-books = json.loads((ROOT/'public-books/catalog.json').read_text(encoding='utf8'))
+books = json.loads(CATALOG.read_text(encoding='utf8'))
 ns = {'o':'http://www.idpf.org/2007/opf'}
 report = json.loads((OUT/'source-report.json').read_text(encoding='utf8')) if (OUT/'source-report.json').exists() else []
 report_by_slug = {r['slug']:r for r in report}
@@ -80,4 +81,4 @@ for b in books:
     report.append({'slug':b['slug'],'sections':len(refs),'text':full,'samples':[t[max(0,len(t)//2-70):len(t)//2+70] for t in texts if len(t)>100]})
     print(b['slug'],len(refs),'sections',len(full.split()),'words')
 (OUT/'source-report.json').write_text(json.dumps(report,ensure_ascii=False),encoding='utf8')
-(ROOT/'public-books/catalog.json').write_text(json.dumps(books,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+CATALOG.write_text(json.dumps(books,ensure_ascii=False,indent=2)+'\n',encoding='utf8')

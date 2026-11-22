@@ -1,6 +1,6 @@
 // Screen every listed creative contributor, including translators/illustrators.
 const fs=require('node:fs'),path=require('node:path'),{download}=require('./library-tools.cjs');
-const folder=process.env.LIBRARY_REVIEW_DIR||'research/expansion-750',records=JSON.parse(fs.readFileSync(path.join(folder,'candidates.json'))),results=[];let index=0;
+const folder=process.env.LIBRARY_REVIEW_DIR||'research/expansion-1000',records=JSON.parse(fs.readFileSync(path.join(folder,'candidates.json'))),results=[];let index=0;
 fs.mkdirSync(path.join(folder,'rdf'),{recursive:true});
 (async()=>{await Promise.all(Array.from({length:4},async()=>{while(index<records.length){const book=records[index++],file=path.join(folder,'rdf',book.id+'.rdf');try{
   const cached='research/expansion-500/rdf/'+book.id+'.rdf';if(!fs.existsSync(file)&&fs.existsSync(cached))fs.copyFileSync(cached,file);

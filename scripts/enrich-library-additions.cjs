@@ -1,6 +1,6 @@
 // Public-source metadata only; writes a separate report so PDF builds cannot be overwritten.
 const fs=require('node:fs'),path=require('node:path'),{pause}=require('./library-tools.cjs');
-const folder=process.env.LIBRARY_REVIEW_DIR||'research/expansion-750',books=JSON.parse(fs.readFileSync('public-books/catalog.json')),baseline=JSON.parse(fs.readFileSync(path.join(folder,'baseline.json'))),oldIds=new Set(baseline.map(b=>b.id)),added=books.filter(b=>!oldIds.has(b.id)),results={};
+const folder=process.env.LIBRARY_REVIEW_DIR||'research/expansion-1000',books=JSON.parse(fs.readFileSync('public-books/catalog.json')),baseline=JSON.parse(fs.readFileSync(path.join(folder,'baseline.json'))),oldIds=new Set(baseline.map(b=>b.id)),added=books.filter(b=>!oldIds.has(b.id)),results={};
 const norm=s=>String(s).normalize('NFKD').toLowerCase().replace(/[^a-z0-9]/g,'').replace(/^(the|an|a)(?=[a-z])/,'');
 const byAuthor=new Map();for(const b of books){const list=byAuthor.get(b.author)||[];list.push(b.title);byAuthor.set(b.author,list)}
 async function json(url){const r=await fetch(url,{headers:{'User-Agent':'GoodReadence catalogue enrichment (goodreadence@proton.me)'},signal:AbortSignal.timeout(18000)});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}

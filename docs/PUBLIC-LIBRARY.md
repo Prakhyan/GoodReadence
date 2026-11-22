@@ -1,6 +1,6 @@
 # Public-library maintenance
 
-The catalogue contains **750 complete PDF editions**. Each record links a locally hosted PDF, the original EPUB, its source cover and edition credits. The interface renders 12 cards at a time; search and genre filters apply to the entire catalogue. PDFs download only when a reader chooses to add one.
+The catalogue contains **1,000 complete PDF editions**. Each record links a locally hosted PDF, the original EPUB, its source cover and edition credits. The interface renders 12 cards at a time; search and genre filters apply to the entire catalogue. PDFs download only when a reader chooses to add one.
 
 ## Rights screening
 
@@ -22,7 +22,7 @@ Original Gutenberg licences and production credits remain in both the source fil
 
 ## Latest batch
 
-250 additions take the collection from 500 to 750. Nine of the ten formerly under-ten genres now have at least ten titles. Gothic satire has two: it was kept narrowly classified rather than padded with unrelated titles. Six existing short works were more accurately classified as novellas or short stories; no existing book was removed.
+250 additions take the collection from 750 to 1,000. The latest batch spans fiction, drama, poetry, natural history, essays, language and architecture. Two very large author-wide omnibus collections were held out in favour of distinct complete editions. Gothic satire remains narrowly classified. Existing editions were kept.
 
 The review records source URLs, contributor dates, source hashes and EPUB spine/word counts. Duplicate IDs, normalized titles and duplicate extracted source text are rejected. Reader ratings are attributed Open Library snapshots when an exact title/author match has a real rating count; unavailable ratings remain unavailable. Author profiles retain reference links and attribution where text is reproduced.
 
@@ -41,3 +41,5 @@ Run from the repository root. Python tools need `lxml`, `Pillow` and `PyMuPDF`. 
 9. Run the preview server and `npm run test:library`. Check complete direct import, saved reading progress, offline reopening, pagination, global search, no automatic PDF preloads and bounded rendering memory. Update release metadata and publish only after these checks pass.
 
 The current addition validator targets a 250-book batch. Change its explicit batch target intentionally for future expansions. Do not run two catalogue-writing scripts concurrently. A source EPUB is never overwritten with a generated PDF.
+
+For an isolated preparation pass, set `LIBRARY_CATALOG_FILE` and `LIBRARY_PRINT_DIR` to batch-local paths. PDF preparation, printing and verification then use that separate catalogue and report folder before verified records are merged. Never run concurrent writers against the same catalogue.

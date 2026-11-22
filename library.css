@@ -8,3 +8,4 @@ body:has(.book-details[open]){overflow:hidden}.bio-credit{font-size:11px!importa
 
 .classic-card{display:flex;flex-direction:column}.classic-cover{flex:none}.classic-copy{display:flex;flex-direction:column;flex:1}.classic-actions{margin-top:auto;padding-top:20px}.classic-copy .edition-size{margin-bottom:16px}
 .info-footer .page-cta{color:#fff!important}
+.daily-discovery-note{margin:24px 0 14px;font-size:12px;color:var(--violet);letter-spacing:.02em}.daily-discovery-note[hidden]{display:none!important}
