@@ -116,7 +116,7 @@ function showEpub(entry,publication){
       input.oninput=()=>{style[key]=input.value;styleText()};input.onchange=saveEntry;
     }
   };
-  $('#epAudio').onclick=()=>{showPanel();const label=document.createElement('label'),volume=$('#pageVolume').cloneNode();volume.removeAttribute('id');volume.value=pageVolume;volume.oninput=()=>{pageVolume=+volume.value;$('#pageVolume').value=pageVolume;savePreferences()};volume.onchange=()=>snd();label.append('Page-turn volume ',volume);panel.append(label);for(const [label,names,current,choose] of [['Page turn',SN.map(item=>item.n),sn,i=>{sn=i;snd();savePreferences()}],['Ambience',AMB,am,i=>{am=i;$('#am').value=i;amb()}]]){
+  $('#epAudio').onclick=()=>{showPanel();const label=document.createElement('label'),volume=$('#pageVolume').cloneNode();volume.removeAttribute('id');volume.style.accentColor='#8764a6';volume.value=pageVolume;volume.oninput=()=>{pageVolume=+volume.value;$('#pageVolume').value=pageVolume;savePreferences()};volume.onchange=()=>snd();label.append('Page-turn volume ',volume);panel.append(label);for(const [label,names,current,choose] of [['Page turn',SN.map(item=>item.n),sn,i=>{sn=i;snd();savePreferences()}],['Ambience',AMB,am,i=>{am=i;$('#am').value=i;amb()}]]){
     const wrapper=document.createElement('label'),control=document.createElement('select');wrapper.append(label+' ',control);panel.append(wrapper);names.forEach((name,i)=>control.add(new Option(name,i)));control.value=current;control.onchange=()=>choose(+control.value);
   }
     const ambienceVolume=document.createElement('label'),slider=document.createElement('input');slider.type='range';slider.min=0;slider.max=1;slider.step=.05;slider.value=av;slider.oninput=()=>{av=+slider.value;$('#av').value=av;ambientVolume();savePreferences()};ambienceVolume.append('Ambience volume ',slider);panel.append(ambienceVolume);
@@ -142,7 +142,7 @@ function showEpub(entry,publication){
     for(const m of marks){const button=document.createElement('button');button.textContent=(m.i===undefined?'Bookmark':'Highlight')+' · '+(m.chapter+1)+' · '+m.label;button.onclick=()=>{jump(m.chapter,m.position||0);if(m.i!==undefined)article.children[m.i]?.scrollIntoView({block:'center'})};panel.append(button)}
   };
   $('#epFull').hidden=!document.fullscreenEnabled;$('#epFull').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
-  $('#epHome').onclick=()=>dialog.close();dialog.onclose=()=>{document.removeEventListener('selectionchange',selected);saveEntry();stopAmb();shelf()};
+  $('#epHome').onclick=()=>dialog.close();dialog.onclose=()=>{document.removeEventListener('selectionchange',selected);saveEntry();resetAmbience();shelf()};
   scroll.onscroll=()=>{if(dialog.open){entry.scroll=scroll.scrollTop}};
   window.addEventListener('pagehide',saveEntry);dialog.addEventListener('close',()=>window.removeEventListener('pagehide',saveEntry),{once:true});
   panel.hidden=true;dialog.showModal();styleText();render(entry.scroll||0);
