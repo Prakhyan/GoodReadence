@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 1.12
+
+A collection with character.
+
+Refreshed classic covers and more verified reader ratings. A calmer reading surface, coordinated page shadows and clearer reading controls.
+
+Includes: 1.12.0.
+
 ## Version 1.11
 
 A reading room that flows.

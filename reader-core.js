@@ -4,14 +4,14 @@ const N=26,PAPER=['#f3e8d0','#faf7ef','#ffffff','#e6cc9e','#d4c8b2','#d9e5cc'],T
 // Keep four page canvases at most and cap their total pixel memory by device class.
 const lowMemory=(navigator.deviceMemory||4)<=4,BUD=lowMemory?10e6:24e6,MAX_PAGE_PIXELS=lowMemory?4e6:10e6,MAX_CACHE_PAGES=4;
 let pdf,n=0,s=0,zoom=1,single,ratio=.72,baseW=300,W=300,H=400,tone=0,ver=0,tk=0;
-let busy=false,anim=false,q=Promise.resolve(),strips=[],shades=[];
+let busy=false,anim=false,q=Promise.resolve(),strips=[],shades=[],turnShadow=null;
 let bookSession=0,openRequest=0;
 function releasePdf(doc){if(doc)(doc.loadingTask||doc).destroy().catch(console.error)}
 function resetReader(){
   window.pendingTurn=0;
   window.readerReset?.();
   bookSession++;ver++;tk++;busy=false;anim=false;cache.clear();LK.clear();
-  sh.hidden=true;sh.textContent='';strips=[];shades=[];book.classList.remove('turn');
+  sh.hidden=true;sh.textContent='';strips=[];shades=[];turnShadow?.remove();turnShadow=null;book.classList.remove('turn');
   Ls.querySelector('.sd').style.opacity=Rs.querySelector('.sd').style.opacity=0;
   if(io)io.disconnect();vis.clear();releasePdf(pdf);pdf=null;
 }
@@ -63,11 +63,6 @@ function get(p,w,ok){
     if(v!==ver||doc!==pdf){cache.delete(key);return null}
     if(tone===4){if(window.applyImageSafeNight)await window.applyImageSafeNight(pg,c,vp);else{x.globalCompositeOperation='difference';x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height)}}
     if(tone!==4){x.globalCompositeOperation='multiply';x.fillStyle=PAPER[tone];x.fillRect(0,0,c.width,c.height)}
-    if(!single){
-      const r=p%2===0,g=x.createLinearGradient(r?0:c.width,0,r?c.width*.1:c.width*.9,0);
-      g.addColorStop(0,'rgb(205,195,180)');g.addColorStop(1,'rgb(255,255,255)');
-      x.globalCompositeOperation='multiply';x.fillStyle=g;x.fillRect(0,0,c.width,c.height);x.globalCompositeOperation='source-over';
-    }
     pg.cleanup();e.px=c.width*c.height;trim();
     return c;
   }).catch(()=>{cache.delete(key);return null});
@@ -101,8 +96,9 @@ function layout(){
   $('#zl').textContent=Math.round(zoom*100)+'%';
   ver++;cache.clear();show();
 }
+function shiftOffset(k){return zoom===1&&!single?(k===0?-W/2:(n%2===0&&k===maxs()?W/2:0)):0}
 function shift(k,instant){
-  const sx=zoom===1&&!single?(k===0?-W/2:(n%2===0&&k===maxs()?W/2:0)):0;
+  const sx=shiftOffset(k);
   if(instant)book.classList.add('nt');
   book.style.transform=sx?`translateX(${sx}px)`:'';
   if(instant)requestAnimationFrame(()=>requestAnimationFrame(()=>book.classList.remove('nt')));
@@ -146,7 +142,7 @@ function ui(){
 /* The turning sheet: N strips hinged in a chain so the paper bends as it travels */
 function buildSheet(front,back){
   const leaf=document.createElement('div');leaf.className='leaf';const count=matchMedia('(prefers-reduced-motion: reduce)').matches?1:(lowMemory||matchMedia('(pointer:coarse)').matches?8:14),width=W/count;
-  strips=[];shades=[Ls.querySelector('.sd'),Rs.querySelector('.sd')];let parent=leaf;
+  strips=[];shades=[];turnShadow=document.createElement('div');turnShadow.className='turn-cast-shadow';turnShadow.setAttribute('aria-hidden','true');book.insertBefore(turnShadow,sh);let parent=leaf;
   for(let i=0;i<count;i++){
     const hinge=document.createElement('div');hinge.className='curl-segment';hinge.style.width=(width+.6)+'px';hinge.style.left=(i?width:0)+'px';
     for(const [faceIndex,source]of [front,back].entries()){
@@ -159,20 +155,19 @@ function buildSheet(front,back){
   sh.replaceChildren(leaf);
 }
 function pose(progress){
-  const lift=Math.sin(Math.PI*progress),count=strips.length;let previous=0;
-  strips.forEach((hinge,i)=>{const position=(i+.5)/count,angle=-180*progress+42*lift*(2*position-1);hinge.style.transform='rotateY('+(angle-previous)+'deg)';hinge.style.setProperty('--curl-shade',(Math.abs(Math.sin(angle*Math.PI/180))*.13*lift).toFixed(3));previous=angle});
-  if(shades.length){shades[0].style.opacity=(.18*lift*progress).toFixed(3);shades[1].style.opacity=(.22*lift*(1-progress)).toFixed(3)}
-  book.style.setProperty('--turn-spine-opacity',(.6-.25*lift).toFixed(3));
+  const lift=Math.sin(Math.PI*progress),count=strips.length;let previous=0,x=0,z=0,min=0,max=0;
+  strips.forEach((hinge,i)=>{const position=(i+.5)/count,angle=-180*progress+42*lift*(2*position-1),radians=angle*Math.PI/180;hinge.style.transform='rotateY('+(angle-previous)+'deg)';hinge.style.setProperty('--curl-shade',(Math.abs(Math.sin(radians))*.055*lift).toFixed(3));previous=angle;x+=W/count*Math.cos(radians);z-=W/count*Math.sin(radians);const projected=x+z*.12;min=Math.min(min,projected);max=Math.max(max,projected)});
+  if(turnShadow){const blur=6+lift*8;turnShadow.style.width=Math.max(1,max-min+blur*2)+'px';turnShadow.style.transform='translate3d('+(min-blur)+'px,0,0)';turnShadow.style.opacity=(.13*lift).toFixed(3)}
 }
 function turnDuration(){return matchMedia('(prefers-reduced-motion: reduce)').matches?1:Math.min(PT[pt].d,(lowMemory||matchMedia('(pointer:coarse)').matches)?420:700)}
 function run(d){
   return new Promise(res=>{
     const t0=performance.now(),D=turnDuration(),session=bookSession;
-    anim=true;pose(d>0?0:1);sh.hidden=false;snd(null,D);
+    anim=true;shift(s,true);pose(d>0?0:1);sh.hidden=false;snd(null,D);
     const f=now=>{
       if(session!==bookSession){res();return}
       const u=Math.min(1,(now-t0)/D),e=u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
-      pose(d>0?e:1-e);window.decorateTurn?.(s,s+d,e);
+      pose(d>0?e:1-e);const offset=shiftOffset(s)+(shiftOffset(s+d)-shiftOffset(s))*e;book.style.transform=offset?'translateX('+offset+'px)':'';window.decorateTurn?.(s,s+d,e);
       if(u<1)requestAnimationFrame(f);else{anim=false;res()}
     };
     requestAnimationFrame(f);
@@ -197,7 +192,7 @@ async function turn(d){
   await run(d);
   if(session!==bookSession)return;
   fill(Ls,l1<0?null:fL,l1);fill(Rs,r1>=n?null:fR,r1);book.classList.remove('turn');
-  sh.hidden=true;sh.textContent='';strips=[];shades=[];
+  sh.hidden=true;sh.textContent='';strips=[];shades=[];turnShadow?.remove();turnShadow=null;
   Ls.querySelector('.sd').style.opacity=Rs.querySelector('.sd').style.opacity=0;
   s=s2;busy=false;if(d>0)addPages(single?1:2);ui();if(resizePending){resizePending=false;fit()}else preload();if(window.pendingTurn){const direction=Math.sign(window.pendingTurn);window.pendingTurn-=direction;requestAnimationFrame(()=>turn(direction))}
 }
