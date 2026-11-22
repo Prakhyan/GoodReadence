@@ -8,12 +8,13 @@ A free, local-first reading room from **Casid Studio**. Read your own documents 
 
 ## The reading room
 
-- Crisp PDF pages with spread, single-page and scrolling views.
+- Crisp PDF pages with Dual, single-page and scrolling views.
 - EPUB typography controls, ten hardcover colours, reading themes and ambient sound.
 - Highlights, freehand marks, notes, bookmarks, reading goals and statistics.
 - Complete public-library PDFs with original source files, covers and edition credits.
 - ZIP backup and restore, annotation exports and direct device transfer.
 - Optional installation and offline access to books already saved on the device.
+- Compact ambience on demand, with individual offline downloads only when requested.
 
 Books and reading data stay in the current browser by default. Clearing browser storage can remove them: keep a backup outside the browser. Personal-cloud connection code is included, but public sign-in requires provider registrations; see [cloud setup](docs/CLOUD-SETUP.md). Online lookup and public-library downloads use the network when requested.
 

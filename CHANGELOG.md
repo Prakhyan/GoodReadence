@@ -4,9 +4,9 @@
 
 More stories. Wherever you read.
 
-A thousand complete classics and a fresh daily selection. A deeper Dual reading view, clearer installation and complete offline ambience bring your reading room along.
+A thousand complete classics and a fresh daily selection. A deeper Dual reading view and clearer installation bring your reading room along. Compact sounds stream on demand, with optional downloads for offline listening.
 
-Includes: 1.10.0.
+Includes: 1.10.0, 1.10.1.
 
 ## Version 1.9
 
