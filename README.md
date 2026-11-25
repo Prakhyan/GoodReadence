@@ -11,7 +11,7 @@ A free, local-first reading room from **Casid Studio**. Read your own documents 
 - Crisp PDF pages with Dual, single-page and scrolling views.
 - EPUB typography controls, ten hardcover colours, reading themes and ambient sound.
 - Highlights, freehand marks, notes, bookmarks, reading goals and statistics.
-- Complete public-library PDFs with original source files, covers and edition credits.
+- An on-demand public library with complete-book PDF preparation, covers and edition credits.
 - ZIP backup and restore, annotation exports and direct device transfer.
 - Optional installation and offline access to books already saved on the device.
 - Compact ambience on demand, with individual offline downloads only when requested.
@@ -32,7 +32,7 @@ Install Node.js, open a terminal in this folder and run:
 npm run preview
 ```
 
-Open **http://127.0.0.1:8799**. Use this local server rather than opening HTML files directly: workers, modules and browser storage require a proper web origin. The deployed app is static and uses bundled dependencies. Run `npm run build:static` to regenerate crawlable catalogue and book pages; Vercel runs this dependency-free generation when publishing.
+Open **http://127.0.0.1:8799**. Use this local server rather than opening HTML files directly: workers, modules and browser storage require a proper web origin. The client uses bundled dependencies; a restricted Vercel function relays approved public-book downloads without storing them. Run `npm run build:static` to regenerate crawlable catalogue and book pages; Vercel runs this dependency-free generation when publishing.
 
 ## Repository map
 
@@ -41,7 +41,7 @@ Open **http://127.0.0.1:8799**. Use this local server rather than opening HTML f
 | `index.html`, `reader-*.js`, related styles | Home, personal shelf and PDF reading room |
 | `reader-epub.js`, `reading-comfort.*` | EPUB reading and reading comfort tools |
 | `library.*`, `library-data.json` | Paginated public-library interface and generated metadata |
-| `public-books/` | Complete PDFs, original EPUBs, covers and source catalogue |
+| `public-books/` | Source catalogue, display covers and private/local full-book test fixtures; only covers are published |
 | `portable-data.js`, `portability-*`, `device-transfer.js`, `cloud-*` | Backups, exports, transfers and optional personal-cloud integrations |
 | `vendor/`, `ambience/`, `textures/` | Locally served engines, recordings and visual assets |
 | `scripts/` | Current preview, verification and library maintenance tools |
@@ -67,3 +67,7 @@ See the [documentation index](docs/README.md), [library maintenance and rights p
 Book texts, source covers, biographies and bundled libraries have their own attribution and licensing terms. See each book’s **More Info**, its retained source licence and [dependency credits](docs/DEPENDENCIES-AND-LICENSES.md). The book screening record is available [here](docs/library-rights-review.json). This repository does not grant a blanket licence over third-party material or the application code.
 
 © 2026 Casid Studio · GoodReadence.
+
+### On-demand public books
+
+The public catalogue keeps metadata and covers in the app. Full source books are retrieved only after Add to my library, then converted to searchable PDFs on the reader’s device. Saved books work offline. No complete public-book PDFs or EPUBs are included in the published dist folder. Local/Git source editions remain available for research and deterministic checks. A restricted streaming endpoint handles sources without browser download access; it stores no files but still consumes hosting bandwidth. See [the maintenance guide](docs/PUBLIC-LIBRARY.md) for source approval and validation.

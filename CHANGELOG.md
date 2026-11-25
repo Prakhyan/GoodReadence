@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 1.13
+
+Your library. A lighter footprint.
+
+Explore complete books without downloading the collection. Add a title to fetch its source and prepare a searchable PDF on your device, ready for offline reading. Clear progress, cancellation and original-edition credits keep each addition simple.
+
+Includes: 1.13.0.
+
 ## Version 1.12
 
 A collection with character.
