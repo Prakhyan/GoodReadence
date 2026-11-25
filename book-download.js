@@ -5,7 +5,7 @@
   async function sourceBytes(book,{signal,progress}){
     signal=AbortSignal.any([signal,AbortSignal.timeout(90000)]);const delivery=book.delivery;if(!delivery)throw Error('Reload the catalogue to get this book’s download details.');
     const url=delivery.direct?delivery.url:'/api/book-source?id='+encodeURIComponent(book.id);
-    const response=await fetch(url,{signal,credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer'});
+    const response=await fetch(url,{signal,credentials:delivery.direct?'omit':'same-origin',cache:'no-store',referrerPolicy:'no-referrer'});
     if(!response.ok)throw Error(response.status===429?'The source is busy. Please try again shortly.':'The book’s source is temporarily unavailable. Please try again later.');
     const total=Number(response.headers.get('X-Book-Bytes')||response.headers.get('Content-Length')||delivery.downloadBytes),reader=response.body?.getReader();let bytes;
     if(reader){const chunks=[];let length=0;try{for(;;){signal.throwIfAborted();const {done,value}=await reader.read();if(done)break;length+=value.byteLength;if(length>MAX)throw Error('This source is too large to prepare safely on this device.');chunks.push(value);progress('Downloading from '+delivery.provider+'…'+(total?' '+Math.min(99,Math.round(length/total*100))+'%':''),total?Math.min(40,length/total*40):15)}bytes=new Uint8Array(length);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.length}}finally{await reader.cancel().catch(()=>{});reader.releaseLock()}}
