@@ -71,3 +71,7 @@ Book texts, source covers, biographies and bundled libraries have their own attr
 ### On-demand public books
 
 The public catalogue keeps metadata and covers in the app. Full source books are retrieved only after Add to my library, then converted to searchable PDFs on the reader’s device. Saved books work offline. No complete public-book PDFs or EPUBs are included in the published dist folder. Local/Git source editions remain available for research and deterministic checks. A restricted streaming endpoint handles sources without browser download access; it stores no files but still consumes hosting bandwidth. See [the maintenance guide](docs/PUBLIC-LIBRARY.md) for source approval and validation.
+
+### Paged public catalogue
+
+The website embeds the first 12 listings, then uses /api/catalogue for server search, genres and page changes. Detailed metadata is fetched per book, and covers load near the viewport. The full catalogue index stays server-side. Saved books still work offline; global public-catalogue searches need a connection. Edition-review fingerprints block unreviewed additions or changed source editions. Run npm run audit:editions with the Python/lxml source-review tools before sealing changed editions.

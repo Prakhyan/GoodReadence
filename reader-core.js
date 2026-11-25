@@ -403,7 +403,6 @@ async function addBooks(files){
     feedback.start('Preparing your book…');
     await new Promise(resolve=>requestAnimationFrame(()=>setTimeout(resolve,0)));
     if(!window.pdfjsLib)throw Error('The reader could not load. Reopen the app online and try again.');
-    if(window.GRPDFReady)await window.GRPDFReady;
     try{await idb}catch(e){throw Error('Your browser cannot save books right now. Allow site storage, leave private browsing, and try again.')}
     for(const [index,file] of files.entries()){
       const id=file.name+'|'+file.size+'|'+file.lastModified;
@@ -418,6 +417,7 @@ async function addBooks(files){
           feedback.update('Saving '+file.name+' to this device…');await storeBook(file,entry);lib.push(entry);last=entry;added++;continue;
         }
         feedback.update('Opening PDF… '+file.name);
+        await window.GRPDFReady;
         const task=pdfjsLib.getDocument({isEvalSupported:false,data:new Uint8Array(await file.arrayBuffer())});
         task.onPassword=()=>{task.destroy();};
         doc=await task.promise;

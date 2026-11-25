@@ -16,15 +16,16 @@
     }catch(_){/* Keep the last displayed version while offline. */}
   };
   let registration;
+  const prepare=()=>window.GRWorkerRegistration||(window.GRWorkerRegistration=new Promise((resolve,reject)=>{const register=()=>worker.register('/audio-cache.js').then(resolve,reject);if(worker.controller)register();else{const idle=()=>setTimeout(register,1500);if(document.readyState==='complete')idle();else addEventListener('load',idle,{once:true})}}));
   const check=async()=>{
     if(!navigator.onLine)return;
     try{
-      registration=registration||await worker.getRegistration()||await worker.register('/audio-cache.js');
+      registration=registration||await worker.getRegistration()||await prepare();
       await registration.update();
       await showVersion();
     }catch(_){/* The cached app remains available when the network is unavailable. */}
   };
-  worker.register('/audio-cache.js').then(reg=>{registration=reg;check()}).catch(()=>{});
+  prepare().then(reg=>{registration=reg;check()}).catch(()=>{});
   window.addEventListener('online',check);
   window.addEventListener('focus',check);
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check()});

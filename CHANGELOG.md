@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 1.14
+
+A lighter library. More room to explore.
+
+Browse page by page, search the collection online and load covers as they come into view. Book details arrive when needed, with a lighter start to your reading room and renewed edition checks.
+
+Includes: 1.14.0.
+
 ## Version 1.13
 
 Your library. A lighter footprint.

@@ -18,7 +18,7 @@ self.onmessage=async({data:{book,publication,bytes}})=>{
     const needed=space=>{if(!page||y-space<foot)fresh()};
     const runs=word=>{const result=[];for(const char of word){const current=fallback.get(char)||font,last=result.at(-1);if(last?.font===current)last.text+=char;else result.push({font:current,text:char})}return result};
     const wordWidth=(word,pt)=>{const key=pt+':'+word;if(!cache.has(key)){if(cache.size>16000)cache.clear();cache.set(key,runs(word).reduce((sum,run)=>sum+run.font.widthOfTextAtSize(run.text,pt),0))}return cache.get(key)};
-    const drawLine=(line,pt)=>{needed(lineHeight);let x=margin;for(const run of runs(line)){page.drawText(run.text,{x,y,font:run.font,size:pt,color:rgb(.12,.12,.12)});x+=run.font.widthOfTextAtSize(run.text,pt)}y-=pt===size?lineHeight:pt*1.4;printed+=line.length};
+    const drawLine=(line,pt)=>{needed(lineHeight);let x=margin;const parts=runs(line);for(let i=0;i<parts.length;i++){const run=parts[i];page.drawText(run.text,{x,y,font:run.font,size:pt,color:rgb(.12,.12,.12)});if(i<parts.length-1)x+=run.font.widthOfTextAtSize(run.text,pt)}y-=pt===size?lineHeight:pt*1.4;printed+=line.length};
     function textBlock(text,kind){
       text=normalize(text);const pt=kind==='heading'?15:size;
       if(kind==='heading'){needed(60);y-=12}
