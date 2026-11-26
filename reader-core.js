@@ -210,7 +210,7 @@ const THEMES=[{n:'Ivory',t:1,bg:'#ece6dc',bar:'#fbf8f2',fg:'#2b2722',ink:'#2b272
 const PT=[{n:'Soft paper',l:.7,d:1000},{n:'Hardcover',l:.12,d:1300},{n:'Quick flip',l:.45,d:620},{n:'Fluttering',l:1.4,d:900}];
 const SN=[{n:'Soft paper',t:'bandpass',f:[2600,4200],q:.6,g:.9,ev:20,cg:.5,tf:140,tg:.12},{n:'Crisp page',t:'highpass',f:[2200,3800],q:.7,g:.8,ev:45,cg:.9,tf:200,tg:.07},{n:'Hardcover',t:'lowpass',f:[900,1800],q:.6,g:1.1,ev:12,cg:.4,tf:90,tg:.5},{n:'Parchment',t:'bandpass',f:[1500,2600],q:.8,g:.9,ev:70,cg:.8,tf:160,tg:.1},{n:'No sound'},{n:'Thin paperback',t:'highpass',f:[1450,3100],q:.65,g:.42,ev:35,cg:.32,tf:110,tg:.045},{n:'Linen paper',t:'bandpass',f:[920,2450],q:.72,g:.55,ev:26,cg:.27,tf:95,tg:.06},{n:'Newsprint',t:'highpass',f:[900,2900],q:.55,g:.68,ev:52,cg:.5,tf:85,tg:.04},{n:'Glossy magazine',t:'bandpass',f:[1800,5200],q:1.2,g:.52,ev:11,cg:.34,tf:190,tg:.08}];
 let pageVolume=.5;
-let th=0,pt=0,am=0,av=.5,tm,lib=[],bk=null,did=0,pp=0,sn=0,tu=0,br=0,mk=0,mkc=0,er=0,hist=[],bm=[],hl={},key='',ix={n:0,t:[],run:0},lastTap=0,qt,mr,AC,nb,io,pj=0;
+let th=0,pt=0,am=0,av=.5,tm,lib=[],bk=null,did=0,pp=0,sn=0,tu=0,br=0,mk=0,mkc=0,er=0,hist=[],bm=[],hl={},key='',ix={n:0,t:[],run:0},lastTap=0,qt,mr,io,pj=0;
 try{const P=JSON.parse(localStorage.getItem('fb:pf')||'{}');pageVolume=P.pageVolume??.5;th=(P.th|0)%THEMES.length;pt=(P.pt|0)%PT.length;av=P.av==null?.5:+P.av;sn=P.sn==null?(P.mute?4:0):(P.sn|0)%SN.length;tu=P.tu|0;br=P.br|0;am=0}catch(e){}
 theme();$('#mute').textContent=SN[sn].n;$('#dim').style.opacity=BR[br];tuck(tu);
 const cp=()=>{const [l,r]=slots(s);return single?s:(r<n?r:l)};
@@ -301,24 +301,32 @@ fsb.onclick=()=>document.fullscreenElement?document.exitFullscreen():document.do
 function tuck(v){tu=v?1:0;bar.classList.toggle('tuck',!!tu);const handle=$('#bh');handle.classList.toggle('o',!tu);handle.setAttribute('aria-expanded',String(!tu));handle.setAttribute('aria-label',tu?'Show reading tools':'Hide reading tools');setTimeout(()=>{if(pdf&&!busy)fit()},60);savePreferences()}
 $('#bh').onclick=()=>tuck(!tu);
 document.addEventListener('fullscreenchange',()=>{tuck(!!document.fullscreenElement);setTimeout(()=>{if(pdf&&!busy)fit()},250)});
+// Native audio playback keeps sound-device startup off the page-turn thread.
+// The short rustles are generated locally, with a bounded cache and no downloads.
+const turnSounds=new Map();let turnAudio=null;
+function paperSound(c,ms){
+  const rate=22050,D=ms/1000,length=Math.ceil(rate*(D+.03)),buffer=new ArrayBuffer(44+length*2),view=new DataView(buffer);
+  const text=(offset,value)=>{for(let i=0;i<value.length;i++)view.setUint8(offset+i,value.charCodeAt(i))};
+  text(0,'RIFF');view.setUint32(4,36+length*2,true);text(8,'WAVE');text(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);view.setUint32(24,rate,true);view.setUint32(28,rate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);text(36,'data');view.setUint32(40,length*2,true);
+  const omega=2*Math.PI*Math.sqrt(c.f[0]*c.f[1])/rate,cos=Math.cos(omega),alpha=Math.sin(omega)/(2*c.q),a0=1+alpha,a1=-2*cos/a0,a2=(1-alpha)/a0;
+  const b0=(c.t==='lowpass'?(1-cos)/2:c.t==='highpass'?(1+cos)/2:alpha)/a0,b1=(c.t==='lowpass'?1-cos:c.t==='highpass'?-(1+cos):0)/a0,b2=c.t==='bandpass'?-b0:b0;
+  let noise=0,crackle=0,x1=0,x2=0,y1=0,y2=0;
+  for(let i=0;i<length;i++){
+    const u=Math.min(1,i/rate/D),envelope=i/rate>=D?0:(u<.5?4*u*u:4*(1-u)*(1-u));
+    noise=noise*.4+(Math.random()*2-1)*.6;if(Math.random()<c.ev*envelope/rate)crackle=1;crackle*=.99;
+    const x=noise*envelope*.55+(Math.random()*2-1)*crackle*c.cg*.5*envelope,y=b0*x+b1*x1+b2*x2-a1*y1-a2*y2;
+    x2=x1;x1=x;y2=y1;y1=y;view.setInt16(44+i*2,Math.round(Math.max(-1,Math.min(1,y*c.g))*32767),true);
+  }
+  return URL.createObjectURL(new Blob([buffer],{type:'audio/wav'}));
+}
 function snd(k,ms){
-
-  const c=SN[k==null?sn:k];if(!c||!c.t||pageVolume===0)return;
+  const index=k==null?sn:k,c=SN[index];if(!c||!c.t||pageVolume===0)return;
   try{
-    const a=AC=AC||new AudioContext();if(a.state==='suspended')a.resume();
-    const D=(ms||PT[pt].d)/1e3*(.86+.23*Math.random()),r=a.sampleRate,L=Math.ceil(r*(D+.12)),b=a.createBuffer(1,L,r),d=b.getChannelData(0);let l=0,ck=0;
-    for(let i=0;i<L;i++){
-      const u=Math.min(1,i/r/D),sp=i/r>=D?0:(u<.5?4*u*u:4*(1-u)*(1-u));
-      l=l*.4+(Math.random()*2-1)*.6;
-      if(Math.random()<c.ev*sp/r)ck=1;ck*=.99;
-      d[i]=l*sp*.55+(Math.random()*2-1)*ck*c.cg*.5*(sp>0?1:0);
-    }
-    const o=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain(),t=a.currentTime;
-    o.buffer=b;f.type=c.t;f.Q.value=c.q;f.frequency.setValueAtTime(c.f[0],t);f.frequency.linearRampToValueAtTime(c.f[1],t+D/2);f.frequency.linearRampToValueAtTime(c.f[0],t+D);
-    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(c.g*pageVolume,t+.025);g.gain.setValueAtTime(c.g*pageVolume,t+D*.8);g.gain.linearRampToValueAtTime(0,t+D);o.connect(f);f.connect(g);g.connect(a.destination);o.start(t);
+    const duration=Math.round((ms||PT[pt].d)/50)*50,key=index+'|'+duration;
+    if(!turnSounds.has(key)){turnSounds.set(key,paperSound(c,duration));if(turnSounds.size>12){const first=turnSounds.keys().next().value;URL.revokeObjectURL(turnSounds.get(first));turnSounds.delete(first)}}
+    turnAudio?.pause();turnAudio=new Audio(turnSounds.get(key));turnAudio.volume=pageVolume;turnAudio.play().catch(()=>{});
   }catch(e){}
 }
-addEventListener('pointerdown',()=>{try{AC=AC||new AudioContext();if(AC.state==='suspended')AC.resume()}catch(e){}},{once:true});
 function zoomAt(z,fx,fy){setZoom(z);stage.scrollLeft=fx*book.offsetWidth-stage.clientWidth/2;stage.scrollTop=fy*book.offsetHeight-stage.clientHeight/2}
 const ptr=new Map();let pd=0,pz=1,pr=1;
 stage.addEventListener('pointerdown',e=>{
