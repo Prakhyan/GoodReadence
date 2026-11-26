@@ -3,6 +3,9 @@ const fs=require('fs'),path=require('path'),cp=require('child_process'),readline
 const {download,pause}=require('./library-tools.cjs'),{fingerprint}=require('./catalogue-approval.cjs'),{identify,keys,partialTitle}=require('./catalogue-work-identity.cjs');
 const downloadSource=require('./download-reviewed-source.cjs');
 const folder='research/expansion-50000',target=Number(process.env.CATALOGUE_REVIEW_TARGET)||1000;
+const stopFile=folder+'/stop-after-current-editions';
+if(process.argv.includes('--stop')){fs.writeFileSync(stopFile,'Finish current editions and retain the review checkpoint.\n');process.exit(0)}
+if(fs.existsSync(stopFile))fs.unlinkSync(stopFile);
 const candidates=JSON.parse(fs.readFileSync(folder+'/candidates.json')),baseline=JSON.parse(fs.readFileSync(folder+'/baseline.json'));
 fs.mkdirSync(folder+'/rdf',{recursive:true});fs.mkdirSync(folder+'/temporary-sources',{recursive:true});
 const readLines=file=>fs.existsSync(file)?fs.readFileSync(file,'utf8').trim().split('\n').filter(Boolean).map(JSON.parse):[];
@@ -32,7 +35,7 @@ function worker(){
 function checkpoint(){fs.writeFileSync(folder+'/progress.json',JSON.stringify({target,accepted:accepted.length,held:held.length,reviewed,pool:candidates.length,latest:accepted.at(-1)?.book.title},null,2))}
 function removeTemporary(file){const resolved=path.resolve(file),parent=path.resolve(folder+'/temporary-sources')+path.sep;if(!resolved.startsWith(parent))throw Error('Unexpected source cleanup path');if(fs.existsSync(file))fs.unlinkSync(file)}
 (async()=>{const workers=Array.from({length:Number(process.env.CATALOGUE_REVIEW_WORKERS)||4},worker);try{await Promise.all(workers.map(async w=>{
- while(next<candidates.length&&accepted.length<target&&!stopping){
+ while(next<candidates.length&&accepted.length<target&&!stopping&&!fs.existsSync(stopFile)){
   const candidate=candidates[next++];if(done.has(candidate.id))continue;done.add(candidate.id);if(partialTitle(candidate.title)){held.push({id:candidate.id,title:candidate.title,reason:'Separate partial volume or adapted text'});fs.appendFileSync(folder+'/held.ndjson',JSON.stringify(held.at(-1))+'\n');reviewed++;continue}
   const rdf=folder+'/rdf/'+candidate.id+'.rdf',epub=folder+'/temporary-sources/'+candidate.id+'.epub';let result;
   try{
@@ -51,5 +54,5 @@ function removeTemporary(file){const resolved=path.resolve(file),parent=path.res
   await pause(150);
  }
  }));}finally{workers.forEach(w=>w.close());checkpoint()}
- console.log('Review batch complete:',accepted.length,'accepted;',held.length,'held. Source files remain external.');
+ console.log(accepted.length>=target||next>=candidates.length?'Review batch complete:':'Review checkpoint saved:',accepted.length,'accepted;',held.length,'held. Source files remain external.');
 })().catch(e=>{stopping=true;console.error(e);process.exitCode=1});

@@ -21,7 +21,7 @@ The scripts write their large working files under ignored `research/` directorie
 1. `scripts/fetch-catalogue-snapshot.cjs` retrieves checksummed Gutenberg metadata snapshots from its automated-download mirror.
 2. `scripts/plan-catalogue-expansion.py` creates a candidate inventory. Candidate counts are not approved book counts.
 3. `scripts/index-catalogue-snapshot.py` extracts selected numeric RDF records without following archive paths or links.
-4. `scripts/review-catalogue-expansion.cjs` performs resumable complete-source review. Set `PYTHON` to a Python installation with the review dependencies. `CATALOGUE_REVIEW_TARGET` controls the accepted-candidate target, not a publication quota. `CATALOGUE_REVIEW_WORKERS` bounds concurrent reviews.
+4. `scripts/review-catalogue-expansion.cjs` performs resumable complete-source review. Set `PYTHON` to a Python installation with the review dependencies. `CATALOGUE_REVIEW_TARGET` controls the accepted-candidate target, not a publication quota. `CATALOGUE_REVIEW_WORKERS` bounds concurrent reviews. A separate invocation with `--stop` lets an active run finish its current editions and save a checkpoint; the next normal invocation resumes.
 5. `scripts/enrich-reviewed-catalogue.cjs` prepares attributed author and rating metadata separately.
 6. `scripts/prepare-catalogue-release.cjs` validates an isolated release. `CATALOGUE_PUBLISH_LIMIT` caps additions. Prepare original covers with `scripts/design-library-covers.cjs`, review them, then explicitly pass `--apply` to the preparation script.
 7. Build and run catalogue, download, offline and discoverability checks. Inspect representative generated PDF pages before publishing. Legacy local-PDF batch scripts do not cover these remote-only additions.
