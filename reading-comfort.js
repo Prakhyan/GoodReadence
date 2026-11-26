@@ -18,7 +18,6 @@
     book.style.setProperty('--cover-depth',Math.max(progress*depth,(1-progress)*depth).toFixed(2)+'px');
     book.dataset.atStart=String(page===0);book.dataset.finished=String(page===n-1);
   };
-  window.decorateTurn=(from,to,t)=>{const depth=Math.min(matchMedia('(max-width:700px)').matches?7:12,3+Math.log10(Math.max(2,n))*3),position=k=>Math.max(0,Math.min(n-1,single?k:2*k)),page=position(from)+(position(to)-position(from))*t,progress=n>1?page/(n-1):1;book.style.setProperty('--left-stack',(progress*depth).toFixed(2)+'px');book.style.setProperty('--right-stack',((1-progress)*depth).toFixed(2)+'px');book.style.setProperty('--cover-depth',Math.max(progress*depth,(1-progress)*depth).toFixed(2)+'px');};
   // Book brightness is a rendering control, not a change to the device's display setting.
   const oldBrightness=document.querySelector('#br'),brightnessRow=oldBrightness.closest('.row');brightnessRow.firstElementChild.textContent='Book brightness';
   const brightnessControl=document.createElement('span');brightnessControl.className='brightness-control';brightnessControl.innerHTML='<button id="brightnessDown" aria-label="Decrease book brightness">−</button><output id="br" aria-live="polite">100%</output><button id="brightnessUp" aria-label="Increase book brightness">+</button>';oldBrightness.replaceWith(brightnessControl);

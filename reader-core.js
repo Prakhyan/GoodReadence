@@ -5,7 +5,7 @@ const N=26,PAPER=['#f3e8d0','#faf7ef','#ffffff','#e6cc9e','#d4c8b2','#d9e5cc'],T
 const lowMemory=(navigator.deviceMemory||4)<=4,BUD=lowMemory?10e6:24e6,MAX_PAGE_PIXELS=lowMemory?4e6:10e6,MAX_CACHE_PAGES=4;
 let pdf,n=0,s=0,zoom=1,single,ratio=.72,baseW=300,W=300,H=400,tone=0,ver=0,tk=0;
 let busy=false,anim=false,q=Promise.resolve(),strips=[],shades=[],turnShadow=null;
-let bookSession=0,openRequest=0;
+let bookSession=0,openRequest=0,lastLayout='';
 function releasePdf(doc){if(doc)(doc.loadingTask||doc).destroy().catch(console.error)}
 function resetReader(){
   window.pendingTurn=0;
@@ -72,9 +72,9 @@ function trim(){
   let t=0;for(const e of cache.values())t+=e.px;
   for(const [k,e] of cache){if(t<=BUD&&cache.size<=MAX_CACHE_PAGES)break;t-=e.px;cache.delete(k)}
 }
-function preload(){
+function preload(direction=1){
   const w=wpx(),[l,r]=slots(s);
-  (single?[s+1,s+2,s+3]:[r+1,r+2]).forEach(p=>get(p,w));
+  (single?[s+direction,s+2*direction,s+3*direction]:direction>0?[r+1,r+2]:[l-2,l-1]).forEach(p=>get(p,w));
 }
 
 /* Layout */
@@ -90,8 +90,11 @@ function fit(){
 }
 function layout(){
   W=baseW*zoom;H=W/ratio;
+  const signature=[bookSession,W,H,single,tone,window.readerView].join('|');
+  if(signature===lastLayout)return;
+  lastLayout=signature;
   book.classList.toggle('one',single);
-  book.style.cssText=`--w:${W}px;--h:${H}px;--paper:${bgp()}`;
+  book.style.setProperty('--w',W+'px');book.style.setProperty('--h',H+'px');book.style.setProperty('--paper',bgp());
   stage.style.touchAction=(window.freehandActive||mk||er)?'none':window.readerView==='scroll'?'pan-x pan-y':zoom>1?'pan-x pan-y':'none';
   $('#zl').textContent=Math.round(zoom*100)+'%';
   ver++;cache.clear();show();
@@ -127,7 +130,7 @@ async function show(){
   const [cl,cr]=await Promise.all([get(l,w),get(r,w)]);
   if(t!==tk||busy)return;
   fill(Ls,l<0||l>=n?null:cl||undefined,l);fill(Rs,r>=n?null:cr||undefined,r);
-  shift(s,true);window.decorateBook?.();ui();if(resizePending){resizePending=false;fit()}else preload();
+  shift(s,true);ui();if(resizePending){resizePending=false;fit()}else preload();
 }
 function ui(){
   window.updateReaderExtras?.();window.decorateBook?.();
@@ -141,13 +144,14 @@ function ui(){
 
 /* The turning sheet: N strips hinged in a chain so the paper bends as it travels */
 function buildSheet(front,back){
-  const leaf=document.createElement('div');leaf.className='leaf';const count=matchMedia('(prefers-reduced-motion: reduce)').matches?1:(lowMemory||matchMedia('(pointer:coarse)').matches?8:14),width=W/count;
+  const leaf=document.createElement('div');leaf.className='leaf';const count=matchMedia('(prefers-reduced-motion: reduce)').matches?1:(lowMemory||matchMedia('(pointer:coarse)').matches?6:10),width=W/count;
+  const brightness=getComputedStyle(book).getPropertyValue('--book-brightness').trim()||'100%';
   strips=[];shades=[];turnShadow=document.createElement('div');turnShadow.className='turn-cast-shadow';turnShadow.setAttribute('aria-hidden','true');book.insertBefore(turnShadow,sh);let parent=leaf;
   for(let i=0;i<count;i++){
     const hinge=document.createElement('div');hinge.className='curl-segment';hinge.style.width=(width+.6)+'px';hinge.style.left=(i?width:0)+'px';
     for(const [faceIndex,source]of [front,back].entries()){
       const face=document.createElement('div');face.className='curl-face'+(faceIndex?' curl-back':'');
-      if(source){const renderWidth=(lowMemory||matchMedia('(pointer:coarse)').matches)?Math.min(source.width,Math.round(W*1.25)):source.width,canvas=document.createElement('canvas');canvas.width=Math.ceil(renderWidth/count)+1;canvas.height=Math.round(renderWidth*source.height/source.width);const sourceX=(faceIndex?count-i-1:i)*source.width/count;canvas.getContext('2d').drawImage(source,sourceX,0,Math.min(source.width-sourceX,source.width/count+1),source.height,0,0,canvas.width,canvas.height);face.append(canvas)}
+      if(source){const renderWidth=(lowMemory||matchMedia('(pointer:coarse)').matches)?Math.min(source.width,Math.round(W*1.25)):source.width,canvas=document.createElement('canvas');canvas.width=Math.ceil(renderWidth/count)+1;canvas.height=Math.round(renderWidth*source.height/source.width);const sourceX=(faceIndex?count-i-1:i)*source.width/count,context=canvas.getContext('2d');if(brightness!=='100%')context.filter='brightness('+brightness+')';context.drawImage(source,sourceX,0,Math.min(source.width-sourceX,source.width/count+1),source.height,0,0,canvas.width,canvas.height);face.append(canvas)}
       hinge.append(face);
     }
     parent.append(hinge);parent=hinge;strips.push(hinge);
@@ -156,18 +160,21 @@ function buildSheet(front,back){
 }
 function pose(progress){
   const lift=Math.sin(Math.PI*progress),count=strips.length;let previous=0,x=0,z=0,min=0,max=0;
-  strips.forEach((hinge,i)=>{const position=(i+.5)/count,angle=-180*progress+42*lift*(2*position-1),radians=angle*Math.PI/180;hinge.style.transform='rotateY('+(angle-previous)+'deg)';hinge.style.setProperty('--curl-shade',(Math.abs(Math.sin(radians))*.055*lift).toFixed(3));previous=angle;x+=W/count*Math.cos(radians);z-=W/count*Math.sin(radians);const projected=x+z*.12;min=Math.min(min,projected);max=Math.max(max,projected)});
-  if(turnShadow){const blur=6+lift*8;turnShadow.style.width=Math.max(1,max-min+blur*2)+'px';turnShadow.style.transform='translate3d('+(min-blur)+'px,0,0)';turnShadow.style.opacity=(.13*lift).toFixed(3)}
+  strips.forEach((hinge,i)=>{const position=(i+.5)/count,angle=-180*progress+42*lift*(2*position-1),radians=angle*Math.PI/180;hinge.style.transform='rotateY('+(angle-previous)+'deg)';previous=angle;x+=W/count*Math.cos(radians);z-=W/count*Math.sin(radians);const projected=x+z*.12;min=Math.min(min,projected);max=Math.max(max,projected)});
+  // Keep the shadow texture at a fixed size: transforms and opacity share the
+  // sheet's frame clock without resizing a blurred layer on every frame.
+  if(turnShadow){turnShadow.style.transform='translate3d('+min+'px,0,0) scaleX('+Math.max(.015,(max-min)/W)+')';turnShadow.style.opacity=(.12*lift).toFixed(3)}
 }
 function turnDuration(){return matchMedia('(prefers-reduced-motion: reduce)').matches?1:Math.min(PT[pt].d,(lowMemory||matchMedia('(pointer:coarse)').matches)?420:700)}
 function run(d){
   return new Promise(res=>{
-    const t0=performance.now(),D=turnDuration(),session=bookSession;
+    let t0;const D=turnDuration(),session=bookSession;
     anim=true;shift(s,true);pose(d>0?0:1);sh.hidden=false;snd(null,D);
     const f=now=>{
       if(session!==bookSession){res();return}
+      if(t0===undefined)t0=now;
       const u=Math.min(1,(now-t0)/D),e=u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
-      pose(d>0?e:1-e);const offset=shiftOffset(s)+(shiftOffset(s+d)-shiftOffset(s))*e;book.style.transform=offset?'translateX('+offset+'px)':'';window.decorateTurn?.(s,s+d,e);
+      pose(d>0?e:1-e);const offset=shiftOffset(s)+(shiftOffset(s+d)-shiftOffset(s))*e;book.style.transform=offset?'translateX('+offset+'px)':'';
       if(u<1)requestAnimationFrame(f);else{anim=false;res()}
     };
     requestAnimationFrame(f);
@@ -185,7 +192,7 @@ async function turn(d){
   const mid=d>0?[l0,r1]:[l1,r0];
   const [cF,cB,mL,mR,fL,fR]=await Promise.all([F,B,mid[0],mid[1],l1,r1].map(p=>get(p,w)));
   if(session!==bookSession)return;
-  if(!cF||(!single&&B<n&&!cB)||(l1>=0&&l1<n&&!fL)||(r1<n&&!fR)){busy=false;fit();toast('Page could not be turned. Try again.');return}
+  if(!cF||(!single&&B<n&&!cB)||(l1>=0&&l1<n&&!fL)||(r1<n&&!fR)){busy=false;lastLayout='';fit();toast('Page could not be turned. Try again.');return}
   buildSheet(cF,cB);
   fill(Ls,mL,mid[0]);fill(Rs,mR,mid[1]);
   book.style.setProperty('--turn-duration',turnDuration()+'ms');book.classList.add('turn');shift(s2);
@@ -194,7 +201,7 @@ async function turn(d){
   fill(Ls,l1<0?null:fL,l1);fill(Rs,r1>=n?null:fR,r1);book.classList.remove('turn');
   sh.hidden=true;sh.textContent='';strips=[];shades=[];turnShadow?.remove();turnShadow=null;
   Ls.querySelector('.sd').style.opacity=Rs.querySelector('.sd').style.opacity=0;
-  s=s2;busy=false;if(d>0)addPages(single?1:2);ui();if(resizePending){resizePending=false;fit()}else preload();if(window.pendingTurn){const direction=Math.sign(window.pendingTurn);window.pendingTurn-=direction;requestAnimationFrame(()=>turn(direction))}
+  s=s2;busy=false;if(d>0)addPages(single?1:2);ui();if(resizePending){resizePending=false;fit()}else preload(d);if(window.pendingTurn){const direction=Math.sign(window.pendingTurn);window.pendingTurn-=direction;turn(direction)}
 }
 
 /* Extras: highlights, bookmarks, drawer, search, contents, thumbnails, sound, preferences */
