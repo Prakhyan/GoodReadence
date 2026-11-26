@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 1.15
+
+More shelves. More possibilities.
+
+A larger collection across stories, poetry, history, philosophy and science. Original covers, author profiles and attributed community ratings, with complete books fetched only when you choose them.
+
+Includes: 1.15.0.
+
 ## Version 1.14
 
 A lighter library. More room to explore.

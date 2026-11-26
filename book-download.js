@@ -29,7 +29,7 @@
       signal.addEventListener('abort',abort,{once:true});if(signal.aborted){abort();return}
       worker.onmessage=e=>{const message=e.data;if(message.error){cleanup();reject(Error(message.error))}else if(message.progress)progress(message.progress,message.percent);else if(message.pdf){cleanup();resolve({file:new File([message.pdf],book.title.replace(/[\\/:*?"<>|]/g,' ').slice(0,160)+'.pdf',{type:'application/pdf',lastModified:0}),pages:message.pages,sourceHash,sections:publication?.sections.length||0})}};
       worker.onerror=()=>{cleanup();reject(Error('This device could not finish preparing the book. Close other apps and try again.'))};
-      worker.postMessage({book:{title:book.title,author:book.author,source:book.delivery.sourcePage||book.source,provider:book.delivery.provider,format:book.delivery.format},publication,bytes:publication?undefined:bytes},publication?[]:[bytes.buffer]);
+      worker.postMessage({book:{title:book.title,author:book.author,language:book.language||'en',source:book.delivery.sourcePage||book.source,provider:book.delivery.provider,format:book.delivery.format},publication,bytes:publication?undefined:bytes},publication?[]:[bytes.buffer]);
     });
   }
   window.GRBookDownload={prepare};

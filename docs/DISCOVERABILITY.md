@@ -4,7 +4,7 @@ GoodReadence remains a static, local-first application. Its home and information
 
 ## Publishing
 
-`npm run build:static` regenerates `library-data.json`, the enhanced `library.html`, 1,000 book pages, 83 additional catalogue pages, About, core metadata, `robots.txt` and `sitemap.xml`. Vercel runs the same dependency-free command when deploying. Generated HTML is checked into Git so it remains reviewable. The build copies only public runtime files and assets into the ignored `dist/` output folder; documentation, research, package manifests and build tools are never part of that artifact. Source book metadata lives in `public-books/catalog.json` and `public-books/authors.json`.
+`npm run build:static` regenerates `library-data.json`, the enhanced `library.html`, 2,000 book pages, 166 additional catalogue pages, About, core metadata, `robots.txt` and `sitemap.xml`. Vercel runs the same dependency-free command when deploying. Generated HTML is checked into Git so it remains reviewable. The build copies only public runtime files and assets into the ignored `dist/` output folder; documentation, research, package manifests and build tools are never part of that artifact. Source book metadata lives in `public-books/catalog.json` and `public-books/authors.json`.
 
 - Home: `https://goodreadence.vercel.app/`
 - About: `/about` (the home page retains its inline About section too)
@@ -14,7 +14,7 @@ GoodReadence remains a static, local-first application. Its home and information
 - Book example: `/library/pride-and-prejudice`
 - Sitemap: `/sitemap.xml`
 
-The 1,090 sitemap URLs resolve to actual HTML files through explicit Vercel rewrites. Missing books return 404; there is no catch-all single-page-app rewrite. Original `.html` links keep working, with canonical tags identifying the preferred URLs. The public catalogue starts with 12 real linked cards in HTML and is enhanced by the existing full-catalogue search and device import controls. Every book page includes a direct complete-PDF link without JavaScript.
+The 2,173 sitemap URLs resolve to actual HTML files through explicit Vercel rewrites. Missing books return 404; there is no catch-all single-page-app rewrite. Original `.html` links keep working, with canonical tags identifying the preferred URLs. The public catalogue starts with 12 real linked cards in HTML and is enhanced by the existing full-catalogue search and device import controls. Every book page includes a direct complete-PDF link without JavaScript.
 
 Each source record retains a `seoSlug` after its first generation. Keep this stable when correcting a title or author. An intentional URL change needs a permanent redirect from its previous path; do not silently rename published book URLs.
 
@@ -36,7 +36,7 @@ Production access is tested without account cookies or protection-bypass headers
 
 ## Checks
 
-Run the local server with `npm run preview`, then set `GR_BASE_URL` to that server and run `npm run test:discoverability`. It checks all 1,000 generated book records, sitemap uniqueness, no-JavaScript routes and pagination, canonical metadata, one-click book import/opening, offline reopening and real 404 responses. Existing library checks still cover global search, persistence and failed-download recovery.
+Run the local server with `npm run preview`, then set `GR_BASE_URL` to that server and run `npm run test:discoverability`. It checks all generated book records, sitemap uniqueness, no-JavaScript routes and pagination, canonical metadata, one-click book import/opening, offline reopening and real 404 responses. Existing library checks still cover global search, persistence and failed-download recovery.
 
 ## References
 

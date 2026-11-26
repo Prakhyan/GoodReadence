@@ -1,6 +1,6 @@
 {
   "name": "goodreadence-vendored-dependencies",
-  "version": "1.14.2",
+  "version": "1.15.0",
   "private": true,
   "description": "Pinned versions of libraries served locally by the static GoodReadence app.",
   "scripts": {
@@ -20,7 +20,10 @@
     "test:navigation": "node scripts/check-room-navigation.cjs",
     "test:on-demand": "node scripts/check-on-demand-books.cjs",
     "test:catalogue": "node scripts/check-catalogue-performance.cjs",
-    "audit:editions": "node scripts/audit-catalogue-parallel.cjs && node scripts/seal-catalogue-audit.cjs"
+    "audit:editions": "node scripts/audit-catalogue-parallel.cjs && node scripts/seal-catalogue-audit.cjs",
+    "test:catalogue:review": "node scripts/check-catalogue-review.cjs",
+    "library:inventory": "python scripts/plan-catalogue-expansion.py",
+    "library:review": "node scripts/review-catalogue-expansion.cjs"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "1.1.1",

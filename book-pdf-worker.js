@@ -7,7 +7,7 @@ self.onmessage=async({data:{book,publication,bytes}})=>{
       if(new TextDecoder().decode(bytes.subarray(0,5))!=='%PDF-')throw Error('The source did not return a PDF.');
       const source=await PDFDocument.load(bytes),out=await PDFDocument.create();for(let i=0;i<source.getPageCount();i+=4){for(const page of await out.copyPages(source,source.getPageIndices().slice(i,i+4))){page.node.delete(PDFName.of('Annots'));page.node.delete(PDFName.of('AA'));out.addPage(page)}postMessage({progress:'Checking PDF pages…',percent:45+45*(i+1)/source.getPageCount()})}const pdf=await out.save();postMessage({pdf:pdf.buffer,pages:out.getPageCount()},[pdf.buffer]);return;
     }
-    const out=await PDFDocument.create();out.registerFontkit(fontkit);out.setTitle(book.title);out.setAuthor(book.author);out.setCreator('GoodReadence · Casid Studio');out.setSubject('Source edition: '+book.source);out.setLanguage('en');
+    const out=await PDFDocument.create();out.registerFontkit(fontkit);out.setTitle(book.title);out.setAuthor(book.author);out.setCreator('GoodReadence · Casid Studio');out.setSubject('Source edition: '+book.source);out.setLanguage(book.language||'en');
     const fontBytes=await(await fetch('/assets/fonts/NotoSerif-Regular.ttf')).arrayBuffer(),font=await out.embedFont(fontBytes,{subset:true}),available=new Set(font.getCharacterSet()),fallback=new Map();
     const normalize=text=>text.normalize('NFC').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f\u00ad\u200b\u2060\ufe0e\ufe0f\ufeff]/g,'');
     const unsupported=new Set();for(const section of publication.sections)for(const block of section.blocks)for(const char of normalize(block.text||''))if(!/\s/.test(char)&&!available.has(char.codePointAt(0)))unsupported.add(char);
