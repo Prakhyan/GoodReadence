@@ -10,7 +10,7 @@ const base=process.env.GR_BASE_URL||'http://127.0.0.1:8805';
    await page.goto(base+'/index.html?library=1');await page.evaluate(async()=>openPdf(await(await fetch('/animation-fixture.pdf')).blob()));
    await page.waitForFunction(()=>pdf&&document.querySelector('#R canvas')&&!busy);await page.evaluate(()=>go(14));await page.waitForFunction(()=>Ls.p===13&&Rs.p===14);await page.evaluate(async()=>await q);
    // A same-size observer callback must retain rendered pages and paper geometry.
-   assert(await page.evaluate(()=>{const version=ver,keys=[...cache.keys()].join(),depth=book.style.getPropertyValue('--cover-depth');fit();return ver===version&&keys===[...cache.keys()].join()&&depth===book.style.getPropertyValue('--cover-depth')}));
+   assert(await page.evaluate(()=>{fit();const version=ver,keys=[...cache.keys()].join(),depth=book.style.getPropertyValue('--cover-depth');fit();return ver===version&&keys===[...cache.keys()].join()&&depth===book.style.getPropertyValue('--cover-depth')}));
    for(const appearance of ['light','dark'])for(const readingTheme of [0,1,2]){
     const controls=await page.evaluate(({appearance,readingTheme})=>{GRAppearance.set(appearance);th=readingTheme;theme();return [...document.querySelectorAll('#readingView,#readingDesk')].map(el=>({background:getComputedStyle(el).backgroundColor,colour:getComputedStyle(el).color,label:getComputedStyle(el.parentElement).color,option:getComputedStyle(el.options[0]).color}))},{appearance,readingTheme});
     assert(controls.every(c=>c.background==='rgba(0, 0, 0, 0)'&&c.colour===c.label&&c.option===c.colour));
