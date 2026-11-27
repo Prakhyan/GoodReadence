@@ -6,7 +6,7 @@ Your next book is closer.
 
 Discover 5,000 complete books across the collection, with a fresh selection each time you open the app. Add your next read straight to your personal shelf.
 
-Includes: 1.5.0, 1.5.1, 1.5.2.
+Includes: 1.5.0, 1.5.1, 1.5.2, 1.5.3.
 
 ## Version 1.4
 
