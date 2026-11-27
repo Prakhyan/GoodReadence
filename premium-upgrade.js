@@ -7,7 +7,7 @@
   $('#mute').closest('.row').hidden=false;$('#pageVolume').closest('.row').hidden=false;
   window.recordReadingTime=(start,end)=>{let cursor=start;while(cursor<end){const date=new Date(cursor),next=new Date(cursor);next.setHours(24,0,0,0);const until=Math.min(end,next.getTime()),key=date.toLocaleDateString('sv');S.days[key]=S.days[key]||{m:0,p:0};S.days[key].m+=(until-cursor)/1000;cursor=until}};
   const originalEpub=showEpub;showEpub=function(entry,publication){sesEnd();bk=entry;autoSes();const result=originalEpub(entry,publication);const audio=$('#epAudio').onclick;$('#epAudio').onclick=()=>{audio();for(const label of $('#epPanel').querySelectorAll('label'))if(/^Page.turn/.test(label.textContent))label.hidden=false};return result};$('#epReader').addEventListener('close',()=>{sesEnd();if(bk)putB(bk);bk=null});
-  if(location.hash==='#about'){const intro=$('#intro');intro.hidden=false;requestAnimationFrame(()=>$('#about').scrollIntoView())}
+  if(location.hash==='#about'){document.documentElement.classList.remove('library-entry');const intro=$('#intro');intro.hidden=false;requestAnimationFrame(()=>$('#about').scrollIntoView())}
   const toolbar=$('#readerTools');toolbar.setAttribute('aria-label','Reading tools');
   // Keep the brush palette beside the page instead of burying it in the toolbar.
   const palette=$('#inkControls');stage.append(palette);

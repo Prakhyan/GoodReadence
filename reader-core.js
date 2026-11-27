@@ -532,7 +532,7 @@ function shelf(){
   $('#featureLabel').textContent=featured?'Continue reading':'Your reading room';
   $('#featureInfo').textContent=featured?readingPosition(featured):'Bring your PDFs and EPUBs. Read offline, and pick up where you left off.';
   $('#featureAction').textContent=featured?'Open book →':'Add your first book';
-  $('#brandHome').onclick=()=>{const intro=$('#intro');intro.hidden=false;intro.scrollTop=0;try{localStorage.removeItem('gr:introSeen')}catch(e){}};
+  $('#brandHome').onclick=()=>{document.documentElement.classList.remove('library-entry');const intro=$('#intro');intro.hidden=false;intro.scrollTop=0;try{localStorage.removeItem('gr:introSeen')}catch(e){}};
 $('#brandHome').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('#brandHome').click()}};
 $('#featureAction').onclick=()=>featured?openBook(featured):$('#f').click();
   if(!featured)return;

@@ -1,122 +1,42 @@
 # Changelog
 
-## Version 1.15
-
-More shelves. More possibilities.
-
-A larger collection across stories, poetry, history, philosophy and science. Original covers, author profiles and attributed community ratings, with complete books fetched only when you choose them.
-
-Includes: 1.15.0.
-
-## Version 1.14
-
-A lighter library. More room to explore.
-
-Browse page by page, search the collection online and load covers as they come into view. Book details arrive when needed, with a lighter start to your reading room and renewed edition checks.
-
-Includes: 1.14.0, 1.14.1, 1.14.2.
-
-## Version 1.13
-
-Your library. A lighter footprint.
-
-Explore complete books without downloading the collection. Add a title to fetch its source and prepare a searchable PDF on your device, ready for offline reading. Clear progress, cancellation and original-edition credits keep each addition simple.
-
-Includes: 1.13.0.
-
-## Version 1.12
-
-A collection with character.
-
-Refreshed classic covers and more verified reader ratings. A calmer reading surface, coordinated page shadows and clearer reading controls.
-
-Includes: 1.12.0.
-
-## Version 1.11
-
-A reading room that flows.
-
-A quieter navigation menu, device-aware appearance and installation together in settings. Discover the highest-rated classics or shuffle for something new, with fluid curved page turns and a new reading activity calendar.
-
-Includes: 1.11.0.
-
-## Version 1.10
-
-More stories. Wherever you read.
-
-A thousand complete classics and a fresh daily selection. A deeper Dual reading view and clearer installation bring your reading room along. Compact sounds stream on demand, with optional downloads for offline listening.
-
-Includes: 1.10.0, 1.10.1.
-
-## Version 1.9
-
-Settle into your next chapter.
-
-New focus sounds and flexible book brightness. Simpler page marking and a coordinated reading room. Colourful reading milestones to celebrate your progress.
-
-Includes: 1.9.0.
-
-## Version 1.8
-
-A reading room worth discovering.
-
-Dedicated pages for every classic, stronger search and sharing previews, and a coordinated mobile library with clear book-import feedback.
-
-Includes: 1.8.0, 1.8.1, 1.8.2, 1.8.3.
-
-## Version 1.7
-
-More worlds to get lost in.
-
-750 complete classics, with 250 new books across the collection. More fairy tales, nature writing, novellas, poetry and lesser-explored genres. Coordinated library buttons and individually coloured feature cards.
-
-Includes: 1.7.0.
-
-## Version 1.6
-
-Your book. Your colours.
-
-Ten hardcover colours, precise zoom controls and an organised home for the reader’s contents, marks and settings.
-
-Includes: 1.6.0, 1.6.1, 1.6.2, 1.6.3.
-
 ## Version 1.5
 
-A new chapter with Casid Studio.
+Your next book is closer.
 
-An understated hardcover with page depth that changes as you read. Weekly backup reminders, EPUB typography controls and in-app word lookup. Updated document engines and stronger browser protections.
+A collection of 2,000 complete books, with focused search, fresh covers and a lighter library. Add a book straight to your personal shelf and read whenever you’re ready.
 
-Includes: 1.5.0.
+Includes: 1.5.0, 1.5.1.
 
 ## Version 1.4
 
-Make the room your own.
+Make reading yours.
 
-Unified marking tools and clearer bookmark controls. 7- and 30-day statistics with chart choices and a daily breakdown. Refreshed identity, mobile layouts and read-aloud flow.
+Choose your desk, paper and hardcover. Set the mood with ambience, adjust EPUB typography and follow your reading rhythm.
 
 Includes: 1.4.0.
 
 ## Version 1.3
 
-Your library, ready to travel.
+Take your library along.
 
-Full ZIP backup and restore for books, notes, progress and settings. Direct device transfer through QR pairing. Export annotations as Markdown or plain text.
+Back up your books and reading progress, transfer them between devices and export your notes. Reopen saved books offline.
 
-Includes: 1.3.0, 1.3.1.
+Includes: 1.3.0.
 
 ## Version 1.2
 
-Five hundred ways to begin.
+More ways to stay with the story.
 
-A public collection of 500 complete classics across a wider range of genres. Refined library browsing, book information and consistent card layouts.
+Highlight, draw, bookmark and write margin notes. Listen aloud, look up a word or prepare your next book from your own documents.
 
 Includes: 1.2.0.
 
 ## Version 1.1
 
-More stories. More choice.
+A shelf full of possibilities.
 
-The public library grows to 300 complete books, searchable by title, author and genre.
+Discover complete classics by title, author or genre. Explore book details and add your next read to your own library.
 
 Includes: 1.1.0.
 
@@ -124,6 +44,6 @@ Includes: 1.1.0.
 
 Your private reading room.
 
-Book-style PDF reading, a personal shelf and progress saved on your device. A public library of 100 classics, alongside notes, highlights and reading tools. Offline reading and automatic online app updates.
+Book-style page turns, a personal shelf and a place to pick up where you left off. Free to read, with no account needed.
 
 Includes: 1.0.0.

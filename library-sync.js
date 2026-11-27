@@ -1,6 +1,6 @@
 // Refresh the private shelf when the catalogue adds a book in another tab.
 (() => {
-  const refresh=()=>{if(typeof loadLib==='function')loadLib()};
+  const refresh=async()=>{if(typeof loadLib==='function'){await loadLib();try{const title=sessionStorage.getItem('gr:bookAdded');if(title){sessionStorage.removeItem('gr:bookAdded');say('“'+title+'” is in your library.')}}catch{}}};
   window.addEventListener('pageshow',refresh);
   window.addEventListener('focus',refresh);
   try{const channel=new BroadcastChannel('goodreadence-library');channel.onmessage=e=>{if(e.data?.type==='changed')refresh()}}catch{}
