@@ -4,7 +4,7 @@
 <p align="center">Good riddance to bad reads.</p>
 <p align="center"><a href="https://goodreadence.vercel.app/">Open the reading room</a> · <a href="https://goodreadence.vercel.app/library">Explore the public library</a> · <a href="https://goodreadence.vercel.app/help">Help & FAQ</a></p>
 
-A free, local-first reading room from **Casid Studio**. Read your own documents or choose from **2,000 complete classics**, with book-style page turns, a personal shelf and tools for making the next chapter yours.
+A free, local-first reading room from **Casid Studio**. Read your own documents or choose from **5,000 complete classics**, with book-style page turns, a personal shelf and tools for making the next chapter yours.
 
 ## The reading room
 

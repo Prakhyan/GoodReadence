@@ -12,5 +12,5 @@ function identify(book,rdf=''){
 // as proof that two already-reviewed books are identical.
 function keys(identity){const prefix=identity.language+':';return[prefix+'title:'+identity.author+':'+identity.title,...(identity.authorAgent?[prefix+'agent:'+identity.authorAgent+':'+identity.title]:[])]}
 function referenceKeys(identity){return identity.references.map(r=>identity.language+':reference:'+r)}
-const partialTitle=title=>/\bv\.\s*(?:\d+|[ivxlcdm]+)\b|\bvol(?:ume)?s?\.?\s*(?:\d+|[ivxlcdm]+)\b|\b(?:part|book)\s+(?:the\s+)?(?:[ivxlcdm\d]+|first|second|third|fourth|one|two|three)\b|\b(?:abridged|retold|epitome|selections)\b/i.test(title);
+const partialTitle=title=>/\bv\.\s*(?:\d+|[ivxlcdm]+)\b|\bvol(?:ume)?s?\.?\s*(?:\d+|[ivxlcdm]+)\b|\b(?:part|book)\s+(?:the\s+)?(?:[ivxlcdm\d]+|first|second|third|fourth|one|two|three)\b|\b(?:abridged|retold|epitome|selections)\b|^letters to his son,?\s+\d{4}\b/i.test(title);
 module.exports={identify,keys,referenceKeys,titleKey,partialTitle};

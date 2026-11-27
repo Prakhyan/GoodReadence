@@ -4,9 +4,9 @@
 
 Your next book is closer.
 
-A collection of 2,000 complete books, with focused search, fresh covers and a lighter library. Add a book straight to your personal shelf and read whenever you’re ready.
+Discover 5,000 complete books across the collection, with a fresh selection each time you open the app. Add your next read straight to your personal shelf.
 
-Includes: 1.5.0, 1.5.1.
+Includes: 1.5.0, 1.5.1, 1.5.2.
 
 ## Version 1.4
 

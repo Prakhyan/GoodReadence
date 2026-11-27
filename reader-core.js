@@ -532,8 +532,6 @@ function shelf(){
   $('#featureLabel').textContent=featured?'Continue reading':'Your reading room';
   $('#featureInfo').textContent=featured?readingPosition(featured):'Bring your PDFs and EPUBs. Read offline, and pick up where you left off.';
   $('#featureAction').textContent=featured?'Open book →':'Add your first book';
-  $('#brandHome').onclick=()=>{document.documentElement.classList.remove('library-entry');const intro=$('#intro');intro.hidden=false;intro.scrollTop=0;try{localStorage.removeItem('gr:introSeen')}catch(e){}};
-$('#brandHome').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('#brandHome').click()}};
 $('#featureAction').onclick=()=>featured?openBook(featured):$('#f').click();
   if(!featured)return;
   $('#featureCover').src=featured.cover;
@@ -559,6 +557,8 @@ function readingPosition(entry){
   return entry.fin?'Finished':(entry.format==='epub'||entry.format==='office'?'Chapter ':'Page ')+((entry.last||0)+1)+' of '+entry.n;
 }
 $('#importBook').onclick=()=>$('#f').click();
+$('#brandHome').onclick=()=>{document.documentElement.classList.remove('library-entry');const intro=$('#intro');intro.hidden=false;intro.scrollTop=0;try{localStorage.removeItem('gr:introSeen')}catch(e){}};
+$('#brandHome').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('#brandHome').click()}};
 $('#enterLibrary').onclick=()=>{const intro=$('#intro');intro.classList.add('leaving');setTimeout(()=>{intro.hidden=true;intro.classList.remove('leaving')},520);try{localStorage.setItem('gr:introSeen','1')}catch(e){}};
 try{if(localStorage.getItem('gr:introSeen')==='1')$('#intro').hidden=true}catch(e){}
 $('#featureAction').onclick=()=>$('#f').click();

@@ -14,9 +14,17 @@ def author_key(value):
     value=re.sub(r'\[[^]]*\]', '',value).strip()
     return ' '.join(sorted(re.findall(r'[a-z0-9]+',unicodedata.normalize('NFKD',value).encode('ascii','ignore').decode().lower())))
 def genre(row):
-    subjects=(row['Subjects']+' '+row['Bookshelves']).lower()
+    subjects=row['Subjects'].lower(); shelves=row['Bookshelves'].lower()
     tests=[('philosophy|ethics|metaphysics','Philosophy'),('architecture|painting|sculpture|art history','Art & architecture'),('letters|diaries|autobiography|memoirs','Memoir & letters'),('essays','Essays'),('grammar|linguistics|literary criticism|rhetoric|philology','Language & literature'),('mathematics|astronomy|physics|chemistry|inventions|natural philosophy','Science & ideas'),('detective|mystery','Mystery'),('science fiction','Science fiction'),('utopias|utopian','Utopian fiction'),('gothic|horror|ghost stories','Gothic fiction'),('fairy tales','Fairy tales'),('fantasy|magic','Fantasy'),('epic poetry|epics','Epic poetry'),('poetry|poems|sonnets','Poetry'),('drama|plays|tragedies|comedies','Drama'),('fables','Fables'),('short stories','Short stories'),('sea stories|adventure stories|pirates','Adventure'),('love stories|romances','Romance'),('historical fiction','Historical fiction'),('satire','Satire'),('humor|humour','Humour'),('juvenile fiction','Children’s fiction'),('family|domestic fiction','Family fiction'),('botany|zoology|birds|natural history|gardening|animals|forests','Nature writing'),('fiction','Literary fiction'),('biography|history','History & biography'),('travel|description and travel|voyages','Travel'),('religion|theology|christian|mythology','Religion & mythology')]
-    return next((name for terms,name in tests if re.search(terms,subjects)), 'General nonfiction')
+    # Broad browsing shelves (especially "Essays, Letters and Speeches") must
+    # not override the book's actual subject headings.
+    if re.search(r'books and reading|bibliograph|library science|literature.*criticism',subjects):return 'Language & literature'
+    for terms,name in tests:
+        if re.search(terms,subjects):return name
+    for terms,name in tests:
+        if name=='Memoir & letters' and 'essays' in shelves:continue
+        if re.search(terms,shelves):return name
+    return 'General nonfiction'
 
 def main():
     OUT.mkdir(parents=True,exist_ok=True)

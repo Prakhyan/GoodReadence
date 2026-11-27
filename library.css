@@ -14,3 +14,4 @@ body:has(.book-details[open]){overflow:hidden}.bio-credit{font-size:11px!importa
 .classic-card{content-visibility:auto;contain-intrinsic-size:auto 760px}.classics-grid[aria-busy=true]{cursor:progress}.classic-cover img{background:transparent}
 
 .classic-cover img[data-cover-src]{opacity:0}.classic-cover:has(noscript img)>img[data-cover-src]{display:none}
+.catalogue-opening .classics-grid{visibility:hidden}

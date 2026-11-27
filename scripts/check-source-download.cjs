@@ -1,0 +1,7 @@
+const fs=require('fs'),assert=require('assert/strict'),download=require('./download-reviewed-source.cjs');
+const folder='research/source-download-check',url='https://gutenberg.pglaf.org/cache/epub/999999/pg999999.epub',payload=Buffer.alloc(12000,7),original=global.fetch;fs.mkdirSync(folder,{recursive:true});
+async function run(name,fetcher){const file=folder+'/'+name+'.epub';if(fs.existsSync(file))fs.unlinkSync(file);global.fetch=fetcher;await download(url,file);assert.deepEqual(fs.readFileSync(file),payload)}
+(async()=>{let calls=0;await run('full-stream',async(_url,options)=>{calls++;assert.equal(options.redirect,'error');assert(!options.headers.Range);return new Response(payload,{headers:{'Content-Length':String(payload.length)}})});assert.equal(calls,1);
+calls=0;await run('range-fallback',async(_url,options)=>{calls++;if(!options.headers.Range)return new Response(payload.subarray(0,100),{headers:{'Content-Length':String(payload.length)}});return new Response(payload,{status:206,headers:{'Content-Range':'bytes 0-'+(payload.length-1)+'/'+payload.length}})});assert.equal(calls,2);
+await assert.rejects(()=>download('https://example.com/book.epub',folder+'/unapproved.epub'),/Unreviewed source host/);console.log('PASS complete bounded single-stream review downloads, truncated-stream range fallback, redirect restrictions and source-host allowlist.');
+})().catch(e=>{console.error(e);process.exitCode=1}).finally(()=>{global.fetch=original});

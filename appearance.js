@@ -1,6 +1,9 @@
 /* Follow the device until the reader explicitly chooses a different appearance. */
 (()=>{
  if(new URLSearchParams(location.search).get('library')==='1')document.documentElement.classList.add('library-entry');
+ if(/^\/library(?:\.html)?\/?$/.test(location.pathname))document.documentElement.classList.add('catalogue-opening');
+ // An installed-app launch starts a fresh visit, even when storage was restored.
+ if(new URLSearchParams(location.search).get('launch')==='1')try{sessionStorage.removeItem('gr:catalogueSessionSeed');const url=new URL(location.href);url.searchParams.delete('launch');history.replaceState(null,'',url)}catch{}
  const system=matchMedia('(prefers-color-scheme: dark)');
  const read=()=>{try{return localStorage.getItem('gr:appearance')}catch{return null}};
  const valid=value=>['light','dark'].includes(value)?value:'system';

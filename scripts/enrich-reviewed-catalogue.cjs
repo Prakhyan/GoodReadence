@@ -16,8 +16,9 @@ async function json(url){const r=await fetch(url,{headers:{'User-Agent':'GoodRea
     if(data.type==='disambiguation'||!data.extract||death>0&&!data.extract.includes(String(death)))throw Error('No exact, dated author profile');
     const text=data.extract.slice(0,2200);profile={...profile,bio:text.slice(0,text.lastIndexOf('.')+1)||text,source:data.content_urls.desktop.page,biographyCredit:'Biography adapted from Wikipedia contributors; attribution and share-alike terms apply.'};
    }catch(e){profile={...profile}}finally{await pause(650)}}
-  profile={...profile,works:[...new Set(byAuthor.get(key))].slice(0,6)};for(const book of ids)out[book.id]={...(out[book.id]||{}),authorInfo:profile};save();if(++i%25===0)console.log('Author profiles checked',i,'/',unique.length);
+  profile={...profile,works:[...new Set(byAuthor.get(key))].slice(0,6)};for(const book of ids)out[book.id]={...(out[book.id]||{}),authorInfo:profile};if(++i%25===0){save();console.log('Author profiles checked',i,'/',unique.length)}
  }
+ save();
  for(let start=0;start<books.length;start+=25){
   const batch=books.slice(start,start+25).filter(b=>!out[b.id]?.ratingChecked);if(!batch.length)continue;
   const query='id_project_gutenberg:('+batch.map(b=>b.id).join(' OR ')+')',url='https://openlibrary.org/search.json?'+new URLSearchParams({q:query,fields:'key,title,author_name,ratings_average,ratings_count,id_project_gutenberg',limit:'100'}),file=folder+'/ratings-'+batch.map(b=>b.id).join('-')+'.json';
