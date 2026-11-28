@@ -1,5 +1,6 @@
 # Project guides
 
+- [Reading interface and storage](EDITORIAL-AND-STORAGE.md): EPUB/PDF choices, local backups, storage limits and verification.
 - [Search and sharing](DISCOVERABILITY.md): static pages, metadata, sitemap and Search Console.
 - [Launch copy](LAUNCH-COPY.md): ready-to-use drafts for the owner’s external listings.
 - [Public library](PUBLIC-LIBRARY.md): selection, rights screening, complete-PDF preparation and publication checks.

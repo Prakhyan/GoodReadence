@@ -4,15 +4,16 @@
 <p align="center">Good riddance to bad reads.</p>
 <p align="center"><a href="https://goodreadence.vercel.app/">Open the reading room</a> · <a href="https://goodreadence.vercel.app/library">Explore the public library</a> · <a href="https://goodreadence.vercel.app/help">Help & FAQ</a></p>
 
-A free, local-first reading room from **Casid Studio**. Read your own documents or choose from **5,000 complete classics**, with book-style page turns, a personal shelf and tools for making the next chapter yours.
+A free, local-first reader from **Casid Studio**. Open PDF and EPUB files, or choose from **5,000 complete classics**. Books, notes and reading positions are saved in the current browser.
 
 ## The reading room
 
 - Crisp PDF pages with Dual, single-page and scrolling views.
 - EPUB typography controls, ten hardcover colours, reading themes and ambient sound.
 - Highlights, freehand marks, notes, bookmarks, reading goals and statistics.
-- An on-demand public library with complete-book PDF preparation, covers and edition credits.
+- An on-demand public library with original EPUBs, optional PDF preparation, covers and edition credits.
 - ZIP backup and restore, annotation exports and direct device transfer.
+- A readable home-page sample and optional automatic backups to a local folder in supported browsers.
 - Optional installation and offline access to books already saved on the device.
 - Compact ambience on demand, with individual offline downloads only when requested.
 
@@ -20,7 +21,7 @@ Books and reading data stay in the current browser by default. Clearing browser 
 
 ## Try it
 
-Visit the [live app](https://goodreadence.vercel.app/), choose **Enter your reading room**, then **Public library** or **Add books**. No account is required. Start with [Help & FAQ](https://goodreadence.vercel.app/help) for installation, supported imports and backups.
+Visit the [live app](https://goodreadence.vercel.app/) to try the sample, or choose **Open your shelf**, then **Public library** or **Add books**. No account is required. Start with [Help & FAQ](https://goodreadence.vercel.app/help) for installation, supported imports and backups.
 
 Explore [Pride and Prejudice](https://goodreadence.vercel.app/library/pride-and-prejudice), [Dracula](https://goodreadence.vercel.app/library/dracula) or [The Adventures of Sherlock Holmes](https://goodreadence.vercel.app/library/adventures-of-sherlock-holmes). Each book has a complete edition, author details and a direct reading link.
 
@@ -70,7 +71,7 @@ Book texts, source covers, biographies and bundled libraries have their own attr
 
 ### On-demand public books
 
-The public catalogue keeps metadata and covers in the app. Full source books are retrieved only after Add to my library, then converted to searchable PDFs on the reader’s device. Saved books work offline. No complete public-book PDFs or EPUBs are included in the published dist folder. Local/Git source editions remain available for research and deterministic checks. A restricted streaming endpoint handles sources without browser download access; it stores no files but still consumes hosting bandwidth. See [the maintenance guide](docs/PUBLIC-LIBRARY.md) for source approval and validation.
+The public catalogue keeps metadata and covers in the app. Full source books are retrieved only after Add to my library, as EPUB by default or an optional searchable PDF prepared on the reader’s device. Saved books work offline. No complete public-book PDFs or EPUBs are included in the published dist folder. Local/Git source editions remain available for research and deterministic checks. A restricted streaming endpoint handles sources without browser download access; it stores no files but still consumes hosting bandwidth. See [the maintenance guide](docs/PUBLIC-LIBRARY.md) for source approval and validation.
 
 ### Paged public catalogue
 

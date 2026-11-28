@@ -4,25 +4,6 @@
 #t-pg .th{display:block;width:100%;height:auto;aspect-ratio:var(--r,.72);margin:0;overflow:hidden;border:1px solid var(--bd);border-radius:7px;box-sizing:border-box;isolation:isolate}
 #t-pg .th canvas{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 #t-pg .th b{bottom:5px;right:5px;border-radius:4px;padding:2px 5px;color:#fff;background:#231b31b8}
-.landing-header{right:24px;display:flex;align-items:center;gap:12px;padding:0;min-width:0}
-.landing-header nav{display:flex;flex-wrap:nowrap;gap:8px;min-width:0}
-.landing-header nav a{white-space:nowrap}
-.landing-header .appearance-toggle{position:static;flex-shrink:0;z-index:auto}
-.landing-footer .app-version{font-size:11px;letter-spacing:.04em;opacity:.75;margin:12px 0 0}
-#about .story{max-width:70ch;margin:30px auto 0;text-align:center}
-#about .story p{margin:15px 0}
-#about .feature-summary{gap:16px}
-#about .feature-summary article{padding:24px}
-#about .feature-summary h2{font-size:26px;margin:0 0 12px}
-#about .feature-summary p{font-size:14px;line-height:1.7;margin:0}
-#about .feature-summary article{border:1px solid transparent;border-top-width:3px;background:linear-gradient(var(--surface-raised),var(--surface-raised)) padding-box,var(--feature-border,linear-gradient(120deg,#9474c5,#bd9cde)) border-box}
-#about .feature-summary .feature-colour-1{--feature-border:linear-gradient(120deg,#9876c8,#ce9ccf,#7b86c8)}
-#about .feature-summary .feature-colour-2{--feature-border:linear-gradient(120deg,#d59a65,#e4c17c,#c88394)}
-#about .feature-summary .feature-colour-3{--feature-border:linear-gradient(120deg,#62a7b3,#8fc3b6,#8dadd2)}
-#about .feature-summary .feature-colour-4{--feature-border:linear-gradient(120deg,#829bd2,#b99ee0,#7dbabb)}
-#about .feature-summary .feature-colour-5{--feature-border:linear-gradient(120deg,#cb849f,#dfaa88,#bba0cc)}
-#about .feature-summary .feature-colour-6{--feature-border:linear-gradient(120deg,#99b975,#73b2ac,#c9bc7f)}
-#about .flipbook-promise{padding-block:24px}
 .portable-tools{justify-content:flex-end;align-items:center;margin:32px 0 0;padding:20px 0 4px;border-top:1px solid var(--line)}
 .portable-tools button{font-size:13px;display:inline-flex;align-items:center;gap:8px;box-shadow:none;background:transparent;color:var(--muted)}
 .portable-tools svg{width:17px;height:17px}
@@ -107,15 +88,6 @@
 #statsData th,#statsData td{padding:8px 6px;border-bottom:1px solid var(--bd);text-align:right}
 #statsData th:first-child,#statsData td:first-child{text-align:left}
 @media(max-width:700px){
-  #intro{padding:22px 18px 20px;row-gap:26px;grid-template-columns:minmax(0,1fr);align-content:start}
-  #intro .landing-header{position:relative;inset:auto;grid-column:1/-1;width:100%;padding:0;gap:7px;margin:0 0 12px}
-  .landing-header nav{flex:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
-  #intro .landing-header nav a{display:flex;align-items:center;justify-content:center;min-width:0;font-size:11px;line-height:1.2;padding:10px 4px;border-radius:11px;height:38px;box-sizing:border-box}
-  #intro .landing-header .appearance-toggle{width:38px;height:38px;padding:0;border-radius:11px;font-size:0}
-  #intro .landing-header .appearance-toggle::before{content:'☾';font-size:19px}
-  html[data-appearance=dark] #intro .landing-header .appearance-toggle::before{content:'☀'}
-  #intro .intro-content{grid-column:1;min-width:0}
-  #intro .intro-logo{width:62px;height:62px;margin-bottom:23px}
   #empty{padding:18px 18px 30px}
   #empty .library-header{display:flex;flex-direction:column;align-items:stretch;gap:16px;min-height:0;padding:0 0 20px}
   #empty .wordmark{font-size:22px;white-space:nowrap;min-width:0;display:flex;align-items:center;gap:7px}
@@ -124,7 +96,6 @@
   #empty .library-actions #installApp:not([hidden]){grid-column:1/-1;grid-row:2}
   #empty .feature{margin-top:22px}
   .portable-tools{justify-content:flex-end;margin-top:26px;padding-top:18px}
-  #about .feature-summary article{padding:20px}
   #pp{padding:8px 8px calc(var(--toolbar-height,110px) + 8px)}
   #pp .pb{height:min(65dvh,650px);max-height:calc(100dvh - var(--toolbar-height,110px) - 24px)}
   #dr{left:8px;right:8px;bottom:8px;max-width:570px}

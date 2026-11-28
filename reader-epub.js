@@ -83,10 +83,15 @@ async function readEpub(file){
 }
 function showEpub(entry,publication){
   const dialog=$('#epReader'),article=$('#epText'),scroll=$('#epScroll'),panel=$('#epPanel'),select=$('#epChapter');
-  const marks=entry.marks||=[];const style=entry.type||={size:21,font:'Georgia',ink:'#292622',paper:'#faf7f0'};
+  const dark=document.documentElement.dataset.appearance==='dark',marks=entry.marks||=[];const style=entry.type||={size:21,font:'Georgia',ink:dark?'#eee7db':'#28251f',paper:dark?'#24211f':'#f5f0e5'};
+  let saveTimer;document.querySelector('#epReadingViewLabel')?.remove();const viewLabel=document.createElement('label');viewLabel.id='epReadingViewLabel';viewLabel.append('View ');const viewSelect=document.createElement('select');viewSelect.id='epReadingView';viewSelect.setAttribute('aria-label','EPUB reading view');for(const [value,label]of [['dual','Dual'],['single','Single'],['scroll','Scroll']])viewSelect.add(new Option(label,value));viewSelect.value=style.view||'dual';viewLabel.append(viewSelect);select.after(viewLabel);
   let chapter=Math.min(entry.last||0,publication.chapters.length-1),selection=null;
-  const saveEntry=()=>{entry.ts=Date.now();putB(entry)};
-  const styleText=()=>{article.style.fontFamily=style.font;article.style.fontSize=style.size+'px';article.style.lineHeight=String(style.lineHeight||1.8);article.style.maxWidth=(style.measure||64)+'ch';scroll.style.paddingInline=(style.margin??6)+'vw';scroll.style.color=style.ink;scroll.style.background=style.paper};
+  const saveEntry=()=>{if(entry.demo)return;entry.ts=Date.now();putB(entry)};
+  const paintNav=()=>{$('#epPrev').disabled=chapter===0&&scroll.scrollLeft<2;$('#epNext').disabled=chapter===publication.chapters.length-1&&(viewSelect.value==='scroll'||scroll.scrollLeft+scroll.clientWidth>=article.scrollWidth-3)};
+  const stride=()=>scroll.clientWidth+(parseFloat(getComputedStyle(article).columnGap)||0);
+  function padSpread(){article.querySelector('.ep-end-page')?.remove();if(viewSelect.value!=='dual'||innerWidth<=700)return;const gap=parseFloat(getComputedStyle(article).columnGap)||48,w=(article.clientWidth-gap)/2,count=Math.round((article.scrollWidth+gap)/(w+gap));if(count>2&&count%2){const spacer=document.createElement('span');spacer.className='ep-end-page';spacer.setAttribute('aria-hidden','true');spacer.style.cssText='position:absolute;top:0;left:'+((count+1)*(w+gap)-gap-1)+'px;width:1px;height:1px';article.append(spacer)}}
+  const styleText=()=>{const paged=viewSelect.value!=='scroll',columns=viewSelect.value==='dual'&&innerWidth>700?2:1,page=Math.round(scroll.scrollLeft/Math.max(1,stride()));dialog.dataset.epView=viewSelect.value;scroll.classList.toggle('ep-paged',paged);article.style.fontFamily=style.font;article.style.fontSize=style.size+'px';article.style.lineHeight=String(style.lineHeight||1.8);article.style.maxWidth=paged?'none':(style.measure||64)+'ch';article.style.setProperty('--ep-columns',columns);scroll.style.setProperty('--ep-margin',(style.margin??6)+'vw');scroll.style.fontFamily=style.font;scroll.style.fontSize=style.size+'px';scroll.style.width=paged?'calc(100% - '+((style.margin??6)*2)+'vw)':'100%';scroll.style.maxWidth=paged?((style.measure||64)*columns+4)+'ch':'none';scroll.style.marginInline='auto';scroll.style.color=style.ink;scroll.style.backgroundColor=style.paper;requestAnimationFrame(()=>{padSpread();scroll.scrollLeft=page*stride();paintNav()})};
+  viewSelect.onchange=()=>{style.view=viewSelect.value;entry.epOffset=0;scroll.scrollLeft=0;styleText();saveEntry()};
   function render(position=0){
     selection=null;select.value=chapter;article.replaceChildren();
     publication.chapters[chapter].paragraphs.forEach((line,i)=>{
@@ -98,11 +103,12 @@ function showEpub(entry,publication){
       }
       p.append(line.slice(offset));article.append(p);
     });
-    scroll.scrollTop=position;$('#epPrev').disabled=chapter===0;$('#epNext').disabled=chapter===publication.chapters.length-1;
+    scroll.scrollTop=position;requestAnimationFrame(()=>{padSpread();scroll.scrollLeft=entry.epOffset||0;paintNav()});
   }
-  function jump(index,position=0){window.stopReadingVoice?.();chapter=index;entry.last=index;entry.scroll=position;panel.hidden=true;render(position);saveEntry()}
+  function jump(index,position=0){window.stopReadingVoice?.();chapter=Math.max(0,Math.min(publication.chapters.length-1,index));entry.last=chapter;entry.scroll=position;entry.epOffset=0;panel.hidden=true;render(position);saveEntry()}
   select.replaceChildren(...publication.chapters.map((c,i)=>new Option(c.title,i)));select.onchange=()=>jump(+select.value);
-  $('#epPrev').onclick=()=>{snd();jump(chapter-1)};$('#epNext').onclick=()=>{snd();jump(chapter+1)};
+  function step(direction){window.stopReadingVoice?.();if(viewSelect.value!=='scroll'&&(direction>0?scroll.scrollLeft+scroll.clientWidth<article.scrollWidth-3:scroll.scrollLeft>2)){snd();scroll.scrollLeft=Math.max(0,scroll.scrollLeft+direction*stride());entry.epOffset=scroll.scrollLeft;saveEntry();paintNav()}else if(direction>0?chapter<publication.chapters.length-1:chapter>0){snd();jump(chapter+direction)}}
+  $('#epPrev').onclick=()=>step(-1);$('#epNext').onclick=()=>step(1);
   function showPanel(){panel.hidden=false;panel.replaceChildren()}
   $('#epType').onclick=()=>{
     showPanel();
@@ -117,11 +123,11 @@ function showEpub(entry,publication){
     }
   };
   $('#epAudio').onclick=()=>{showPanel();const label=document.createElement('label'),volume=$('#pageVolume').cloneNode();volume.removeAttribute('id');volume.style.accentColor='#8764a6';volume.value=pageVolume;volume.oninput=()=>{pageVolume=+volume.value;$('#pageVolume').value=pageVolume;savePreferences()};volume.onchange=()=>snd();label.append('Page-turn volume ',volume);panel.append(label);for(const [label,names,current,choose] of [['Page turn',SN.map(item=>item.n),sn,i=>{sn=i;snd();savePreferences()}],['Ambience',AMB,am,i=>{am=i;$('#am').value=i;amb()}]]){
-    const wrapper=document.createElement('label'),control=document.createElement('select');wrapper.append(label+' ',control);panel.append(wrapper);names.forEach((name,i)=>control.add(new Option(name,i)));control.value=current;control.onchange=()=>choose(+control.value);
+    const wrapper=document.createElement('label'),control=document.createElement('select');if(label==='Ambience')control.id='epAmbienceControl';wrapper.append(label+' ',control);panel.append(wrapper);names.forEach((name,i)=>control.add(new Option(name,i)));control.value=current;control.onchange=()=>choose(+control.value);
   }
     const ambienceVolume=document.createElement('label'),slider=document.createElement('input');slider.type='range';slider.min=0;slider.max=1;slider.step=.05;slider.value=av;slider.oninput=()=>{av=+slider.value;$('#av').value=av;ambientVolume();savePreferences()};ambienceVolume.append('Ambience volume ',slider);panel.append(ambienceVolume);
     const status=document.createElement('p');status.dataset.ambStatus='';status.setAttribute('role','status');status.textContent=ambMessage;panel.append(status);
-    const credits=document.createElement('a');credits.href='ambience/CREDITS.html';credits.target='_blank';credits.rel='noopener';credits.textContent='Sound sources & credits';panel.append(credits);
+    const credits=document.createElement('a');credits.href='ambience/CREDITS.html';credits.target='_blank';credits.rel='noopener';credits.textContent='Sound sources & credits';panel.append(credits);window.GREpubSoundState?.();
   };
   function selected(){
     const sel=getSelection();if(!sel.rangeCount||sel.isCollapsed)return;
@@ -143,7 +149,8 @@ function showEpub(entry,publication){
   };
   $('#epFull').hidden=!document.fullscreenEnabled;$('#epFull').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
   $('#epHome').onclick=()=>dialog.close();dialog.onclose=()=>{document.removeEventListener('selectionchange',selected);saveEntry();resetAmbience();shelf()};
-  scroll.onscroll=()=>{if(dialog.open){entry.scroll=scroll.scrollTop}};
+  scroll.onscroll=()=>{if(dialog.open){entry.scroll=scroll.scrollTop;entry.epOffset=scroll.scrollLeft;paintNav();clearTimeout(saveTimer);saveTimer=setTimeout(saveEntry,700)}};
   window.addEventListener('pagehide',saveEntry);dialog.addEventListener('close',()=>window.removeEventListener('pagehide',saveEntry),{once:true});
-  panel.hidden=true;dialog.showModal();styleText();render(entry.scroll||0);
+  dialog.addEventListener('close',()=>{clearTimeout(saveTimer);window.stopReadingVoice?.()},{once:true});panel.hidden=true;dialog.showModal();styleText();render(entry.scroll||0);
 }
+window.GREpubSoundState=()=>{const control=document.querySelector('#epAmbienceControl');if(!control)return;for(const option of control.options)option.disabled=+option.value>0&&!navigator.onLine&&!window.GROffline?.soundSaved(AMBIENCE_TRACKS[+option.value-1]?.file);if(!navigator.onLine&&+control.value>0&&control.selectedOptions[0].disabled)control.value='0';const status=control.closest('#epPanel').querySelector('[data-amb-status]');if(!navigator.onLine&&status)status.textContent='You’re offline. Only downloaded sounds are available. Open Settings online to download a sound.'};

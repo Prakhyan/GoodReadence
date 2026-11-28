@@ -33,7 +33,7 @@ async function openPdf(file,b){
   resetReader();const session=bookSession;
   say('Opening…');let doc;
   try{
-    doc=await pdfjsLib.getDocument({isEvalSupported:false,data:new Uint8Array(await file.arrayBuffer())}).promise;
+    doc=await(await window.GRPDFFile(file)).promise;
     if(session!==bookSession){releasePdf(doc);return}
     const v=(await doc.getPage(1)).getViewport({scale:1});
     if(session!==bookSession){releasePdf(doc);return}
@@ -43,7 +43,7 @@ async function openPdf(file,b){
     pp=Math.max(0,Math.min((b?b.last:sv.p)|0,n-1));bm=sv.bm||[];hl=sv.hl||{};ix={n:0,t:[],run:0};did++;bk=b||null;$('#ch').hidden=false;chip();tabTo('');toc();
     $('#empty').hidden=true;book.hidden=false;sl.max=n;sl.disabled=false;document.body.classList.remove('lib');autoSes();
     fit();
-  }catch(e){releasePdf(doc);if(session===bookSession)say('That file couldn’t be opened. Choose a valid, unlocked PDF.')}
+  }catch(e){releasePdf(doc);if(session===bookSession){say('This PDF could not open. Choose an unlocked, complete copy.');if(b)dispatchEvent(new CustomEvent('gr:book-unreadable',{detail:{book:b}}))}}
 }
 
 /* Page rendering: small LRU cache, one render at a time, paused while a page is turning */
@@ -173,7 +173,7 @@ function run(d){
     const f=now=>{
       if(session!==bookSession){res();return}
       if(t0===undefined)t0=now;
-      const u=Math.min(1,(now-t0)/D),e=u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
+      const u=Math.min(1,(now-t0)/D),v=Math.pow(u,.85),e=v*v*v*(v*(v*6-15)+10);
       pose(d>0?e:1-e);const offset=shiftOffset(s)+(shiftOffset(s+d)-shiftOffset(s))*e;book.style.transform=offset?'translateX('+offset+'px)':'';
       if(u<1)requestAnimationFrame(f);else{anim=false;res()}
     };
@@ -285,7 +285,7 @@ function lists(){
   Object.keys(hl).filter(p=>hl[p].length).map(Number).sort((a,c)=>a-c).forEach(p=>b.append(item('🖍 Highlights · page '+(p+1),p)));
   if(!b.children.length)b.textContent='Bookmarks and highlights will appear here.';
 }
-$('#bm').onclick=()=>{const p=cp();bm=bm.includes(p)?bm.filter(x=>x!==p):[...bm,p];ui();lists()};
+$('#bm').onclick=()=>{const p=cp();bm=bm.includes(p)?bm.filter(x=>x!==p):[...bm,p];ui();lists();$('#bm').classList.remove('bookmark-saved');if(bm.includes(p))requestAnimationFrame(()=>$('#bm').classList.add('bookmark-saved'))};
 $('#mk').onclick=()=>{mk^=1;if(mk)er=0;paintMk();paintEr()};
 const mp=$('#mp');
 MC.forEach((c,i)=>{const b=document.createElement('button');b.style.background=c;b.setAttribute('aria-label','Colour '+(i+1));b.onclick=()=>{mkc=i;paintMk()};mp.append(b)});
@@ -391,18 +391,20 @@ function theme(){const T=THEMES[th],r=document.documentElement.style,B=T.b||{bg:
 const idb=new Promise((ok,no)=>{try{const r=indexedDB.open('casid',1);r.onupgradeneeded=()=>{r.result.createObjectStore('b',{keyPath:'id'});r.result.createObjectStore('f')};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error);r.onblocked=()=>no(Error('Close other GoodReadence tabs and try again.'))}catch(e){no(e)}});
 idb.catch(()=>{});
 const dbx=(s,m,f)=>idb.then(d=>new Promise((ok,no)=>{const t=d.transaction(s,m),q=f(t.objectStore(s));t.oncomplete=()=>ok(q&&q.result);t.onabort=t.onerror=()=>no(t.error)}));
-const writeBook=b=>{window.GRPortable?.touchBook(b);return dbx('b','readwrite',s=>s.put(b)).then(result=>{window.dispatchEvent(new Event('gr:changed'));return result})};
+const writeBook=b=>{if(b.demo)return Promise.resolve();window.GRPortable?.touchBook(b);return dbx('b','readwrite',s=>s.put(b)).then(result=>{window.dispatchEvent(new CustomEvent('gr:changed',{detail:{book:b,kind:'reading'}}));return result})};
 const putB=b=>writeBook(b).catch(storageError);
 async function storeBook(file,b){
+  if(b.demo)throw Error('Save the sample to your shelf before keeping it.');
+  window.GRStorage?.requestPersistence();
   window.GRPortable?.touchBook(b);
   const db=await idb;
   return new Promise((resolve,reject)=>{
     const transaction=db.transaction(['b','f'],'readwrite');
     transaction.objectStore('b').put(b);transaction.objectStore('f').put(file,b.id);
-    transaction.oncomplete=resolve;transaction.onabort=transaction.onerror=()=>reject(transaction.error);
+    transaction.oncomplete=()=>{dispatchEvent(new CustomEvent('gr:changed',{detail:{book:b,kind:'import'}}));resolve()};transaction.onabort=transaction.onerror=()=>reject(transaction.error);
   });
 }
-async function loadLib(){try{lib=await dbx('b','readonly',s=>s.getAll())}catch(e){lib=[]}shelf();renderStats($('#stats'))}
+async function loadLib(){try{const rows=await dbx('b','readonly',s=>s.getAll());lib=rows.filter(b=>b&&typeof b.id==='string'&&typeof b.name==='string'&&Number.isInteger(b.n)&&b.n>0);if(lib.length!==rows.length)toast('Some book records could not be displayed. They have been kept for recovery in a backup.')}catch(e){lib=[];say('Your shelf could not be read. Reopen this browser, or restore a ZIP backup. No books have been deleted.')}shelf();renderStats($('#stats'))}
 async function chapters(doc){
   try{const o=await doc.getOutline(),r=[];if(!o)return[];
     for(const it of o.slice(0,200)){let d=it.dest;if(typeof d==='string')d=await doc.getDestination(d);if(d)r.push(await doc.getPageIndex(d[0]))}
@@ -414,7 +416,7 @@ async function addBooks(files){
   files=files.filter(Boolean);if(!files.length)return;
   importingBooks=true;const feedback=window.GRImport;let last,added=0,errors=[];
   try{
-    if(window.prepareImports&&!window.skipPrep){files=await window.prepareImports(files);if(!files.length)return}
+    feedback.start('Checking your files…');if(window.prepareImports&&!window.skipPrep){files=await window.prepareImports(files);if(!files.length){feedback.fail('No books were added. Choose PDF, EPUB, JPG or PNG. DOCX and PPTX import text only.');return}}
     feedback.start('Preparing your book…');
     await new Promise(resolve=>requestAnimationFrame(()=>setTimeout(resolve,0)));
     if(!window.pdfjsLib)throw Error('The reader could not load. Reopen the app online and try again.');
@@ -433,7 +435,7 @@ async function addBooks(files){
         }
         feedback.update('Opening PDF… '+file.name);
         await window.GRPDFReady;
-        const task=pdfjsLib.getDocument({isEvalSupported:false,data:new Uint8Array(await file.arrayBuffer())});
+        const task=await window.GRPDFFile(file);
         task.onPassword=()=>{task.destroy();};
         doc=await task.promise;
         let thumbnail='';
@@ -452,9 +454,9 @@ async function openBook(b){
   say('Opening…');
   const f=await dbx('f','readonly',s=>s.get(b.id)).catch(()=>null);
   if(request!==openRequest)return;
-  if(!f){say('That book’s file is missing. Add it again.');return}
+  if(!(f instanceof Blob)||!f.size){say('This book’s file is missing. Other books are still available.');dispatchEvent(new CustomEvent('gr:book-unreadable',{detail:{book:b}}));return}
   b.lastReadAt=Date.now();await putB(b);
-  if(b.format==='epub'||b.format==='office'){try{const epub=b.format==='office'?await window.readOffice(f):await readEpub(f);if(request===openRequest){if(pdf)home();showEpub(b,epub)}}catch(error){toast(error.message)}return}
+  if(b.format==='epub'||b.format==='office'){try{const epub=b.format==='office'?await window.readOffice(f):await readEpub(f);if(request===openRequest){if(pdf)home();showEpub(b,epub)}}catch(error){toast(error.message);dispatchEvent(new CustomEvent('gr:book-unreadable',{detail:{book:b}}))}return}
   return openPdf(f,b);
 }
 function wrapText(x,t,cx,y,w,lh){let l='';t.split(' ').forEach(wd=>{const m=l?l+' '+wd:wd;if(x.measureText(m).width>w&&l){x.fillText(l,cx,y);y+=lh;l=wd}else l=m});x.fillText(l,cx,y)}
@@ -528,9 +530,9 @@ function shelf(){
   if(previous){previousImage.src=previous.cover;previousImage.alt='Previously read: '+previous.name}else{previousImage.removeAttribute('src');previousImage.alt=''}
   $('#collection').hidden=!featured;
   $('#featureCover').hidden=!featured;
-  $('#featureTitle').textContent=featured?featured.name:'A place to read.';
-  $('#featureLabel').textContent=featured?'Continue reading':'Your reading room';
-  $('#featureInfo').textContent=featured?readingPosition(featured):'Bring your PDFs and EPUBs. Read offline, and pick up where you left off.';
+  $('#featureTitle').textContent=featured?featured.name:'Your shelf is empty.';
+  $('#featureLabel').textContent=featured?'Continue reading':'Your shelf';
+  $('#featureInfo').textContent=featured?readingPosition(featured):'Add a PDF or EPUB, or choose a book from the public library.';
   $('#featureAction').textContent=featured?'Open book →':'Add your first book';
 $('#featureAction').onclick=()=>featured?openBook(featured):$('#f').click();
   if(!featured)return;
@@ -554,7 +556,7 @@ $('#featureAction').onclick=()=>featured?openBook(featured):$('#f').click();
   }
 }
 function readingPosition(entry){
-  return entry.fin?'Finished':(entry.format==='epub'||entry.format==='office'?'Chapter ':'Page ')+((entry.last||0)+1)+' of '+entry.n;
+  return (entry.format==='epub'?'EPUB · ':entry.format==='office'?'Text import · ':'PDF · ')+(entry.fin?'Finished':(entry.format==='epub'||entry.format==='office'?'Section ':'Page ')+((entry.last||0)+1)+' of '+entry.n);
 }
 $('#importBook').onclick=()=>$('#f').click();
 $('#brandHome').onclick=()=>{document.documentElement.classList.remove('library-entry');const intro=$('#intro');intro.hidden=false;intro.scrollTop=0;try{localStorage.removeItem('gr:introSeen')}catch(e){}};
@@ -570,7 +572,7 @@ function home(){
   resetReader();bk=null;n=0;book.hidden=true;$('#ch').hidden=true;sl.disabled=true;
   ['pv','nx','zo','zi','bm'].forEach(i=>$('#'+i).disabled=true);
   tabTo('');dw.classList.remove('on');document.body.classList.add('lib');$('#empty').hidden=false;
-  say('Your books are stored on this device. Cloud sync and transfers are optional.');renderStats($('#stats'));shelf();
+  say('Books and notes are saved in this browser. Keep a ZIP backup outside it.');renderStats($('#stats'));shelf();
 }
 function track(){
   if(!bk||!pdf)return;
@@ -598,7 +600,7 @@ function renderStats(el){
   fin=lib.filter(b=>b.fin).length,
   ch=lib.reduce((a,b)=>a+(b.chs||[]).filter((p,i)=>((b.chs[i+1]??b.n)-1)<=(b.max||0)).length,0),
   g=S.goal,d0=Dy(),cur=g.t==='p'?d0.p:Math.floor((d0.m+(ses&&ses.run?(Date.now()-ses.t0)/1e3:0))/60),pc=Math.min(100,Math.round(cur/g.v*100));
-  el.innerHTML="<div class='stats-cheer'><span>Your reading momentum</span><strong>"+(pc>=100?'Daily goal reached. Beautifully done.':'Every chapter is a little victory.')+"</strong></div><div class='cd'><b>"+fire(streak())+streak()+"</b><span>day streak</span></div><div class='cd'><b>"+fin+"</b><span>books completed</span></div><div class='cd'><b>"+ch+"</b><span>chapters completed</span></div><div class='cd'><b>"+t+"</b><span>min per session</span></div><div class='gl'>Today: "+cur+" / "+g.v+(g.t==='p'?' pages':' minutes')+"<i><u style='width:"+pc+"%'></u></i></div>";
+  el.innerHTML="<div class='stats-cheer'><span>Reading log</span><strong>"+(pc>=100?'Daily goal reached.':'Reading this week')+"</strong></div><div class='cd'><b>"+fire(streak())+streak()+"</b><span>day streak</span></div><div class='cd'><b>"+fin+"</b><span>books completed</span></div><div class='cd'><b>"+ch+"</b><span>chapters completed</span></div><div class='cd'><b>"+t+"</b><span>min per session</span></div><div class='gl'>Today: "+cur+" / "+g.v+(g.t==='p'?' pages':' minutes')+"<i><u style='width:"+pc+"%'></u></i></div>";
 }
 function addPages(k){const d=Dy(),b=d.p;d.p+=k;if(bk)bk.readPages=(bk.readPages||0)+k;sv();if(S.goal.t==='p'&&b<S.goal.v&&d.p>=S.goal.v)toast('Daily goal reached ✦')}
 const secs=()=>ses?ses.acc+(ses.run?(Date.now()-ses.t0)/1e3:0):0;

@@ -16,14 +16,15 @@
     const data=await readDB(),selected=ids?new Set(ids):null;
     data.books=data.books.filter(b=>!selected||selected.has(b.id));
     data.records=data.records.filter(r=>!selected||selected.has(r.key)||settings&&r.key==='gr:brush');
-    for(const b of data.books)if(!data.records.some(r=>r.key===b.id&&r.value instanceof Blob&&r.value.size>0))throw Error('The file for “'+b.name+'” is missing. Add it again before making a full backup.');
+    data.recovery=[];data.books=data.books.filter(b=>{if(!b||typeof b.id!=='string'||typeof b.name!=='string'||!Number.isInteger(b.n)||b.n<1||!data.records.some(r=>r.key===b.id&&r.value instanceof Blob&&r.value.size>0)){data.recovery.push({book:b,reason:'Missing file or unreadable book metadata. Reading data retained for recovery.'});return false}return true});
     data.records=data.records.filter(r=>data.books.some(b=>b.id===r.key)||r.key==='gr:brush');
+    for(const b of data.books)if(/^data:image\/svg\+xml;base64,/i.test(b.cover||'')){try{const bytes=Uint8Array.from(atob(b.cover.split(',')[1]),c=>c.charCodeAt(0));b.cover=await window.GRCoverData(new Blob([bytes],{type:'image/svg+xml'}))}catch{b.cover=''}}
     data.settings={};if(settings)for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(prefKey(key))data.settings[key]=localStorage.getItem(key)}
     return {...data,kind:'goodreadence-backup',schema:1,createdAt:new Date().toISOString(),deviceId};
   }
-  async function digest(blob){return [...new Uint8Array(await crypto.subtle.digest('SHA-256',await blob.arrayBuffer()))].map(v=>v.toString(16).padStart(2,'0')).join('')}
+  async function digest(blob){if(window.GRDocumentTask)return (await GRDocumentTask('digest',[],{blob})).hash;return [...new Uint8Array(await crypto.subtle.digest('SHA-256',await blob.arrayBuffer()))].map(v=>v.toString(16).padStart(2,'0')).join('')}
   async function archive(data,onProgress=()=>{},writable=null){
-    const parts=[],manifest={kind:data.kind,schema:1,createdAt:data.createdAt,deviceId:data.deviceId,books:data.books,settings:data.settings,records:[]};
+    const parts=[],manifest={kind:data.kind,schema:1,createdAt:data.createdAt,deviceId:data.deviceId,books:data.books,settings:data.settings,recovery:data.recovery||[],records:[]};
     let size=0;
     for(let i=0;i<data.records.length;i++){const {key,value}=data.records[i];if(value instanceof Blob){if(value.size>FILE_MAX)throw Error('One book exceeds the 300 MB backup limit.');size+=value.size;if(size>MAX)throw Error('This backup exceeds 1 GB. Export selected books in smaller groups.');manifest.records.push({key,path:'files/'+i+'.bin',size:value.size,type:value.type,name:value.name||'',lastModified:value.lastModified||0,sha256:await digest(value)});}else manifest.records.push({key,value})}
     for(const r of manifest.records){const book=manifest.books.find(b=>b.id===r.key);if(book&&r.sha256)book.grFileHash=r.sha256}

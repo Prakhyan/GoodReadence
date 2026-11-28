@@ -13,7 +13,7 @@
     if(!bytes.length||bytes.length>MAX)throw Error('The source download was incomplete. Please try again.');
     signal.throwIfAborted();return bytes;
   }
-  async function prepare(book,{signal,progress}){
+  async function prepare(book,{signal,progress,format='epub'}){
     const bytes=await sourceBytes(book,{signal,progress}),sourceHash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(n=>n.toString(16).padStart(2,'0')).join('');
     if(book.delivery.sha256&&book.delivery.sha256!==sourceHash)throw Error('The source edition changed and needs a new review. Please choose another book for now.');
     if(book.delivery.format!=='epub'&&!book.delivery.sha256)throw Error('This source edition needs to be verified before it can be added.');
@@ -21,7 +21,13 @@
     if(book.delivery.format==='epub')publication=await window.GRBookArchive.read(bytes,book,{signal,progress});
     else if(book.delivery.format==='txt'){const text=new TextDecoder('utf-8',{fatal:true}).decode(bytes);if(!text.trim()||/^\s*</.test(text))throw Error('The source did not return a readable text edition.');publication={sections:[{title:book.title,blocks:text.split(/\n\s*\n/).map(text=>({text,kind:'p'}))}],images:[]}}
     else if(book.delivery.format!=='pdf')throw Error('This source format is not supported.');
-    signal.throwIfAborted();progress('Getting your book ready…',45);
+    signal.throwIfAborted();
+    if(format==='epub'){
+      if(book.delivery.format!=='epub')throw Error('This edition is only available as a PDF reading copy. Choose PDF to add it.');
+      const file=new File([bytes],book.title.replace(/[\\/:*?"<>|]/g,' ').slice(0,160)+'.epub',{type:'application/epub+zip',lastModified:0});
+      const readable=await readEpub(file);progress('Saving the EPUB…',92);return {file,pages:readable.chapters.length,format:'epub',sourceHash,sections:publication.sections.length};
+    }
+    if(format!=='pdf')throw Error('Choose EPUB or PDF.');progress('Preparing the PDF reading copy…',45);
     return new Promise((resolve,reject)=>{
       const worker=new Worker('/book-pdf-worker.js');
       const cleanup=()=>{signal.removeEventListener('abort',abort);worker.terminate()};

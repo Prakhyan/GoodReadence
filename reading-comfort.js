@@ -29,7 +29,7 @@
   const week=7*86400000,read=(key,fallback=null)=>{try{return localStorage.getItem(key)||fallback}catch{return fallback}},write=(key,value)=>{try{localStorage.setItem(key,String(value))}catch{}};
   const options=document.createElement('div');options.className='backup-reminder-options';options.innerHTML='<label><input type="checkbox" id="backupReminders"> Remind me weekly to back up my library</label><p class="portable-note" id="backupReminderInfo">A gentle reminder inside the app. Nothing runs or uploads in the background.</p>';
   document.querySelector('[data-portable-panel=backup]').append(options);
-  const banner=document.createElement('aside');banner.className='backup-reminder';banner.hidden=true;banner.setAttribute('aria-label','Library backup reminder');banner.innerHTML='<p><strong>Keep your reading safe.</strong><br>It’s time for a fresh backup of your books and notes.</p><button id="reminderBackup">Back up now</button><button id="reminderLater">In a week</button>';
+  const banner=document.createElement('aside');banner.className='backup-reminder';banner.hidden=true;banner.setAttribute('aria-label','Library backup reminder');banner.innerHTML='<p><strong>Backup reminder</strong><br>It’s time for a fresh backup of your books and notes.</p><button id="reminderBackup">Back up now</button><button id="reminderLater">In a week</button>';
   document.querySelector('.portable-tools').before(banner);
   function reminder(){const enabled=read('gr:backupReminders')==='on',due=Number(read('gr:backupReminderDue',0));document.querySelector('#backupReminders').checked=enabled;banner.hidden=!enabled||Date.now()<due||!lib.length;}
   document.querySelector('#backupReminders').onchange=e=>{write('gr:backupReminders',e.target.checked?'on':'off');if(e.target.checked)write('gr:backupReminderDue',Date.now()+week);reminder()};
@@ -39,7 +39,7 @@
   addEventListener('gr:changed',reminder);addEventListener('pageshow',reminder);addEventListener('storage',reminder);document.addEventListener('visibilitychange',()=>{if(!document.hidden)reminder()});setInterval(reminder,3600000);reminder();
 
   const dialog=document.createElement('dialog');dialog.id='lookupDialog';dialog.className='gr-dialog';dialog.setAttribute('aria-labelledby','lookupTitle');
-  dialog.innerHTML='<button class="close-dialog" aria-label="Close lookup">×</button><h2 id="lookupTitle">A word worth knowing</h2><p class="quiet">Online lookup sends only your chosen word or phrase to the provider you select. Your book stays on this device.</p><label for="lookupTerm">Word or phrase</label><input id="lookupTerm" type="search" maxlength="80" autocomplete="off"><div class="lookup-providers"><button class="gr-button" id="lookupDictionary">English dictionary</button><button class="gr-button" id="lookupWikipedia">Wikipedia</button></div><p id="lookupStatus" role="status"></p><section id="lookupResults" hidden></section>';
+  dialog.innerHTML='<button class="close-dialog" aria-label="Close lookup">×</button><h2 id="lookupTitle">Dictionary & Wikipedia</h2><p class="quiet">Online lookup sends only your chosen word or phrase to the provider you select. Your book stays on this device.</p><label for="lookupTerm">Word or phrase</label><input id="lookupTerm" type="search" maxlength="80" autocomplete="off"><div class="lookup-providers"><button class="gr-button" id="lookupDictionary">English dictionary</button><button class="gr-button" id="lookupWikipedia">Wikipedia</button></div><p id="lookupStatus" role="status"></p><section id="lookupResults" hidden></section>';
   document.body.append(dialog);let controller=null,chosen='';const cache=new Map();
   dialog.querySelector('.close-dialog').onclick=()=>dialog.close();dialog.addEventListener('close',()=>controller?.abort());
   const validTerm=value=>String(value||'').replace(/\s+/g,' ').trim().slice(0,80);
@@ -51,7 +51,7 @@
   async function json(url,signal){const response=await fetch(url,{credentials:'omit',referrerPolicy:'no-referrer',signal});if(!response.ok)throw Error(response.status===404?'No definition found. Try Wikipedia or another word.':'This source is unavailable right now. Try again later.');const reader=response.body.getReader(),chunks=[];let size=0;try{while(true){const{done,value}=await reader.read();if(done)break;size+=value.length;if(size>512000){await reader.cancel();throw Error('The lookup response is too large.')}chunks.push(value)}}finally{reader.releaseLock()}return JSON.parse(await new Blob(chunks).text())}
   async function lookup(provider){
     const term=validTerm(document.querySelector('#lookupTerm').value),status=document.querySelector('#lookupStatus'),result=document.querySelector('#lookupResults');if(!term){status.textContent='Enter a word first.';return}
-    if(!navigator.onLine){status.textContent='Lookup needs an internet connection. Your saved book remains available offline.';return}
+    if(!navigator.onLine){result.hidden=true;status.textContent='You’re offline. Connect to search definitions or Wikipedia. Your saved book is still available.';return}
     controller?.abort();const request=controller=new AbortController(),timer=setTimeout(()=>request.abort(),12000);result.hidden=true;status.textContent='Looking up “'+term+'”…';
     try{const key=provider+':'+term.toLowerCase();let data=cache.get(key);if(!data){
       if(provider==='dictionary')data=await json('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(term),request.signal);
@@ -63,5 +63,6 @@
       result.hidden=false;status.textContent='';
     }catch(error){if(request===controller)status.textContent=error.name==='AbortError'?'Lookup was cancelled or timed out. Try again.':error.message}finally{clearTimeout(timer)}
   }
+  for(const id of ['lookupDictionary','lookupWikipedia']){document.querySelector('#'+id).dataset.online='true';document.querySelector('#'+id).title='Requires an internet connection; sends only the chosen word or phrase.'}
   document.querySelector('#lookupDictionary').onclick=()=>lookup('dictionary');document.querySelector('#lookupWikipedia').onclick=()=>lookup('wikipedia');document.querySelector('#lookupTerm').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();lookup('dictionary')}};
 })();
