@@ -452,7 +452,8 @@ async function addBooks(files){
 async function openBook(b){
   const request=++openRequest;
   say('Opening…');
-  const f=await dbx('f','readonly',s=>s.get(b.id)).catch(()=>null);
+  let f=await dbx('f','readonly',s=>s.get(b.id)).catch(()=>null);
+  if((!(f instanceof Blob)||!f.size)&&b.grCloud){try{window.GRImport?.start('Downloading '+b.name+' to this device…');f=await window.GRCloud.ensureBook(b,p=>window.GRImport?.update('Downloading '+b.name+'…',p));b.grCloud.downloaded=true;window.GRImport?.finish('Saved on this device.');document.querySelector('#importFeedback')?.close()}catch(error){window.GRImport?.fail(error.message);return}}
   if(request!==openRequest)return;
   if(!(f instanceof Blob)||!f.size){say('This book’s file is missing. Other books are still available.');dispatchEvent(new CustomEvent('gr:book-unreadable',{detail:{book:b}}));return}
   b.lastReadAt=Date.now();await putB(b);
@@ -556,7 +557,7 @@ $('#featureAction').onclick=()=>featured?openBook(featured):$('#f').click();
   }
 }
 function readingPosition(entry){
-  return (entry.format==='epub'?'EPUB · ':entry.format==='office'?'Text import · ':'PDF · ')+(entry.fin?'Finished':(entry.format==='epub'||entry.format==='office'?'Section ':'Page ')+((entry.last||0)+1)+' of '+entry.n);
+  return (entry.grCloud&&!entry.grCloud.downloaded?'Cloud · ':'')+(entry.format==='epub'?'EPUB · ':entry.format==='office'?'Text import · ':'PDF · ')+(entry.fin?'Finished':(entry.format==='epub'||entry.format==='office'?'Section ':'Page ')+((entry.last||0)+1)+' of '+entry.n);
 }
 $('#importBook').onclick=()=>$('#f').click();
 $('#brandHome').onclick=()=>{document.documentElement.classList.remove('library-entry');const intro=$('#intro');intro.hidden=false;intro.scrollTop=0;try{localStorage.removeItem('gr:introSeen')}catch(e){}};

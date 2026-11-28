@@ -13,6 +13,7 @@ A free, local-first reader from **Casid Studio**. Open PDF and EPUB files, or ch
 - Highlights, freehand marks, notes, bookmarks, reading goals and statistics.
 - An on-demand public library with original EPUBs, optional PDF preparation, covers and edition credits.
 - ZIP backup and restore, annotation exports and direct device transfer.
+- Framework-free TypeScript cloud adapters for Google Drive, Dropbox and personal OneDrive, with lazy book downloads. Provider registration is required before sign-in is available.
 - A sample chapter in the three-bar menu and optional automatic backups to a local folder in supported browsers.
 - Optional installation and offline access to books already saved on the device.
 - Compact ambience on demand, with individual offline downloads only when requested.

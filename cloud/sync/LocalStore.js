@@ -1,0 +1,120 @@
+import { CloudError, MAX_BOOK } from '../types/CloudStorageProvider.js';
+import { metadata, mergeStates, stable } from './merge.js';
+export class LocalStore {
+    host;
+    hashes = new Map();
+    constructor(host) {
+        this.host = host;
+    }
+    clearHash(id) { id ? this.hashes.delete(id) : this.hashes.clear(); }
+    db(name = 'casid', version = 1) { return new Promise((resolve, reject) => { const r = indexedDB.open(name, version); r.onupgradeneeded = () => { if (name === 'goodreadence-cloud-v2')
+        r.result.createObjectStore('state'); }; r.onsuccess = () => resolve(r.result); r.onerror = () => reject(r.error); r.onblocked = () => reject(new Error('Close other GoodReadence tabs and try again.')); }); }
+    async setting(key) { const db = await this.db('goodreadence-cloud-v2'); try {
+        return await new Promise((resolve, reject) => { const t = db.transaction('state'), r = t.objectStore('state').get(key); t.oncomplete = () => resolve(r.result); t.onerror = t.onabort = () => reject(t.error); });
+    }
+    finally {
+        db.close();
+    } }
+    async save(key, value) { const db = await this.db('goodreadence-cloud-v2'); try {
+        await new Promise((resolve, reject) => { const t = db.transaction('state', 'readwrite'); t.objectStore('state').put(value, key); t.oncomplete = () => resolve(); t.onerror = t.onabort = () => reject(t.error); });
+    }
+    finally {
+        db.close();
+    } }
+    async read() { const db = await this.db(); try {
+        return await new Promise((resolve, reject) => { const t = db.transaction(['b', 'f']), b = t.objectStore('b').getAll(), f = t.objectStore('f').getAll(), keys = t.objectStore('f').getAllKeys(); t.oncomplete = () => resolve({ books: b.result, files: new Map(keys.result.map((k, i) => [String(k), f.result[i]])) }); t.onerror = t.onabort = () => reject(t.error); });
+    }
+    finally {
+        db.close();
+    } }
+    async snapshot(account, hidden) {
+        const data = await this.read(), books = Object.create(null), files = new Map();
+        let oversized = 0;
+        for (const b of data.books) {
+            if (b.demo || hidden.has(b.id))
+                continue;
+            const file = data.files.get(b.id), ref = b.grCloud;
+            let hash, size, mime, name;
+            if (file instanceof Blob && file.size) {
+                if (file.size > MAX_BOOK) {
+                    oversized++;
+                    continue;
+                }
+                const stamp = file.size + ':' + (file.lastModified || 0), cached = this.hashes.get(b.id);
+                hash = cached?.stamp === stamp ? cached.hash : await this.host.digest(file);
+                this.hashes.set(b.id, { hash, stamp });
+                size = file.size;
+                mime = file.type;
+                name = file.name || b.name;
+                files.set(hash, file);
+            }
+            else if (ref?.account === account) {
+                ({ hash, size, mime, filename: name } = ref);
+            }
+            else
+                continue;
+            const m = metadata(b);
+            if (!m.grClock || !Object.keys(m.grClock).length) {
+                m.grClock = { [this.host.deviceId]: 1 };
+                m.grModifiedAt = Date.now();
+            }
+            books[b.id] = { id: b.id, hash, size, mime, filename: name, lastModified: Number(m.grModifiedAt) || 0, metadata: m };
+        }
+        return { state: { kind: 'goodreadence-library', schema: 2, deviceId: this.host.deviceId, updatedAt: Date.now(), books }, files, oversized };
+    }
+    validate(state) { this.host.validate({ kind: 'goodreadence-backup', schema: 1, books: Object.values(state.books).map(b => b.metadata), records: Object.values(state.books).map((b, i) => ({ key: b.id, path: 'files/' + i + '.bin', size: b.size, type: b.mime, sha256: b.hash })), settings: {} }); }
+    async apply(remote, account, hidden, current) {
+        this.validate(remote);
+        const snapshot = await this.snapshot(account, hidden), merged = await mergeStates([remote, snapshot.state], this.host.deviceId);
+        this.validate(merged);
+        const observed = await this.read(), writes = [];
+        let recoveredReference = false;
+        for (const b of Object.values(merged.books)) {
+            if (hidden.has(b.id))
+                continue;
+            const previous = observed.books.find(x => x.id === b.id), ref = previous?.grCloud, downloaded = !!observed.files.get(b.id)?.size;
+            if (ref && ref.account !== account && !downloaded)
+                continue;
+            if (previous && !downloaded && !ref) {
+                if (previous.grFileHash && previous.grFileHash !== b.hash)
+                    continue;
+                writes.push({ ...previous, grCloud: { account, hash: b.hash, size: b.size, mime: b.mime, filename: b.filename, downloaded: false } });
+                recoveredReference = true;
+                continue;
+            }
+            if (previous && stable(metadata(previous)) === stable(b.metadata) && ref?.account === account && ref.hash === b.hash && ref.downloaded === downloaded)
+                continue;
+            if (this.host.activeId() === b.id)
+                continue;
+            writes.push({ ...b.metadata, ts: previous?.ts || Date.now(), ...(previous?.type ? { type: previous.type } : {}), grCloud: { account, hash: b.hash, size: b.size, mime: b.mime, filename: b.filename, downloaded } });
+        }
+        if (!current())
+            throw new CloudError('Sync was cancelled.', 'auth');
+        const db = await this.db();
+        try {
+            await new Promise((resolve, reject) => { const t = db.transaction('b', 'readwrite'), s = t.objectStore('b'); for (const b of writes) {
+                const r = s.get(b.id);
+                r.onsuccess = () => { const before = observed.books.find(x => x.id === b.id); if (current() && stable(r.result) === stable(before))
+                    s.put(b); };
+            } t.oncomplete = () => resolve(); t.onerror = t.onabort = () => reject(t.error); });
+        }
+        finally {
+            db.close();
+        }
+        await this.host.refresh();
+        if (recoveredReference)
+            dispatchEvent(new CustomEvent('gr:changed', { detail: { kind: 'cloud-reference-recovered' } }));
+        return merged;
+    }
+    async storeFile(book, file, expected, current) { if (await this.host.digest(file) !== expected)
+        throw new CloudError('The cloud copy did not pass its integrity check. Sync the original device again.', 'invalid'); if (!current())
+        throw new CloudError('Connection changed. Reconnect the book’s cloud account.', 'auth'); const db = await this.db(); try {
+        await new Promise((resolve, reject) => { const t = db.transaction(['b', 'f'], 'readwrite'), r = t.objectStore('b').get(book.id); r.onsuccess = () => { const existing = r.result; if (!existing || existing.grCloud?.hash !== expected) {
+            t.abort();
+            return;
+        } t.objectStore('f').put(file, book.id); t.objectStore('b').put({ ...existing, grCloud: { ...existing.grCloud, downloaded: true } }); }; t.oncomplete = () => resolve(); t.onabort = t.onerror = () => reject(t.error || new Error('This cloud book changed. Try opening it again.')); });
+    }
+    finally {
+        db.close();
+    } }
+}

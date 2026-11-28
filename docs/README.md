@@ -6,7 +6,7 @@
 - [Public library](PUBLIC-LIBRARY.md): selection, rights screening, complete-PDF preparation and publication checks.
 - [Catalogue expansion](CATALOGUE-EXPANSION.md): reviewed batches, remote-only book sources and the open-licence expansion plan.
 - [The 5,000-book collection](LIBRARY-5000.md): the latest 3,000 additions and session-based discovery.
-- [Cloud setup](CLOUD-SETUP.md): provider registrations needed to activate optional personal-cloud sign-in.
+- [Cloud setup](CLOUD-SETUP.md): TypeScript adapters, provider registration checklists, privacy boundaries, uploads and required live-account checks.
 - [Security review](SECURITY-REVIEW.md): implemented browser protections, validation and remaining limits.
 - [Dependencies and licences](DEPENDENCIES-AND-LICENSES.md): bundled engines and third-party material.
 - [Branding](BRANDING.md): current identity and artwork rights.

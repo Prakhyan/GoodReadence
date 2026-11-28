@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 1.7
+
+Your own cloud, alongside local reading.
+
+Optional personal-cloud sync controls, on-demand book downloads and reading-data recovery. Connections appear when provider sign-in is available.
+
+Includes: 1.7.0.
+
 ## Version 1.6
 
 EPUB reading and local backups.
