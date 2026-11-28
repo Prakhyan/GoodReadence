@@ -6,7 +6,7 @@ EPUB reading and local backups.
 
 Choose EPUB or PDF from the library, check storage health and keep a backup in a local folder. A sample chapter is available in the menu.
 
-Includes: 1.6.0, 1.6.1.
+Includes: 1.6.0, 1.6.1, 1.6.2.
 
 ## Version 1.5
 
