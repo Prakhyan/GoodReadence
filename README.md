@@ -13,7 +13,7 @@ A free, local-first reader from **Casid Studio**. Open PDF and EPUB files, or ch
 - Highlights, freehand marks, notes, bookmarks, reading goals and statistics.
 - An on-demand public library with original EPUBs, optional PDF preparation, covers and edition credits.
 - ZIP backup and restore, annotation exports and direct device transfer.
-- A readable home-page sample and optional automatic backups to a local folder in supported browsers.
+- A sample chapter in the three-bar menu and optional automatic backups to a local folder in supported browsers.
 - Optional installation and offline access to books already saved on the device.
 - Compact ambience on demand, with individual offline downloads only when requested.
 
@@ -21,7 +21,7 @@ Books and reading data stay in the current browser by default. Clearing browser 
 
 ## Try it
 
-Visit the [live app](https://goodreadence.vercel.app/) to try the sample, or choose **Open your shelf**, then **Public library** or **Add books**. No account is required. Start with [Help & FAQ](https://goodreadence.vercel.app/help) for installation, supported imports and backups.
+Visit the [live app](https://goodreadence.vercel.app/), choose **Enter your library**, then **Public library** or **Add books**. The three-bar menu also has a sample EPUB chapter. No account is required. Start with [Help & FAQ](https://goodreadence.vercel.app/help) for installation, supported imports and backups.
 
 Explore [Pride and Prejudice](https://goodreadence.vercel.app/library/pride-and-prejudice), [Dracula](https://goodreadence.vercel.app/library/dracula) or [The Adventures of Sherlock Holmes](https://goodreadence.vercel.app/library/adventures-of-sherlock-holmes). Each book has a complete edition, author details and a direct reading link.
 

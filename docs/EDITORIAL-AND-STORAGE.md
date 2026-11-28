@@ -1,6 +1,6 @@
 # Reading interface and storage — 1.6.0
 
-The home page opens with a readable, adjustable sample of Chapter I of *Pride and Prejudice*. Its text comes from the reviewed public-domain source edition. Trying the sample does not create a saved book; Save sample makes an explicit local copy.
+The home page retains its illustrated books, coloured background and interactive cover fan. The three-bar menu and app settings contain an adjustable sample of Chapter I of *Pride and Prejudice*. Its text comes from the reviewed public-domain source edition. Trying the sample does not create a saved book; Save sample makes an explicit local copy.
 
 ## Product facts
 
@@ -8,7 +8,7 @@ The home page opens with a readable, adjustable sample of Chapter I of *Pride an
 
 PDF and EPUB are the primary reading formats. JPG and PNG can be combined into a PDF. DOCX and PPTX are experimental text imports: original layout and illustrations are not preserved. CBZ is not supported. Public cloud sign-in remains inactive until provider registrations are configured.
 
-`editorial-layout.cjs` and `editorial-copy.cjs` generate the shared navigation, footer, home page, FAQ and contact copy. `editorial.css` supplies the paper, ink, muted text, rule and accent tokens, with serif headings, humanist sans controls and monospace folios. Reader-selected page and annotation colours remain available.
+`editorial-layout.cjs`, its two HTML templates and `editorial-copy.cjs` generate the shared navigation, footer, home page, FAQ and contact copy. `restored-landing.css` preserves the original home artwork and cover interactions. `editorial.css` supplies the reading/settings paper, ink, muted text, rule and accent tokens, with serif headings, humanist sans controls and monospace folios. Reader-selected page and annotation colours remain available.
 
 ## Storage and backups
 

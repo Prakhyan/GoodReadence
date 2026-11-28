@@ -4,9 +4,9 @@
 
 EPUB reading and local backups.
 
-Try a chapter before saving it. Choose EPUB or PDF from the library, check storage health and keep a backup in a local folder.
+Choose EPUB or PDF from the library, check storage health and keep a backup in a local folder. A sample chapter is available in the menu.
 
-Includes: 1.6.0.
+Includes: 1.6.0, 1.6.1.
 
 ## Version 1.5
 
